@@ -34,7 +34,7 @@
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/main.do">홈</a></li>
                         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/map.do">내주변</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">마이페이지</a></li>
+                        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/mypage/myPage.do">마이페이지</a></li>
                         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/board/freeboard.do">커뮤니티</a></li>
                         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/login.do">로그인</a></li>
                     </ul>

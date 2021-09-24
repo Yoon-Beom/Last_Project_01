@@ -87,7 +87,7 @@ color: inherit;
  <input type="button" value="검색">&nbsp;&nbsp;&nbsp;
   <select><option value="#">나열순</option></select>
    </div>
-  <a href ="${pageContext.request.contextPath}/board/freeBoardWrting.do">
+  <a href ="${pageContext.request.contextPath}/board/freeBoardWriting.do">
   <input type="button" value="글쓰기" id="wrting">
   </a> 
   <br>

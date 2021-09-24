@@ -76,11 +76,11 @@ public class HomeController {
 		return "board/freeContent";
 	}
 	
-	@RequestMapping(value = "/board/freeBoardWrting.do", method = RequestMethod.GET)
-	public String freeboardWrting(Locale locale, Model model) {
+	@RequestMapping(value = "/board/freeBoardWriting.do", method = RequestMethod.GET)
+	public String freeboardWriting(Locale locale, Model model) {
 
 
-		return "board/freeBoardWrting";
+		return "board/freeBoardWriting";
 	}
 	
 	@RequestMapping(value = "/board/qnaBoard.do", method = RequestMethod.GET)
@@ -97,11 +97,11 @@ public class HomeController {
 		return "board/qnaContent";
 	}
 	
-	@RequestMapping(value = "/board/qnaBoardWrting.do", method = RequestMethod.GET)
-	public String qnaboardWrting(Locale locale, Model model) {
+	@RequestMapping(value = "/board/qnaBoardWriting.do", method = RequestMethod.GET)
+	public String qnaboardWriting(Locale locale, Model model) {
 
 
-		return "board/qnaBoardWrting";
+		return "board/qnaBoardWriting";
 	}
 	
 	@RequestMapping(value = "/board/noticeBoard.do", method = RequestMethod.GET)
@@ -118,4 +118,46 @@ public class HomeController {
 		return "board/noticeContent";
 	}
 
+	@RequestMapping(value = "/mypage/myPage.do", method = RequestMethod.GET)
+	public String myPage(Locale locale, Model model) {
+		
+		
+		return "mypage/myPage";
+}
+	@RequestMapping(value = "/mypage/pwdCheck.do", method = RequestMethod.GET)
+	public String pwdCheck(Locale locale, Model model) {
+		
+		
+		return "mypage/pwdCheck";
+}
+	@RequestMapping(value = "/mypage/membershipMod.do", method = RequestMethod.GET)
+	public String membershipMod(Locale locale, Model model) {
+		
+		
+		return "mypage/membershipMod";
+}
+	@RequestMapping(value = "/mypage/petAdd.do", method = RequestMethod.GET)
+	public String petAdd(Locale locale, Model model) {
+		
+		
+		return "mypage/petAdd";
+}
+	@RequestMapping(value = "/mypage/review.do", method = RequestMethod.GET)
+	public String review(Locale locale, Model model) {
+		
+		
+		return "mypage/review";
+}
+	@RequestMapping(value = "/mypage/reviewWrite.do", method = RequestMethod.GET)
+	public String reviewWrite(Locale locale, Model model) {
+		
+		
+		return "mypage/reviewWrite";
+}
+	@RequestMapping(value = "/mypage/visit.do", method = RequestMethod.GET)
+	public String visit(Locale locale, Model model) {
+		
+		
+		return "mypage/visit";
+}
 }
