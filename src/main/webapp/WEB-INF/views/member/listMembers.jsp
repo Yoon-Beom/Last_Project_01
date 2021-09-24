@@ -13,27 +13,33 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css" />
 </head>
 <body>
-	<table border="1" align="center" width="80%">
-		<tr align="center" bgcolor="lightgreen">
-			<td><b>아이디</b></td>
-			<td><b>비밀번호</b></td>
-			<td><b>이름</b></td>
-			<td><b>이메일</b></td>
-			<td><b>가입일</b></td>
-			<td><b>삭제</b></td>
-		</tr>
-
-		<c:forEach var="member" items="${membersList}">
-			<tr align="center">
-				<td>${member.member_id}</td>
-				<td>${member.member_pwd}</td>
-				<td>${member.member_name}</td>
-				<td>${member.member_email}</td>
-				<td>${member.member_joinDate}</td>
-				<td><a href="${contextPath}/member/removeMember.do?id=${member.member_id }">삭제하기</a></td>
-			</tr>
-		</c:forEach>
-	</table>
-	<a href="${contextPath}/member/memberForm.do"><h1 style="text-align: center">회원가입</h1></a>
+	<header class="masthead">
+			<div id="box">
+			
+				<table border="1" align="center" width="80%">
+					<tr align="center" bgcolor="lightgreen">
+						<td><b>아이디</b></td>
+						<td><b>비밀번호</b></td>
+						<td><b>이름</b></td>
+						<td><b>이메일</b></td>
+						<td><b>가입일</b></td>
+						<td><b>삭제</b></td>
+					</tr>
+			
+					<c:forEach var="member" items="${membersList}">
+						<tr align="center">
+							<td>${member.member_id}</td>
+							<td>${member.member_pwd}</td>
+							<td>${member.member_name}</td>
+							<td>${member.member_email}</td>
+							<td>${member.member_joinDate}</td>
+							<td><a href="${contextPath}/member/removeMember.do?id=${member.member_id }">삭제하기</a></td>
+						</tr>
+					</c:forEach>
+				</table>
+				<a href="${contextPath}/member/memberForm.do"><h1 style="text-align: center">회원가입</h1></a>
+				
+			</div>
+		</header>	
 </body>
 </html>

@@ -28,20 +28,28 @@ public class MemberControllerImpl implements MemberController{
 	
 	@RequestMapping(value = {"/", "/main.do"}, method = RequestMethod.GET)
 	private ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("MemberControllerImpl : main start");
+		
 		String viewName = (String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
+		
+		System.out.println("MemberControllerImpl : main end");
 		return mav;
 	}
 	
 	
 	@Override
-	@RequestMapping(value="/member/listMembers.do" ,method = RequestMethod.GET)
+	@RequestMapping(value="/member/listMembers.do", method = RequestMethod.GET)
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("MemberControllerImpl : listMembers start");
+		
 		String viewName = (String)request.getAttribute("viewName");
 		List membersList = memberService.listMembers();
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("membersList", membersList);
+		
+		System.out.println("MemberControllerImpl : listMembers end");
 		return mav;
 	}
 	

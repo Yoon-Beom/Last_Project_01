@@ -22,7 +22,7 @@
 }
 
 input {
-	size: 120px;
+	size: 20%;
 }
 
 h1 {

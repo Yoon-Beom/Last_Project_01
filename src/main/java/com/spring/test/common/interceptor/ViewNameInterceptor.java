@@ -28,6 +28,8 @@ public class ViewNameInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	private String getViewName(HttpServletRequest request) throws Exception {
+		System.out.println("ViewNameInterceptor : getViewName start");
+		
 		String contextPath = request.getContextPath();
 		String uri = (String) request.getAttribute("javax.servlet.include.request_uri");
 		
@@ -56,6 +58,9 @@ public class ViewNameInterceptor extends HandlerInterceptorAdapter {
 		if (fileName.lastIndexOf("/") != -1) {
 			fileName = fileName.substring(fileName.lastIndexOf("/", 1), fileName.length());
 		}
+
+		System.out.println("fileName : " + fileName);
+		System.out.println("ViewNameInterceptor : getViewName end");
 		return fileName;
 	}
 }
