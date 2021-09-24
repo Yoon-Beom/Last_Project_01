@@ -33,6 +33,8 @@ public class MemberControllerImpl implements MemberController{
 		System.out.println("윤범 : 인정님은 천재에요!!");
 		System.out.println("윤범 : 해수님은 바보에요!");
 		System.out.println("가연 : 오프라인가고시퍼요");
+		System.out.println("윤범 : 가연님 패치해요!");
+		
 		String viewName = (String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
