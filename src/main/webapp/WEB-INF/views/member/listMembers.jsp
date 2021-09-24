@@ -25,12 +25,12 @@
 
 		<c:forEach var="member" items="${membersList}">
 			<tr align="center">
-				<td>${member.id}</td>
-				<td>${member.pwd}</td>
-				<td>${member.name}</td>
-				<td>${member.email}</td>
-				<td>${member.joinDate}</td>
-				<td><a href="${contextPath}/member/removeMember.do?id=${member.id }">삭제하기</a></td>
+				<td>${member.member_id}</td>
+				<td>${member.member_pwd}</td>
+				<td>${member.member_name}</td>
+				<td>${member.member_email}</td>
+				<td>${member.member_joinDate}</td>
+				<td><a href="${contextPath}/member/removeMember.do?id=${member.member_id }">삭제하기</a></td>
 			</tr>
 		</c:forEach>
 	</table>
