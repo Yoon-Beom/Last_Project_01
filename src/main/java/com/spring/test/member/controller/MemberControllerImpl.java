@@ -30,6 +30,7 @@ public class MemberControllerImpl implements MemberController{
 	private ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("MemberControllerImpl : main start");
 		System.out.println("인정 : 나는 바보다!");
+		System.out.println("윤범 : 인정님은 천재에요!!");
 		
 		String viewName = (String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
