@@ -36,7 +36,15 @@
                         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/map.do">내주변</a></li>
                         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/mypage/myPage.do">마이페이지</a></li>
                         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/board/freeboard.do">커뮤니티</a></li>
-                        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/login.do">로그인</a></li>
+                        <c:choose>
+          <c:when test="${isLogOn == true  && member!= null}">
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/logout.do">로그아웃</a></li>
+          </c:when>
+          <c:otherwise>
+	        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/login.do">로그인</a></li>
+	      </c:otherwise>
+	   </c:choose>     
+                        
                     </ul>
                 </div>
             </div>

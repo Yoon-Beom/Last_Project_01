@@ -4,7 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
 <%
 request.setCharacterEncoding("utf-8");
 %>
@@ -13,10 +12,10 @@ request.setCharacterEncoding("utf-8");
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/styles.css" />
+	href="${contextPath}/resources/css/styles.css" />
 <title>회원가입창</title>
 <script type="text/javascript">
-	window.onload = function() {
+	window.onload = function selec() {
 		var membership = document.membership;
 		var now = new Date().getFullYear(); // 현재 날짜 및 시간
 
@@ -29,7 +28,9 @@ request.setCharacterEncoding("utf-8");
 		for (var d = 1; d <= 31; d++) {
 			membership.member_dd.add(new Option((d)));
 		}
-	}
+	};
+
+	
 </script>
 <style type="text/css">
 img {
@@ -86,7 +87,7 @@ input {
 				<div id="box1">
 					<h1>
 						개인회원 회원가입 <img
-							src="${pageContext.request.contextPath}/resources/assets/img/icon.png">
+							src="${contextPath}/resources/assets/img/icon.png">
 					</h1>
 					<div class="text1">
 						아이디
@@ -120,7 +121,7 @@ input {
 					<input type="email" name="member_email">
 					<div class="text1">주소</div>
 					<input type="text" name="member_address"><br> <br>
-					<br> <input type="submit" value="가입하기">
+					<br> <input type="submit" value="가입하기" >
 				</div>
 			</div>
 		</header>

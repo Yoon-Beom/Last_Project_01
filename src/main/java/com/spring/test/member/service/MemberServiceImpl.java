@@ -28,4 +28,14 @@ public class MemberServiceImpl implements MemberService{
 	public int addMember(MemberVO member) throws DataAccessException {
 		return memberDAO.insertMember(member);
 	}
+	@Override
+	public int removeMember(String member_id) throws DataAccessException {
+		System.out.println("removeMemberstart");
+		return memberDAO.deleteMember(member_id);
+	}
+	@Override
+	public MemberVO login(MemberVO memberVO) throws Exception{
+		System.out.println("MemberService login");
+		return memberDAO.loginById(memberVO);
+	}
 }

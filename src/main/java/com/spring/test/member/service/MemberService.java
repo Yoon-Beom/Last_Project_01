@@ -10,6 +10,6 @@ public interface MemberService {
 	
 	public List listMembers() throws DataAccessException;
 	public int addMember(MemberVO member) throws DataAccessException;
-	
-
+	public int removeMember(String member_id) throws DataAccessException;
+	public MemberVO login(MemberVO memberVO) throws Exception;
 }

@@ -28,4 +28,18 @@
 				#{member_birth}, #{member_phone},#{member_email}, #{member_gender},#{member_address})
 		]]>
 	</insert>
+	<delete id="deleteMember"  parameterType="String">
+	<![CDATA[
+	   delete from t_member
+	   where
+	   member_id=#{member_id}
+	]]>      
+  </delete>
+  
+   <select id="loginById"  resultType="memberVO"   parameterType="memberVO" >
+	<![CDATA[
+		select * from t_member	
+		where member_id=#{member_id} and member_pwd=#{member_pwd}		
+	]]>
+  </select>
 </mapper>

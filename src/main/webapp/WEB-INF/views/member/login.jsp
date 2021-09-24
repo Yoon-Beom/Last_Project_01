@@ -44,20 +44,29 @@ h1 {
 	font-size: 20px;
 }
 </style>
+<c:choose>
+	<c:when test="${result=='loginFailed'}">
+	  <script>
+	    window.onload=function(){
+	      alert("아이디나 비밀번호가 틀립니다.다시 로그인 하세요!");
+	    }
+	  </script>
+	</c:when>
+</c:choose>  
 </head>
 <body>
-	<form>
+	<form name="membership" method="post"  action="${contextPath}/member/login.do">
 		<header class="masthead">
 			<div id="box">
 				<h1>로그인</h1>
 				<div class="text">
-					&nbsp;아이디&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="member_id"><br>
+					&nbsp;아이디&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" name="member_id"><br>
 				</div>
 				<div class="text">
-					비밀번호 &nbsp; <input type="password" id="member_pwd"><br>
+					비밀번호 &nbsp; <input type="password" name="member_pwd"><br>
 				</div>
-				<input type="button" value="로그인" class="button"> 
-				<a href="${pageContext.request.contextPath}/member/membership.do">
+				<input type="submit" value="로그인" class="button"> 
+				<a href="${contextPath}/member/membership.do">
 					<input type="button" value="회원가입" class="button">
 				</a>
 
