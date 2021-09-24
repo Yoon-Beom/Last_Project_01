@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="baseLayout" template="/WEB-INF/views/common/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/common/body.jsp" />
+		<put-attribute name="content" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+		<put-attribute name="side" value="" />
+	</definition>
+
+	<definition name="main" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/main.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
+
+	<definition name="login" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/member/login.jsp" />
+	</definition>
+	
+	<definition name="member/membership" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/member/membership.jsp" />
+	</definition>
+	
+	<definition name="member/membershipForm" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/member/membershipForm.jsp" />
+	</definition>
+	
+	<definition name="shop/shopmembershipForm" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/shop/shopmembershipForm.jsp" />
+	</definition>
+	
+	<definition name="map" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/map/map.jsp" />
+	</definition>
+
+	<definition name="board/freeboard" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/freeboard.jsp" />
+	</definition>
+
+	<definition name="board/freeContent" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/freeContent.jsp" />
+	</definition>
+
+	<definition name="board/freeBoardWrting" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/freeBoardWrting.jsp" />
+	</definition>
+
+	<definition name="board/qnaBoard" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/qnaBoard.jsp" />
+	</definition>
+
+	<definition name="board/qnaContent" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/qnaContent.jsp" />
+	</definition>
+
+	<definition name="board/qnaBoardWrting" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/qnaBoardWrting.jsp" />
+	</definition>
+
+	<definition name="board/noticeBoard" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/noticeBoard.jsp" />
+	</definition>
+
+	<definition name="board/noticeContent" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/noticeContent.jsp" />
+	</definition>
+</tiles-definitions>
