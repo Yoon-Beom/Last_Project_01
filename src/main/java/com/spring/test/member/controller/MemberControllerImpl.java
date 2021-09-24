@@ -29,6 +29,7 @@ public class MemberControllerImpl implements MemberController{
 	@RequestMapping(value = {"/", "/main.do"}, method = RequestMethod.GET)
 	private ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("MemberControllerImpl : main start");
+		System.out.println("인정 : 나는 바보다!");
 		
 		String viewName = (String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
