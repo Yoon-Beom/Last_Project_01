@@ -118,7 +118,7 @@ public class MemberControllerImpl implements MemberController{
 	    }
 
 	}else {
-	   rAttr.addAttribute("result","loginFailed");
+	   rAttr.addFlashAttribute("result","loginFailed");
 	   mav.setViewName("redirect:/login.do");
 	}
 	

@@ -31,6 +31,13 @@ img {
 	width: 100px;
 	height: 100px;
 }
+#box1{
+width:80%;
+height:500px;
+margin:auto;
+margin-top:100px;
+background-color: white;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css" />
 </head>
@@ -38,13 +45,13 @@ img {
 	<form>
 		<header class="masthead">
 
-			<div id="box">
+			<div id="box1">
 				<h1>회원가입</h1>
 				<div id="button">
 					<img src="${pageContext.request.contextPath}/resources/assets/img/icon.png">
 					<a href="${pageContext.request.contextPath}/member/membershipForm.do">
 						<input type="button" value="개인 회원">
-					</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+					</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 					<img src="${pageContext.request.contextPath}/resources/assets/img/icon2.png">
 					<a href="${pageContext.request.contextPath}/shop/shopmembershipForm.do">
 						<input type="button" value="기업 회원">

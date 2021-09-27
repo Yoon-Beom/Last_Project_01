@@ -13,7 +13,7 @@
 <meta charset="UTF-8">
 <title>로그인 창</title>
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/styles.css" />
+	href="${contextPath}/resources/css/styles.css" />
 <style type="text/css">
 #box {
 	margin: auto;

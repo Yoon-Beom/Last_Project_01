@@ -9,7 +9,8 @@
 <style type="text/css">
 #box1{
 width:80%;
-height:2000px;
+height:100%;
+padding-bottom:80px;
 position :relative;
 top:50px;
 margin:auto;
