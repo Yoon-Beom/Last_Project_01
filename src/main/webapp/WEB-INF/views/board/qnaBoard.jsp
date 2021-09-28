@@ -2,11 +2,22 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
     <%request.setCharacterEncoding("utf-8"); %>
   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+  <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>QnA</title>
+<script>
+	function fn_articleForm(isLogOn,qnaBoardWriting,login){
+	  if(isLogOn != '' && isLogOn != 'false'){
+	    location.href=qnaBoardWriting;
+	  }else{
+	    alert("로그인 후 글쓰기가 가능합니다.")
+	    location.href=login+'?action=/board/freeBoardWriting.do';
+	  }
+	}
+</script>
 <style type="text/css">
 
 #menu{
@@ -76,9 +87,9 @@ color: inherit;
  <div class="container">
  <div id="menu">
  <br>
- <a href ="${pageContext.request.contextPath}/board/freeboard.do" class="mn">자유게시판</a><br>
- <a href ="${pageContext.request.contextPath}/board/qnaBoard.do" class="mn">QnA</a><br>
- <a href ="${pageContext.request.contextPath}/board/noticeBoard.do" class="mn">공지사항</a><br>
+ <a href ="${contextPath}/board/freeBoard.do?board_code=1" class="mn">자유게시판</a><br>
+ <a href ="${contextPath}/board/qnaBoard.do?board_code=2" class="mn">QnA</a><br>
+ <a href ="${contextPath}/board/noticeBoard.do?board_code=3" class="mn">공지사항</a><br>
  </div>
   <br>
  <div id="boardmain">
@@ -87,10 +98,12 @@ color: inherit;
  <input type="button" value="검색">&nbsp;&nbsp;&nbsp;
   <select><option value="#">나열순</option></select>
    </div>
-   <a href ="${pageContext.request.contextPath}/board/qnaBoardWriting.do">
+   <a href="javascript:fn_articleForm('${isLogOn}','${contextPath}/board/qnaBoardWriting.do', 
+                                                    '${contextPath}/login.do')">
   <input type="button" value="글쓰기" id="wrting">
   </a>
   <br>
+  <form>
   <table id="boardtable">
   <tr id="boardmenu">
   <td width="7%" class="td">번호</td>
@@ -98,25 +111,33 @@ color: inherit;
   <td width="14%" class="td">작성자</td>
   <td width="20%" class="td">작성일</td>
   <td width="14%" class="td">조회수</td>
-  <td width="14%" class="td">좋아요</td>
   </tr>
- 
-  <c:forEach var="i" begin="1" end="9">
+ <c:choose>
+ <c:when test="${articlesList==null }">
+ <tr>
+ <td colspan="5">작성된 글이 없습니다.</td>
+ </tr>
+ </c:when>
+ <c:otherwise>
+ <c:forEach var="board" items="${articlesList}">
    
     <tr>
     
-  <td width="7%" id="board_NO" class="td">1</td>
+  <td width="7%" id="board_NO" class="td">${board.board_NO }</td>
   <td width="30%" id="board_title" class="td"> 
-  <a href="${pageContext.request.contextPath}/board/qnaContent.do" id="title">비밀글 입니다.</a></td>
-  <td width="14%" id="board_name" class="td">홍길동</td>
-  <td width="20%" id="board_Date" class="td">2021-09-19</td>
-  <td width="14%" id="board_score" class="td">2</td>
-  <td width="14%" id="board_score" class="td">14</td>
+  <a href="${contextPath}/board/qnaContent.do?board_NO=${board.board_NO }" id="title">비밀글 입니다.</a></td>
+  <td width="14%" id="board_name" class="td">${board.board_name }</td>
+  <td width="20%" id="board_Date" class="td">${board.board_Date }</td>
+  <td width="14%" id="board_score" class="td">${board.board_score}</td>
 
   </tr>
   </c:forEach>
+ </c:otherwise>
+ </c:choose>
+   
   
   </table>
+  </form>
   <div id="page">
   <p>< 1 2 3 4 5 6 7 8 9 ></p>
   </div>

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
     <%request.setCharacterEncoding("utf-8"); %>
   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+   <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,9 +97,9 @@ outline: none;
 
  <div id="menu">
  <br>
- <a href ="${pageContext.request.contextPath}/board/freeboard.do" class="mn">자유게시판</a><br>
- <a href ="${pageContext.request.contextPath}/board/qnaBoard.do" class="mn">QnA</a><br>
- <a href ="${pageContext.request.contextPath}/board/noticeBoard.do" class="mn">공지사항</a><br>
+ <a href ="${pageContext.request.contextPath}/board/freeBoard.do?board_code=1" class="mn">자유게시판</a><br>
+ <a href ="${pageContext.request.contextPath}/board/qnaBoard.do?board_code=2" class="mn">QnA</a><br>
+ <a href ="${pageContext.request.contextPath}/board/noticeBoard.do?board_code=3" class="mn">공지사항</a><br>
  </div>
   <br>
  <div id="boardmain">
@@ -110,17 +111,39 @@ outline: none;
    <input type="button" value="수정하기" >
    </div>
   <br>
-  <table id="boardtable">
+ <table id="boardtable">
   <tr id="boardmenu">
   <td width="10%" class="td">제목</td>
-  <td id="board_title" width="60%" class="td">저는 이게 정말 좋아요</td>
+  <td id="board_title" width="60%" class="td">
+  <input type="text" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;font-size: 20px;" value="${board.board_title }" disabled/>
+  </td>
   </tr>
+  
     <tr> 
   <td colspan="2" width="85%" class="td">내용</td>
   </tr>
+  
+  <c:choose>
+  <c:when test="${not empty board.board_image && board.board_image!='null' }">
    <tr> 
-  <td colspan="2" id="board_content" class="td">내용 어쩌고 저쩌고<br></td>
+   <td>
+   <input  type= "hidden"   name="originalFileName" value="${board.board_image }" />
+		    <img src="${contextPath}/download.do?board_NO=${board.board_NO}&board_image=${board.board_image}" id="preview" width="300" height="200px" />
+		    </td>
+		    
+  <td  id="board_content">
+  <textarea rows="15" cols="40%" style="resize:none;" name="board_content" disabled>${board.board_content }</textarea>
+  <br></td>
   </tr>
+  </c:when>
+  <c:otherwise>
+  <tr> 
+  <td colspan="2" id="board_content" class="td">
+  <textarea rows="15" cols="100%" style="resize:none;" name="board_content" disabled>${board.board_content }</textarea>
+  <br></td>
+  </tr>
+  </c:otherwise>
+  </c:choose>
   </table>
 <div style="text-align:'center';">
 <a style="font-size:30px;">♥</a>&nbsp;&nbsp;&nbsp; 
@@ -129,7 +152,8 @@ outline: none;
  
  <table class="comment">
  <tr>
- <td width="10%" id="member_name" class="td">홍길동</td>
+ <td width="10%" id="member_name" class="td" >
+ <input type="text" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;text-align:center;" value="${board.board_name }" disabled/>
  <td width="30%" class="td"><textarea rows="2" cols="80%" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
  <td class="td"><input type="button" value="저장"></td>
  </tr>
@@ -139,7 +163,7 @@ outline: none;
  <tr>
  <td width="10%" id="member_name" class="td">이지효</td>
  <td width="60%" class="td">저는 어디서 왔습니다</td>
- <td class="td" width="10%"><input type="button" value="삭제"></td>
+ <td class="td" width="10%"><input type="button" value="삭제" cols="100%"></td>
  </tr>
  </table>
  </div>

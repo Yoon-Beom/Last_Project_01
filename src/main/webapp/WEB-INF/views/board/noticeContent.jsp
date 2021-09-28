@@ -89,9 +89,9 @@ height: 350px;
 
  <div id="menu">
  <br>
- <a href ="${pageContext.request.contextPath}/board/freeboard.do" class="mn">자유게시판</a><br>
- <a href ="${pageContext.request.contextPath}/board/qnaBoard.do" class="mn">QnA</a><br>
- <a href ="${pageContext.request.contextPath}/board/noticeBoard.do" class="mn">공지사항</a><br>
+ <a href ="${pageContext.request.contextPath}/board/freeBoard.do?board_code=1" class="mn">자유게시판</a><br>
+ <a href ="${pageContext.request.contextPath}/board/qnaBoard.do?board_code=2" class="mn">QnA</a><br>
+ <a href ="${pageContext.request.contextPath}/board/noticeBoard.do?board_code=3" class="mn">공지사항</a><br>
  </div>
   <br>
  <div id="boardmain">

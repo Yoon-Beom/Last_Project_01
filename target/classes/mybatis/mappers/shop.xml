@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.shop">
+	<resultMap type="shopVO" id="shopResult">
+		<result property="shop_NO" column="shop_NO"/>
+		<result property="member_NO" column="member_NO"/>
+		<result property="shop_name" column="shop_name"/>
+		<result property="shop_address" column="shop_address"/>
+		<result property="shop_code" column="shop_code"/>
+		<result property="shop_latitude" column="shop_latitude"/>
+		<result property="shop_longitude" column="shop_longitude"/>
+		<result property="shop_joinDate" column="shop_joinDate"/>
+	</resultMap>
+	<select id="selectAllShopList" resultMap="shopResult"> 
+		<![CDATA[
+			select * from t_shop order by shop_joinDate desc
+		]]>
+	</select>
+</mapper>

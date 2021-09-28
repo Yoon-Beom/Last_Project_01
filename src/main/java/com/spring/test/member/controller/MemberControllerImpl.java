@@ -97,11 +97,10 @@ public class MemberControllerImpl implements MemberController{
 	public ModelAndView login(@ModelAttribute("member") MemberVO member,
 				              RedirectAttributes rAttr,
 		                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String id = member.getMember_id();
+		String member_id = member.getMember_id();
 		String pwd = member.getMember_pwd();
 		
-		System.out.println("id :"+id+"pwd:"+pwd);
-		System.out.println("login start");
+		
 	ModelAndView mav = new ModelAndView();
 	memberVO = memberService.login(member);
 	if(memberVO != null) {
@@ -109,7 +108,8 @@ public class MemberControllerImpl implements MemberController{
 	    session.setAttribute("member", memberVO);
 	    session.setAttribute("isLogOn", true);
 	    //mav.setViewName("redirect:/member/listMembers.do");
-	    String action = (String)session.getAttribute("action");
+	    String action = (String) session.getAttribute("action");
+	    session.setAttribute("member_id", member_id);
 	    session.removeAttribute("action");
 	    if(action!= null) {
 	       mav.setViewName("redirect:"+action);

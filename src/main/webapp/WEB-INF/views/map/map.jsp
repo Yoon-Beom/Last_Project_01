@@ -15,6 +15,15 @@
 <head>
 <meta charset="UTF-8">
 <title>내주변</title>
+<style>
+#box1{
+width:80%;
+height:500px;
+margin:auto;
+margin-top:100px;
+background-color: white;
+}
+</style>
 <link rel="stylesheet" type="text/css"
    href="${contextPath}/resources/css/styles.css" />
 </head>
@@ -100,7 +109,7 @@
 <body>
    <header class="masthead">
       <div class="container">
-         <div id="box">
+         <div id="box1">
             <div class="map_wrap">
                <div id="map"
                   style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
@@ -168,7 +177,7 @@
                   
                   
                   alert('클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, \n경도는 '
-                        + latlng.getLng() + ' 입니다');
+                        + latlng.getLng() + ' 입니다.');
                });
 
                // 장소 검색 객체를 생성합니다

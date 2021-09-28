@@ -55,26 +55,26 @@ public class HomeController {
 		return "shop/shopmembershipForm";
 	}
 	
-	@RequestMapping(value = "map.do", method = RequestMethod.GET)
+	/*@RequestMapping(value = "map.do", method = RequestMethod.GET)
 	public String map(Locale locale, Model model) {
 
 
 		return "map";
-	}
+	}*/
 	
-	@RequestMapping(value = "/board/freeboard.do", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/board/freeBoard.do", method = RequestMethod.GET)
 	public String freeboard(Locale locale, Model model) {
 
 
-		return "board/freeboard";
-	}
+		return "board/freeBoard";
+	}*/
 	
-	@RequestMapping(value = "/board/freeContent.do", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/board/freeContent.do", method = RequestMethod.GET)
 	public String freeContent(Locale locale, Model model) {
 
 
 		return "board/freeContent";
-	}
+	}*/
 	
 	@RequestMapping(value = "/board/freeBoardWriting.do", method = RequestMethod.GET)
 	public String freeboardWriting(Locale locale, Model model) {
@@ -83,19 +83,19 @@ public class HomeController {
 		return "board/freeBoardWriting";
 	}
 	
-	@RequestMapping(value = "/board/qnaBoard.do", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/board/qnaBoard.do", method = RequestMethod.GET)
 	public String QnABoard(Locale locale, Model model) {
 
 
 		return "board/qnaBoard";
-	}
+	}*/
 	
-	@RequestMapping(value = "/board/qnaContent.do", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/board/qnaContent.do", method = RequestMethod.GET)
 	public String QnAContent(Locale locale, Model model) {
 
 
 		return "board/qnaContent";
-	}
+	}*/
 	
 	@RequestMapping(value = "/board/qnaBoardWriting.do", method = RequestMethod.GET)
 	public String qnaboardWriting(Locale locale, Model model) {

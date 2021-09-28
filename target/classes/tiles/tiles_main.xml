@@ -36,38 +36,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/map/map.jsp" />
 	</definition>
 
-	<definition name="board/freeboard" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/freeboard.jsp" />
-	</definition>
-
-	<definition name="board/freeContent" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/freeContent.jsp" />
-	</definition>
-
-	<definition name="board/freeBoardWriting" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/freeBoardWriting.jsp" />
-	</definition>
-
-	<definition name="board/qnaBoard" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/qnaBoard.jsp" />
-	</definition>
-
-	<definition name="board/qnaContent" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/qnaContent.jsp" />
-	</definition>
-
-	<definition name="board/qnaBoardWriting" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/qnaBoardWriting.jsp" />
-	</definition>
-
-	<definition name="board/noticeBoard" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/noticeBoard.jsp" />
-	</definition>
-
-	<definition name="board/noticeContent" extends="baseLayout">
-		<put-attribute name="content" value="/WEB-INF/views/board/noticeContent.jsp" />
-	</definition>
-	
 	  <definition name="mypage/myPage" extends="baseLayout">
       <put-attribute name="content" value="/WEB-INF/views/mypage/myPage.jsp" />
    </definition>

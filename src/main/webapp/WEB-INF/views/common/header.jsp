@@ -58,7 +58,7 @@
 
 
 					<li class="nav-item"><a class="nav-link"
-						href="${pageContext.request.contextPath}/board/freeboard.do">커뮤니티</a></li>
+						href="${pageContext.request.contextPath}/board/freeBoard.do?board_code=1">커뮤니티</a></li>
 					<c:choose>
 						<c:when test="${isLogOn == true  && member!= null}">
 							<li class="nav-item"><a class="nav-link"
