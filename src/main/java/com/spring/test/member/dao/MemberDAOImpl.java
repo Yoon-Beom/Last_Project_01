@@ -46,4 +46,12 @@ public class MemberDAOImpl implements MemberDAO{
 		  MemberVO vo = sqlSession.selectOne("mapper.member.loginById",memberVO);
 		return vo;
 	}
+
+	@Override
+	public int updateMember(MemberVO vo) throws Exception {
+		int result =sqlSession.update("mapper.member.updateMember", vo);
+		return result;
+		
+	}
+
 }

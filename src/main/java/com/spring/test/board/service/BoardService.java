@@ -12,4 +12,6 @@ public interface BoardService {
 	public List<BoardVO> listArticles(String board_code) throws Exception;
 	public int addNewArticle(Map articleMap) throws Exception;
 	public BoardVO viewArticle(int board_NO) throws Exception;
+	public void removeArticle(int board_NO) throws Exception;
+	public void modArticle(Map articleMap) throws Exception;
 }

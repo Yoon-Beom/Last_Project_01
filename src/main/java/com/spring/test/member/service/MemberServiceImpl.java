@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.test.member.vo.MemberVO;
 import com.spring.test.member.dao.MemberDAO;
+
 @Service("memberService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class MemberServiceImpl implements MemberService{
@@ -38,4 +39,11 @@ public class MemberServiceImpl implements MemberService{
 		System.out.println("MemberService login");
 		return memberDAO.loginById(memberVO);
 	}
+
+	@Override
+	public int updateMember(MemberVO vo) throws Exception {
+		return memberDAO.updateMember(vo);
+		
+	}
+
 }

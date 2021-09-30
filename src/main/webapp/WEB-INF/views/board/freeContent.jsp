@@ -9,6 +9,58 @@
 <head>
 <meta charset="UTF-8">
 <title>자유게시판 글내용</title>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script> 
+<script type="text/javascript">
+
+window.onload=function(){
+	$('#tr_btn_modify').hide();
+	$('#i_imageFileName').hide();
+};
+
+function fn_enable(obj){
+	
+	if(${not empty board.board_image && board.board_image!='null' }){
+		document.getElementById("i_imageFileName").disabled=false;
+		document.getElementById("tr_file_upload").style.display="block";
+	};
+	 document.getElementById("tr_btn_modify").style.display="block";
+	 document.getElementById("board_content").disabled=false;
+	 document.getElementById("board_title").disabled=false;
+	 document.getElementById("delete").style.display="none";
+	 document.getElementById("mod").style.display="none";
+	 $('#i_imageFileName').show();
+	 $('#tr_btn_modify').show();
+};
+
+function fn_remove_article(url,board_NO){
+	 var form = document.createElement("form");
+	 form.setAttribute("method", "post");
+	 form.setAttribute("action", url);
+    var articleNOInput = document.createElement("input");
+    articleNOInput.setAttribute("type","hidden");
+    articleNOInput.setAttribute("name","board_NO");
+    articleNOInput.setAttribute("value", board_NO);
+	 
+    form.appendChild(articleNOInput);
+    document.body.appendChild(form);
+    form.submit();
+
+};
+function fn_modify_article(obj){
+	 obj.action="${contextPath}/board/modArticle.do?board_NO="+${board.board_NO};
+	 obj.submit();
+};
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+};
+    
+</script>
 <style type="text/css">
 #menu{
 position:absolute;
@@ -107,16 +159,26 @@ outline: none;
  <div id="boardhead">
  조회수: 99
    </div>
-   <div class="wrting">
-  <input type="button" value="삭제하기" >
-   <input type="button" value="수정하기" >
+   <div class="wrting" id="tr_btn">
+   <c:if test="${board.board_name == member.member_name }">
+  <input type="button" value="삭제하기" id="delete"onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${board.board_NO})">
+   <input type="button" value="수정하기" id="mod" onClick="javascript:fn_enable(this.form)">
+   <input type=button value="수정반영하기" id="tr_btn_modify"  onClick="javascript:fn_modify_article(frmBoard)" >
+   </c:if>
+   <c:if test="${board.board_name != member.member_name }">
+   <a href ="${pageContext.request.contextPath}/board/freeBoard.do?board_code=1">
+  <input type="button" value="뒤로가기" >
+  </a>
+   </c:if>
    </div>
   <br>
+  <form name="frmBoard" method="post" enctype="multipart/form-data">
   <table id="boardtable">
   <tr id="boardmenu">
   <td width="10%" class="td">제목</td>
-  <td id="board_title" width="60%" class="td">
-  <input type="text" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;font-size: 20px;" value="${board.board_title }" disabled/>
+  <td  width="60%" class="td">
+  <input type="hidden" name="board_NO" value="${board.board_NO }">
+  <input type="text" name="board_title" id="board_title" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;font-size: 20px;" value="${board.board_title }" disabled />
   </td>
   </tr>
   
@@ -126,21 +188,22 @@ outline: none;
   
   <c:choose>
   <c:when test="${not empty board.board_image && board.board_image!='null' }">
-   <tr> 
+   <tr id="tr_file_upload"> 
    <td>
-   <input  type= "hidden"   name="originalFileName" value="${board.board_image }" />
+   <input  type= "hidden"   name="originalFileName" value="${board.board_image }" id="board_image"/>
 		    <img src="${contextPath}/download.do?board_NO=${board.board_NO}&board_image=${board.board_image}" id="preview" width="300" height="200px" />
+		    <input  type="file"  name="board_image" id="i_imageFileName"   disabled   onchange="readURL(this);"   />
 		    </td>
 		    
-  <td  id="board_content">
-  <textarea rows="15" cols="40%" style="resize:none;" name="board_content" disabled>${board.board_content }</textarea>
+  <td  >
+  <textarea rows="15" cols="40%" style="resize:none;" name="board_content" id="board_content" disabled>${board.board_content }</textarea>
   <br></td>
   </tr>
   </c:when>
   <c:otherwise>
   <tr> 
-  <td colspan="2" id="board_content" class="td">
-  <textarea rows="15" cols="100%" style="resize:none;" name="board_content" disabled>${board.board_content }</textarea>
+  <td colspan="2" class="td">
+  <textarea rows="15" cols="100%" style="resize:none;" name="board_content" id="board_content" disabled>${board.board_content }</textarea>
   <br></td>
   </tr>
   </c:otherwise>
@@ -167,6 +230,7 @@ outline: none;
  <td class="td" width="10%"><input type="button" value="삭제" cols="100%"></td>
  </tr>
  </table>
+ </form>
  </div>
  </div>
  </header>

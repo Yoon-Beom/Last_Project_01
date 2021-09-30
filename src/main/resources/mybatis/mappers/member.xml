@@ -42,4 +42,15 @@
 		where member_id=#{member_id} and member_pwd=#{member_pwd}		
 	]]>
   </select>
+  
+  
+  <update id="updateMember"  parameterType="memberVO">
+  <![CDATA[
+  	update t_member
+  	set member_name=#{member_name}, member_address=#{member_address}, member_email=#{member_email}, 
+  	member_phone=#{member_phone},  member_pwd=#{member_pwd} 
+  	where member_id=#{member_id} 
+  ]]>
+  </update> 
+  
 </mapper>

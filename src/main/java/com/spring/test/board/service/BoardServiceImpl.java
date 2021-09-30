@@ -35,4 +35,13 @@ public class BoardServiceImpl implements BoardService{
 			BoardVO boardVO = boardDAO.selectArticle(board_NO);
 			return boardVO;
 		}
+	 @Override
+		public void removeArticle(int board_NO) throws Exception {
+			boardDAO.deleteArticle(board_NO);
+		}
+	 @Override
+		public void modArticle(Map articleMap) throws Exception {
+		 System.out.println("service : modArticleStart");
+			boardDAO.updateArticle(articleMap);
+		}
 }

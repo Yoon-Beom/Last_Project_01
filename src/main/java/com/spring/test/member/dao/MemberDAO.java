@@ -12,6 +12,8 @@ public interface MemberDAO {
 	public int insertMember(MemberVO member) throws DataAccessException;
 	public int deleteMember(String member_id) throws DataAccessException;
 	public MemberVO loginById(MemberVO memberVO) throws DataAccessException;
+	public int updateMember(MemberVO vo) throws Exception;
+	
 	
 	
 }

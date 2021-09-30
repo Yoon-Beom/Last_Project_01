@@ -184,8 +184,6 @@ public ResponseEntity addNewQnABoard(
 			MultipartFile mFile = multipartRequest.getFile(fileName);
 			board_image = mFile.getOriginalFilename();
 			File file = new File(ARTICLE_IMAGE_REPO+"\\"+fileName);
-			
-			System.out.println("fileName : "+fileName);
 			if(mFile.getSize()!=0) { //File Null Check
 				if(! file.exists()) {
 					if(file.getParentFile().mkdirs()) {
@@ -213,4 +211,147 @@ public ResponseEntity addNewQnABoard(
 		System.out.println("title : "+title);
 		return mav;
 	}
+	
+	@Override
+	  @RequestMapping(value="/board/removeArticle.do" ,method = RequestMethod.POST)
+	  @ResponseBody
+	  public ResponseEntity  removeArticle(@RequestParam("board_NO") int board_NO,
+	                              HttpServletRequest request, HttpServletResponse response) throws Exception{
+		response.setContentType("text/html; charset=UTF-8");
+		String message;
+		ResponseEntity resEnt=null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		try {
+			boardService.removeArticle(board_NO);
+			File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO);
+			FileUtils.deleteDirectory(destDir);
+			
+			message = "<script>";
+			message += " alert('글을 삭제했습니다.');";
+			message += " location.href='"+request.getContextPath()+"/board/freeBoard.do?board_code=1';";
+			message +=" </script>";
+		    resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		       
+		}catch(Exception e) {
+			message = "<script>";
+			message += " alert('작업중 오류가 발생했습니다.다시 시도해 주세요.');";
+			message += " location.href='"+request.getContextPath()+"/board/freeBoard.do?board_code=1';";
+			message +=" </script>";
+		    resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		    e.printStackTrace();
+		}
+		return resEnt;
+	  } 
+	 @RequestMapping(value="/board/modArticle.do" ,method = RequestMethod.POST)
+	  @ResponseBody
+	  public ResponseEntity modArticle(
+			  MultipartHttpServletRequest multipartRequest,  
+	    HttpServletResponse response) throws Exception{
+	    multipartRequest.setCharacterEncoding("utf-8");
+		Map<String,Object> articleMap = new HashMap<String, Object>();
+		Enumeration enu=multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()){
+			String name=(String)enu.nextElement();
+			System.out.println("name : "+name);
+			String value=multipartRequest.getParameter(name);
+			System.out.println("value : "+value);
+			articleMap.put(name,value);
+		}
+		
+		String board_image = load(multipartRequest);
+		HttpSession session = multipartRequest.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("member");
+		String member_id = memberVO.getMember_id();
+		articleMap.put("member_id", member_id);
+		articleMap.put("board_image", board_image);
+		System.out.println("articleMAP : "+articleMap);
+		String board_NO=(String)articleMap.get("board_NO");
+		String message;
+		ResponseEntity resEnt=null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+	    try {
+	       boardService.modArticle(articleMap);
+	       if(board_image!=null && board_image.length()!=0) {
+	         File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
+	         File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO);
+	         FileUtils.moveFileToDirectory(srcFile, destDir, true);
+	         
+	         String originalFileName = (String)articleMap.get("originalFileName");
+	         File oldFile = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO+"\\"+originalFileName);
+	         oldFile.delete();
+	       }	
+	       message = "<script>";
+		   message += "  alert('글을 수정했습니다.');";
+		   message += " location.href='"+multipartRequest.getContextPath()+"/board/freeContent.do?board_NO="+board_NO+"';";
+		   message +=" </script>";
+	       resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+	    }catch(Exception e) {
+	      File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
+	      srcFile.delete();
+	      message = "<script>";
+		  message += " alert('작업중 오류가 발생했습니다.다시 시도해 주세요.');";
+		  message += " location.href='"+multipartRequest.getContextPath()+"/board/freeContent.do?board_NO="+board_NO+"';";
+		  message +=" </script>";
+	      resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+	    }
+	    return resEnt;
+	  }
+	 @RequestMapping(value="/board/modQnABoard.do" ,method = RequestMethod.POST)
+	  @ResponseBody
+	  public ResponseEntity modQnABoard(
+			  MultipartHttpServletRequest multipartRequest,  
+	    HttpServletResponse response) throws Exception{
+	    multipartRequest.setCharacterEncoding("utf-8");
+		Map<String,Object> articleMap = new HashMap<String, Object>();
+		Enumeration enu=multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()){
+			String name=(String)enu.nextElement();
+			System.out.println("name : "+name);
+			String value=multipartRequest.getParameter(name);
+			System.out.println("value : "+value);
+			articleMap.put(name,value);
+		}
+		
+		String board_image = load(multipartRequest);
+		HttpSession session = multipartRequest.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("member");
+		String member_id = memberVO.getMember_id();
+		articleMap.put("member_id", member_id);
+		articleMap.put("board_image", board_image);
+		System.out.println("articleMAP : "+articleMap);
+		String board_NO=(String)articleMap.get("board_NO");
+		String message;
+		ResponseEntity resEnt=null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+	    try {
+	       boardService.modArticle(articleMap);
+	       if(board_image!=null && board_image.length()!=0) {
+	         File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
+	         File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO);
+	         FileUtils.moveFileToDirectory(srcFile, destDir, true);
+	         
+	         String originalFileName = (String)articleMap.get("originalFileName");
+	         File oldFile = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO+"\\"+originalFileName);
+	         oldFile.delete();
+	       }	
+	       message = "<script>";
+		   message += "  alert('글을 수정했습니다.');";
+		   message += " location.href='"+multipartRequest.getContextPath()+"/board/freeContent.do?board_NO="+board_NO+"';";
+		   message +=" </script>";
+	       resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+	    }catch(Exception e) {
+	      File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
+	      srcFile.delete();
+	      message = "<script>";
+		  message += " alert('작업중 오류가 발생했습니다.다시 시도해 주세요.');";
+		  message += " location.href='"+multipartRequest.getContextPath()+"/board/freeContent.do?board_NO="+board_NO+"';";
+		  message +=" </script>";
+	      resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+	    }
+	    return resEnt;
+	  }
+	  
 }

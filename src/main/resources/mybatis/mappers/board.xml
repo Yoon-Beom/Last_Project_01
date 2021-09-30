@@ -42,4 +42,19 @@
       where board_NO = #{board_NO}		
     ]]>
     </select>
+    <delete id="deleteArticle"  parameterType="int">
+    <![CDATA[
+      delete from t_board
+      where board_NO = #{board_NO}
+    ]]>      
+  </delete>
+  <update id="updateArticle"  parameterType="java.util.Map">
+			update t_board
+			set board_title=#{board_title},	 
+			board_content=#{board_content}
+			 <if test="board_image!='' and board_image!=null">
+			  , board_image=#{board_image}
+			</if>
+			where board_NO=#{board_NO}
+	</update>
   </mapper>

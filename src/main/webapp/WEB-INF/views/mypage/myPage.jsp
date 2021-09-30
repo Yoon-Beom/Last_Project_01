@@ -2,6 +2,11 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
      <%request.setCharacterEncoding("utf-8"); %>
   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
+<%
+  request.setCharacterEncoding("UTF-8");
+%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +14,7 @@
 <style type="text/css">
 #box1{
 width:80%;
-height:100%;
-padding-bottom:80px;
+height:2000px;
 position :relative;
 top:50px;
 margin:auto;
@@ -56,25 +60,29 @@ border-bottom: 3px solid gray;
  <div class="container">
  <div id="box1">
  <br>
+ <form name="frmMember" merthod="get" action="${contextPath }" enctype="application/x-www-form-urlencoded">
 <table>
 <tr>
-<td class="title" colspan="2"><p>회원 정보</p><a href="${pageContext.request.contextPath}/mypage/pwdCheck.do">
-<input type="button" value="수정하기" class="button"></a></td>
+<td class="title" colspan="2"><p>회원 정보</p><a href="${pageContext.request.contextPath}/mypage/pwdCheck.do"><input type="button" value="수정하기" class="button"></a></td>
 <tr>
 <tr><td><br></td></tr>
 <tr>
-<td width="7%">이름 : </td> <td width="21%">홍길동</td>
+<td width="7%">이름 : </td> <td width="21%">${member.member_name }</td>
 </tr>
 <tr>
-<td >생년월일 : </td><td>2000.01.01</td>
+<td >생년월일 : </td><td>${member.member_birth }</td>
 </tr>
 <tr>
-<td>핸드폰 번호 : </td><td>010.1111.1111</td>
+<td>주소 : </td><td>${member.member_address }</td>
 </tr>
 <tr>
-<td>이메일 : </td><td>hong123@test.com</td>
+<td>핸드폰 번호 : </td><td>${member.member_phone }</td>
+</tr>
+<tr>
+<td>이메일 : </td><td>${member.member_email }</td>
 </tr>
 </table>
+</form>
 <br><br>
 <table>
 <tr>
