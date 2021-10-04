@@ -8,7 +8,7 @@
 
 <html>
 <head>
-<meta charset=UTF-8>
+<meta charset=UTF-8">
 <title>회원 정보 출력창</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/styles.css" />
@@ -34,8 +34,7 @@
 						<td>${member.member_name}</td>
 						<td>${member.member_email}</td>
 						<td>${member.member_joinDate}</td>
-						<td><a
-							href="${contextPath}/member/removeMember.do?id=${member.member_id }">삭제하기</a></td>
+						<td><a href="${contextPath}/member/removeMember.do?id=${member.member_id }">삭제하기</a></td>
 					</tr>
 				</c:forEach>
 			</table>

@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
+	
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,12 +33,13 @@ img {
 	width: 100px;
 	height: 100px;
 }
-#box1{
-width:80%;
-height:500px;
-margin:auto;
-margin-top:100px;
-background-color: white;
+
+#box1 {
+	width: 80%;
+	height: 500px;
+	margin: auto;
+	margin-top: 100px;
+	background-color: white;
 }
 </style>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css" />
@@ -50,8 +53,9 @@ background-color: white;
 				<div id="button">
 					<img src="${pageContext.request.contextPath}/resources/assets/img/icon.png">
 					<a href="${pageContext.request.contextPath}/member/membershipForm.do">
-						<input type="button" value="개인 회원"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-					<img src="${pageContext.request.contextPath}/resources/assets/img/icon2.png">
+						<input type="button" value="개인 회원"></a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<img src="${pageContext.request.contextPath}/resources/assets/img/icon2.png">
 					<a href="${pageContext.request.contextPath}/shop/shopmembershipForm.do">
 						<input type="button" value="기업 회원">
 					</a>

@@ -28,4 +28,5 @@ public interface MemberController {
 
 	public ModelAndView updateMember(MemberVO vo, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;
+	public ModelAndView memberIdCheckAction (HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

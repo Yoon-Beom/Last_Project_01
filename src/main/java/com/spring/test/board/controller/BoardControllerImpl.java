@@ -29,6 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.test.board.controller.BoardController;
 import com.spring.test.board.service.BoardService;
 import com.spring.test.board.vo.BoardVO;
+import com.spring.test.comment.service.CommentService;
+import com.spring.test.comment.vo.CommentVO;
 import com.spring.test.member.vo.MemberVO;
 @Controller("boardController")
 public class BoardControllerImpl implements BoardController{
@@ -37,6 +39,10 @@ public class BoardControllerImpl implements BoardController{
 	private BoardService boardService;
 	@Autowired
 	private BoardVO boardVO;
+	@Autowired
+	private CommentService commentService;
+	@Autowired
+	private CommentVO commentVO;
 	
 	@Override
 	@RequestMapping(value="/board/*Board.do", method= {RequestMethod.GET,RequestMethod.POST})
@@ -46,9 +52,10 @@ public class BoardControllerImpl implements BoardController{
 		String viewName = (String)request.getAttribute("viewName");
 		System.out.println("board_code : "+board_code);
 		List articlesList = boardService.listArticles(board_code);
+		
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("articlesList",articlesList);
-		
+
 		return mav;
 	}
 	
@@ -201,12 +208,16 @@ public ResponseEntity addNewQnABoard(
                                     HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println("viewArticleSTART");
 		String viewName = (String)request.getAttribute("viewName");
+		List commentList = commentService.listArticles(board_NO);
 		boardVO=boardService.viewArticle(board_NO);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("board", boardVO);
+		mav.addObject("commentList",commentList);
 		String name = boardVO.getBoard_name();
 		String title = boardVO.getBoard_title();
+		int comment_NO = commentVO.getComment_NO();
+		System.out.println("comment_NO : "+comment_NO);
 		System.out.println("name : "+name);
 		System.out.println("title : "+title);
 		return mav;

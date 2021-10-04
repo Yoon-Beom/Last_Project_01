@@ -25,7 +25,6 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		System.out.println("dao code : "+board_code);
 		List<BoardVO> articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList",board_code);
-		
 		return articlesList;
 	}
 	
@@ -36,7 +35,7 @@ public class BoardDAOImpl implements BoardDAO{
 		String board_code = (String) articleMap.get("board_code");
 		String board_image = (String) articleMap.get("board_image");
 		String board_name = (String) articleMap.get("board_name");
-		int board_NO = selectNewArticleNO();
+		
 		String board_title = boardVO.getBoard_title();
 		String board_content=boardVO.getBoard_content();
 		System.out.println("board_name : "+board_name);
@@ -46,6 +45,7 @@ public class BoardDAOImpl implements BoardDAO{
 		System.out.println("board_code : "+board_code);
 		
 		sqlSession.insert("mapper.board.insertNewArticle",articleMap);
+		int board_NO = selectNewBoardNO();
 		System.out.println("insert articleMap : "+articleMap);
 		
 		return board_NO;
@@ -57,13 +57,14 @@ public class BoardDAOImpl implements BoardDAO{
 		return sqlSession.selectOne("mapper.board.selectArticle", board_NO);
 	}
 	
-	private int selectNewArticleNO() throws DataAccessException {
-		return sqlSession.selectOne("mapper.board.selectNewArticleNO");
+	private int selectNewBoardNO() throws DataAccessException {
+		return sqlSession.selectOne("mapper.board.selectNewBoardNO");
 	}
 	@Override
 	public void deleteArticle(int board_NO) throws DataAccessException {
-		sqlSession.delete("mapper.board.deleteArticle", board_NO);
-		
+		sqlSession.delete("mapper.comment.deleteBoard", board_NO);
+		sqlSession.delete("mapper.board.deleteBoard", board_NO);
+	
 	}
 	@Override
 	public void updateArticle(Map articleMap) throws DataAccessException {

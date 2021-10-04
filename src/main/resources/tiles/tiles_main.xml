@@ -36,7 +36,7 @@
 		<put-attribute name="content" value="/WEB-INF/views/map/map.jsp" />
 	</definition>
 
-	  <definition name="mypage/myPage" extends="baseLayout">
+	  <definition name="/mypage/myPage" extends="baseLayout">
       <put-attribute name="content" value="/WEB-INF/views/mypage/myPage.jsp" />
    </definition>
    

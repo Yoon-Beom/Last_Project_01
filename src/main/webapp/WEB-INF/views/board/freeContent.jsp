@@ -28,6 +28,7 @@ function fn_enable(obj){
 	 document.getElementById("board_title").disabled=false;
 	 document.getElementById("delete").style.display="none";
 	 document.getElementById("mod").style.display="none";
+	 $('.comment').hide();
 	 $('#i_imageFileName').show();
 	 $('#tr_btn_modify').show();
 };
@@ -59,35 +60,52 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 };
-    
+ function addComment(obj){
+	 if(${member.member_NO==null}){
+		 location.href="${contextPath}/login.do";
+	 }else{
+	document.getElementById("comment_name").disabled=false;
+	 obj.action="${contextPath}/board/addcomment.do?board_NO="+${board.board_NO};
+	 obj.submit();
+	 }
+ };
+ function remove_comment(obj){
+		document.getElementById("comment_name").disabled=false;
+		 obj.action="${contextPath}/board/removecomment.do?board_NO="+${board.board_NO};
+		 obj.submit();
+	 };
+
 </script>
 <style type="text/css">
+#parent{
+display: table;
+overflow: auto;
+margin-top:20px;
+}
 #menu{
-position:absolute;
-top:140px;
 left:5%;
-width: 15%;
-height: 800px;
+width: 18%;
 background-color: #e6e6e6;
 font-size: 30px;
-
+margin-bottom: 5%;
+padding-bottom: 5%;
+display: table-cell;
 }
 .wrting{
 text-align:right;
 position: absolute;
-right:60px;
-top:50px;
+right:200px;
+top:150px;
 }
 #boardmain{
-position:relative;
-top:52px;
-left:14.8%;
 width:88%;
-height:800px;
 text-align:"center";
 background-color: white;
-
+margin-bottom: 5%;
+padding-bottom: 5%;
+display: table-cell;
 }
+
 .comment{
 width: 90%;
 margin:auto;
@@ -147,21 +165,22 @@ outline: none;
 <body>
  <header class="masthead">
  <div class="container">
-
+<br>
+<div id="parent">
  <div id="menu">
  <br>
  <a href ="${pageContext.request.contextPath}/board/freeBoard.do?board_code=1" class="mn">자유게시판</a><br>
  <a href ="${pageContext.request.contextPath}/board/qnaBoard.do?board_code=2" class="mn">QnA</a><br>
  <a href ="${pageContext.request.contextPath}/board/noticeBoard.do?board_code=3" class="mn">공지사항</a><br>
  </div>
-  <br>
+
  <div id="boardmain">
  <div id="boardhead">
  조회수: 99
    </div>
    <div class="wrting" id="tr_btn">
    <c:if test="${board.board_name == member.member_name }">
-  <input type="button" value="삭제하기" id="delete"onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${board.board_NO})">
+  <input type="button" value="삭제하기" id="delete" onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${board.board_NO})">
    <input type="button" value="수정하기" id="mod" onClick="javascript:fn_enable(this.form)">
    <input type=button value="수정반영하기" id="tr_btn_modify"  onClick="javascript:fn_modify_article(frmBoard)" >
    </c:if>
@@ -178,7 +197,7 @@ outline: none;
   <td width="10%" class="td">제목</td>
   <td  width="60%" class="td">
   <input type="hidden" name="board_NO" value="${board.board_NO }">
-  <input type="text" name="board_title" id="board_title" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;font-size: 20px;" value="${board.board_title }" disabled />
+  <input type="text" name="board_title" id="board_title" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;font-size: 20px;overflow: auto;" value="${board.board_title }" disabled />
   </td>
   </tr>
   
@@ -195,7 +214,7 @@ outline: none;
 		    <input  type="file"  name="board_image" id="i_imageFileName"   disabled   onchange="readURL(this);"   />
 		    </td>
 		    
-  <td  >
+  <td >
   <textarea rows="15" cols="40%" style="resize:none;" name="board_content" id="board_content" disabled>${board.board_content }</textarea>
   <br></td>
   </tr>
@@ -209,28 +228,41 @@ outline: none;
   </c:otherwise>
   </c:choose>
   </table>
+   </form>
 <div style="text-align:'center';">
 <a style="font-size:30px;">♥</a>&nbsp;&nbsp;&nbsp; 
 20
 </div>
- 
+<form method="post" action="${contextPath}/board/addcomment.do" name="comment" enctype="multipart/form-data">
  <table class="comment">
  <tr>
  <td width="10%" id="member_name" class="td" >
- <input type="text" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;text-align:center;" value="${board.board_name }" disabled/>
- <td width="30%" class="td"><textarea rows="2" cols="80%" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
- <td class="td"><input type="button" value="저장"></td>
+ <input type="text" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;text-align:center;overflow: auto;" id="comment_name" name="member_name" value="${member.member_name }" disabled/>
+ <td width="30%" class="td"><textarea rows="2" cols="80%" placeholder="댓글을 입력하세요." style="resize:none;overflow: auto;" name="comment_content"></textarea>
+ 
+ <td class="td"><input type="button" value="저장" onclick="addComment(this.form)"></td>
  </tr>
  <tr>
  <td colspan="3" class="td"> 댓글</td>
  </tr>
+ <c:forEach var="comment" items="${commentList}">
  <tr>
- <td width="10%" id="member_name" class="td">이지효</td>
- <td width="60%" class="td">저는 어디서 왔습니다</td>
- <td class="td" width="10%"><input type="button" value="삭제" cols="100%"></td>
+ <td width="20%" class="td">${comment.member_name }</td>
+ <c:choose>
+ <c:when test="${member.member_NO == comment.member_NO }">
+  <td width="50%" class="td">${comment.comment_content }</td>
+ <td class="td" width="10%"><input type="hidden" name="comment_NO" value="${comment.comment_NO }">
+ <input type="button" value="삭제" onclick="remove_comment(this.form)"></td>
+ </c:when>
+ <c:otherwise>
+  <td colspan="2" width="50%" class="td">${comment.comment_content }</td>
+ </c:otherwise>
+ </c:choose>
  </tr>
+ </c:forEach>
  </table>
  </form>
+ </div>
  </div>
  </div>
  </header>

@@ -22,9 +22,9 @@ public class MemberDAOImpl implements MemberDAO{
 		System.out.println("membersList"+membersList);
 		return membersList;
 	}
-
-	public int insertMember(MemberVO memberVO) throws DataAccessException {
-		int result = sqlSession.insert("mapper.member.insertMember", memberVO);
+	@Override
+	public int insertMember(MemberVO member) throws DataAccessException {
+		int result = sqlSession.insert("mapper.member.insertMember", member);
 		return result;
 	}
 	@Override
@@ -52,6 +52,25 @@ public class MemberDAOImpl implements MemberDAO{
 		int result =sqlSession.update("mapper.member.updateMember", vo);
 		return result;
 		
+	}
+	@Override
+	public int selectById(String member_id) throws DataAccessException {
+		System.out.println("MemberDAOImpl : selectById start");
+		
+		int result = sqlSession.selectOne("mapper.member.selectById", member_id);
+		
+		System.out.println("MemberDAOImpl : selectById end");
+		return result;
+	}
+
+	@Override
+	public String selectSaltById(String member_id) throws DataAccessException {
+		System.out.println("MemberDAOImpl : selectSaltById start");
+		
+		String result = sqlSession.selectOne("mapper.member.selectSaltById", member_id);
+		
+		System.out.println("MemberDAOImpl : selectSaltById end");
+		return result;
 	}
 
 }

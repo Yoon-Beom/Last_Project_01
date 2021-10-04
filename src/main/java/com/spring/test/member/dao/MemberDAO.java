@@ -13,7 +13,8 @@ public interface MemberDAO {
 	public int deleteMember(String member_id) throws DataAccessException;
 	public MemberVO loginById(MemberVO memberVO) throws DataAccessException;
 	public int updateMember(MemberVO vo) throws Exception;
-	
+	public int selectById(String member_id) throws DataAccessException;
+	public String selectSaltById(String member_id) throws DataAccessException;
 	
 	
 }

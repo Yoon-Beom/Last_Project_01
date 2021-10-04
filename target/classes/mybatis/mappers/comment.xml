@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.comment">
+  <resultMap id="commentResult" type="commentVO">
+ 	<result property="comment_NO" column="comment_NO" />
+    <result property="member_NO" column="member_NO" />
+    <result property="board_NO" column="board_NO" />
+    <result property="comment_content" column="comment_content" />
+    <result property="comment_Date" column="comment_Date" />
+  </resultMap> 
+  
+  <resultMap type="memberVO" id="memResult">
+		<result property="member_id" column="member_id" />
+		<result property="member_name" column="member_name" />
+  </resultMap>
+  
+  <resultMap id="boardResult" type="boardVO">
+ 	<result property="board_NO" column="board_NO" />
+   </resultMap>		
+   <select id="selectAllArticlesList" resultMap="commentResult">
+   
+    <![CDATA[
+ SELECT c.comment_NO, c.member_name, c.member_NO, c.board_NO, c.comment_content
+ FROM t_comment c INNER JOIN t_member m
+      ON c.member_NO = m.member_NO
+      and m.member_name = c.member_name
+           INNER JOIN t_board b
+      ON  b.board_NO = c.board_NO 
+ where b.board_NO = #{board_NO} ORDER BY comment_date desc	
+    ]]>
+  </select>
+  
+  <insert id="insertNewComment"  parameterType="java.util.Map">
+		<![CDATA[
+			INSERT into t_comment(comment_NO, member_NO, member_name, board_NO, comment_content)
+			VALUES(seq_comment.nextval, #{member_NO}, #{member_name}, #{board_NO}, #{comment_content})
+		]]>  
+</insert>
+
+ <select id="selectNewCommentNO" resultType="int"  >
+		<![CDATA[
+			SELECT  max(comment_NO)+1 from t_comment		
+		]]>
+	</select>
+	
+	<delete id="deleteComment"  parameterType="int">
+    <![CDATA[
+      delete from t_comment
+      where comment_NO = #{comment_NO}
+    ]]>      
+  </delete>
+  <delete id="deleteBoard"  parameterType="int">
+    <![CDATA[
+      delete from t_comment
+      where board_NO = #{board_NO}
+    ]]>      
+  </delete>
+  </mapper>

@@ -21,11 +21,12 @@
 	</select>
 	<insert id="insertMember" parameterType="memberVO">
 		<![CDATA[		
-			insert into t_member(member_NO, member_id, member_pwd, member_name,
-				member_birth, member_phone, member_email, member_gender,
-				member_address) 
-				values(seq_member.nextval, #{member_id}, #{member_pwd}, #{member_name},
-				#{member_birth}, #{member_phone},#{member_email}, #{member_gender},#{member_address})
+			insert into t_member(member_NO, member_id, member_pwd, member_salt,
+				member_name, member_birth, member_phone, member_email,
+				member_gender, member_address) 
+				values(seq_member.nextval, #{member_id}, #{member_pwd}, #{member_salt},
+				#{member_name}, #{member_birth}, #{member_phone}, #{member_email},
+				#{member_gender}, #{member_address})
 		]]>
 	</insert>
 	<delete id="deleteMember"  parameterType="String">
@@ -53,4 +54,15 @@
   ]]>
   </update> 
   
+  <select id="selectById" resultType="int" parameterType="string">
+		<![CDATA[
+			select count(*) from t_member where member_id=#{member_id}
+		]]>
+  </select>
+	
+  <select id="selectSaltById" resultType="String" parameterType="String">
+		<![CDATA[
+			select member_salt from t_member where member_id=#{member_id}
+		]]>
+  </select>
 </mapper>

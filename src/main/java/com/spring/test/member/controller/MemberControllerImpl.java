@@ -61,84 +61,116 @@ public class MemberControllerImpl implements MemberController {
 	}
 
 	@Override
-	@RequestMapping(value = "/member/addMember.do", method = RequestMethod.POST)
-	public ModelAndView addMember(@ModelAttribute("member") MemberVO member, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	@RequestMapping(value="/member/addMember.do", method = RequestMethod.POST)
+	public ModelAndView addMember(@ModelAttribute("member") MemberVO member,
+			                  HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("MemberControllerImpl : addMember start");
+		
 		request.setCharacterEncoding("euc-kr");
 		response.setCharacterEncoding("text/html; charset=utf-8");
+		
 		int result = 0;
+				
 		String yy = request.getParameter("member_yy");
 		String mm = request.getParameter("member_mm");
 		String dd = request.getParameter("member_dd");
+
+		String member_phone1 = request.getParameter("member_phone1");
+		String member_phone2 = request.getParameter("member_phone2");
+		String member_phone3 = request.getParameter("member_phone3");
+		
+		String member_post = request.getParameter("member_post");
+		String member_addr = request.getParameter("member_addr");
+		String member_detailAddr = request.getParameter("member_detailAddr");
+		
 		member.setMember_birth(yy + "-" + mm + "-" + dd);
-		System.out.println(member.getMember_birth());
-		System.out.println(member);
+		member.setMember_phone(member_phone1 + "-" + member_phone2 + "-" + member_phone3);
+		member.setMember_address(member_post + "," + member_addr + "," + member_detailAddr);
+
+		System.out.println("---------- member VO ----------");
+		System.out.println("member_id : " + member.getMember_id());
+		System.out.println("member_pwd : " + member.getMember_pwd());
+		System.out.println("member_salt : " + member.getMember_salt());
+		System.out.println("member_name : " + member.getMember_name());
+		System.out.println("member_birth : " + member.getMember_birth());
+		System.out.println("member_phone : " + member.getMember_phone());
+		System.out.println("member_email : " + member.getMember_email());
+		System.out.println("member_gender : " + member.getMember_gender());
+		System.out.println("member_address : " + member.getMember_address());
+		System.out.println("-------------------------------");
+
+		
 		result = memberService.addMember(member);
+		
 		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
+		
 		System.out.println("MemberControllerImpl : addMember end");
 		return mav;
 	}
 
 	@Override
-	@RequestMapping(value = "/member/removeMember.do", method = RequestMethod.GET)
-	public ModelAndView removeMember(@RequestParam("id") String member_id, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	@RequestMapping(value="/member/removeMember.do" ,method = RequestMethod.GET)
+	public ModelAndView removeMember(@RequestParam("id") String member_id, 
+			           HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println("MemberControllerImpl : removeMember start");
+		
 		System.out.println(member_id);
 		request.setCharacterEncoding("euc-kr");
 		memberService.removeMember(member_id);
 		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
+		
 		System.out.println("MemberControllerImpl : removeMember end");
 		return mav;
 	}
 
 	@Override
 	@RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
-	public ModelAndView login(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
+	public ModelAndView login(@ModelAttribute("member") MemberVO member,
+			RedirectAttributes rAttr,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("MemberControllerImpl : login start");
+
 		String id = member.getMember_id();
 		String pwd = member.getMember_pwd();
 
-		System.out.println("id :" + id + "pwd:" + pwd);
-		System.out.println("login start");
 		ModelAndView mav = new ModelAndView();
 		memberVO = memberService.login(member);
-		if (memberVO != null) {
+		int memberNO = memberVO.getMember_NO();
+		if(memberVO != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("member", memberVO);
 			session.setAttribute("isLogOn", true);
-			// mav.setViewName("redirect:/member/listMembers.do");
-			String action = (String) session.getAttribute("action");
+			System.out.println("login member : "+memberNO);
+			//mav.setViewName("redirect:/member/listMembers.do");
+			String action = (String)session.getAttribute("action");
 			session.removeAttribute("action");
-			if (action != null) {
+
+			if(action!= null) {
 				mav.setViewName("redirect:" + action);
 			} else {
-				mav.setViewName("redirect:/main.do");
+				mav.setViewName("redirect:/main.do");	
 			}
-
 		} else {
 			rAttr.addFlashAttribute("result", "loginFailed");
 			mav.setViewName("redirect:/login.do");
-			/*
-			 * PrintWriter out = response.getWriter();
-			 * out.println("<script>alert('로그인 정보를 확인해주세요.'); history.go(-1);</script>");
-			 * out.flush();
-			 */
 		}
 
-		System.out.println("login end");
+		System.out.println("MemberControllerImpl : login end");
 		return mav;
 	}
 
 	@Override
-	@RequestMapping(value = "/member/logout.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/logout.do", method =  RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("MemberControllerImpl : logout start");
+		
 		HttpSession session = request.getSession();
 		session.removeAttribute("member");
 		session.removeAttribute("isLogOn");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/main.do");
+		
+		System.out.println("MemberControllerImpl : logout end");
 		return mav;
 	}
 
@@ -188,6 +220,27 @@ public class MemberControllerImpl implements MemberController {
 		ModelAndView mav = new ModelAndView("redirect:/mypage/myPage.do");
 		System.out.println("member수정 끝");
 		return mav;
+	}
+
+	@Override
+	@RequestMapping(value = "/member/memberIdCheckAction.do", method =  RequestMethod.POST)
+	public ModelAndView memberIdCheckAction (HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("MemberControllerImpl : memberIdCheckAction start");
+		
+		String id = request.getParameter("id");
+		int result = memberService.selectById(id);
+		
+		response.setContentType("text/html;charset=euc-kr");
+		PrintWriter out = response.getWriter();
+		System.out.println("result : " + result);
+		
+		if(result == 1) { out.println("0"); } // 아이디 중복
+		else { out.println("1"); } // 아이디 없음
+		
+		out.close();
+		
+		System.out.println("MemberControllerImpl : memberIdCheckAction end");
+		return null;
 	}
 
 }

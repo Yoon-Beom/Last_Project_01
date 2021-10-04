@@ -4,16 +4,45 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<%
-request.setCharacterEncoding("utf-8");
-%>
+
+<% request.setCharacterEncoding("utf-8"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css"
-	href="${contextPath}/resources/css/styles.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/styles.css" />
 <title>회원가입창</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+
+	// 전화번호 자동 포커스 이동
+	$(function() {		
+		$("input[name=member_phone1]").on("propertychange change keyup paste input", function(e) {
+			if($(this).val().length == 3) {
+				$("input[name=member_phone2]").focus();
+			}
+		});
+		
+		$("input[name=member_phone2]").on("propertychange change keyup paste input", function(e) {
+			if($(this).val().length == 4) {
+				$("input[name=member_phone3]").focus();
+			} else if (e.keyCode == 8 || e.which == 8) {
+				if($(this).val().length == 0) {
+					$("input[name=member_phone1]").focus();
+				}
+			}
+		});
+		
+		$("input[name=member_phone3]").on("propertychange change keyup paste input", function(e) {
+			if (e.keyCode == 8 || e.which == 8) {
+				if($(this).val().length == 0) {
+					$("input[name=member_phone2]").focus();
+				}
+			}
+		});
+	});
+</script>
 <script type="text/javascript">
 	window.onload = function selec() {
 		var membership = document.membership;
@@ -29,9 +58,145 @@ request.setCharacterEncoding("utf-8");
 			membership.member_dd.add(new Option((d)));
 		}
 	};
-
 	
+	// 주소 찾기
+	function findAddr(){
+		new daum.Postcode({
+	        oncomplete: function(data) {
+	        		        	
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	            // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+	            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	            var roadAddr = data.roadAddress; // 도로명 주소 변수
+	            var jibunAddr = data.jibunAddress; // 지번 주소 변수
+	            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	            document.membership.member_post.value = data.zonecode;
+	            
+	            if(roadAddr !== ''){
+	                document.membership.member_addr.value = roadAddr;
+	            } else if(jibunAddr !== ''){
+	                document.membership.member_addr.value = jibunAddr;
+	            }
+	            document.membership.member_detailAddr.focus();
+	        }
+	    }).open();
+	}
+	
+	function inputIdChk() {
+		document.membership.idDuplication.value="idUncheck";
+	}
+	
+	// 새창에서 아이디 중복 체크
+	function openIdChk() {
+		window.name = "parentForm";
+		window.open("IdCheckForm.do",
+				"chkForm", "width=500, height=300, resizable=no, scrollbars=no");
+	}
+	
+	// submit
+	function submitBtn() {		
+		var frm = document.membership;
+		
+		if(frm.member_id.value == "") {
+			alert("아이디를 입력하세요.");
+			frm.member_id.focus();
+		} else if(frm.idDuplication.value == "idUncheck") {
+			alert("아이디 중복 확인을 해주세요.");
+			frm.member_pwd.focus();
+		} else if(frm.member_pwd.value == "") {
+			alert("비밀번호를 입력하세요.");
+			frm.member_pwd.focus();
+		} else if(frm.member_pwd1.value == "") {
+			alert("비밀번호 확인을 입력하세요.");
+			frm.member_pwd1.focus();
+		} else if(frm.pwdCheck.value == "pwdUnmatch") {
+			alert("비밀번호를 확인하세요.");
+			frm.member_pwd.focus();
+		} else if(frm.member_name.value == "") {
+			alert("이름을 입력하세요.");
+			frm.member_name.focus();
+		} else if(frm.member_yy.value == "#" || frm.member_mm.value == "#" || frm.member_dd.value == "#" ) {
+			alert("생년월일을 선택하세요.");
+			frm.member_yy.focus();
+		} else if(frm.member_gender.value == "") {
+			alert("성별을 선택하세요.");
+			frm.member_gender.focus();
+		} else if(frm.member_phone1.value == "" || frm.member_phone2.value == "" || frm.member_phone3.value == "") {
+			alert("연락처를 입력하세요.");
+			frm.member_phone1.value = null;
+			frm.member_phone2.value = null;
+			frm.member_phone3.value = null;
+			frm.member_phone1.focus();
+		} else if(frm.member_email.value == "") {
+			alert("이메일을 입력하세요.");
+			frm.member_email.focus();			
+		} else if(frm.member_post.value == "" || frm.member_addr.value == "") {
+			alert("주소를 입력하세요.");
+			frm.member_post.focus();			
+		} else if(frm.member_detailAddr.value == "") {
+			alert("상세 주소를 입력하세요.");
+			frm.member_post.focus();	
+		} else {
+			frm.action = '${contextPath}/member/addMember.do';
+			frm.method = 'post';
+			frm.submit();
+		}
+	}
+	
+	// 비밀번호 유효성 검사
+	// 비밀번호 8자리 이상
+	// 숫자 포함	
+	// 영대 문자 포함	
+	// 영소 문자 포함	
+	// 특수문자 포함	
+	// 공백 X	
+	// 같은 문자 4번 반복 X	
+	// 아이디 포함 X	
+	// 한글 X
+	function chkPW() {
+		var id = document.membership.member_id.value;
+		var pwd = document.membership.member_pwd.value;
+		var pwd1 = document.membership.member_pwd1.value;
+		
+		var pwdtext = document.getElementById('pwdtext');
+		var pwdCheck = document.membership.pwdCheck;
+		
+		var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+		var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+		
+		pwdCheck.value = 'pwdUnmatch';
+		
+		if(pwd == '') {
+			pwdtext.innerHTML = '비밀번호를 입력하세요.';
+			document.membership.member_pwd.focus();
+		} else if (pwd1 == '') {
+			pwdtext.innerHTML = '비밀번호 확인을 입력하세요.';
+			document.membership.member_pwd1.focus();
+		} else if(pwd != pwd1) {
+			pwdtext.innerHTML = '비밀번호가 일치하지 않습니다.';
+			// document.membership.member_pwd.focus();
+		} else if (false === reg.test(pwd)) {
+			pwdtext.innerHTML = '비밀번호는 8자 이상이어야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.';
+			document.membership.member_pwd.focus();
+		} else if (/(\w)\1\1\1/.test(pwd)) {
+			pwdtext.innerHTML = '같은 문자를 4번 이상 사용하실 수 없습니다.';
+			document.membership.member_pwd.focus();
+		} else if (pwd.search(id) > -1) {
+			pwdtext.innerHTML = '비밀번호에 아이디가 포함되었습니다.';
+			document.membership.member_pwd.focus();
+		} else if (pwd.search(/\s/) != -1) {
+			pwdtext.innerHTML = '비밀번호는 공백 없이 입력해주세요.';
+			document.membership.member_pwd.focus();
+		} else if (hangulcheck.test(pwd)) {
+			pwdtext.innerHTML = '비밀번호에 한글을 사용 할 수 없습니다.';
+			document.membership.member_pwd.focus();
+		} else {
+			pwdtext.innerHTML = '';
+			pwdCheck.value = 'pwdmatch';
+		}
+	}
 </script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" ></script>
 <style type="text/css">
 img {
 	width: 50px;
@@ -55,7 +220,7 @@ input {
 #box1 {
 	width: 80%;
 	height: 100%;
-	padding-bottom:80px;
+	padding-bottom: 80px;
 	position: relative;
 	top: 50px;
 	margin: auto;
@@ -78,31 +243,45 @@ input {
 	font-size: 13px;
 	color: red;
 }
+
+.text2 {
+	width: 70px;
+	text-align: "center";
+}
 </style>
 </head>
 <body>
-	<form method="post" name="membership"
-		action="${contextPath}/member/addMember.do">
+	<form name="membership">
 		<header class="masthead">
 			<div class="container">
 				<div id="box1">
 					<h1>
-						개인회원 회원가입 <img
-							src="${contextPath}/resources/assets/img/icon.png">
+						개인회원 회원가입 <img src="${contextPath}/resources/assets/img/icon.png">
 					</h1>
 					<div class="text1">
 						아이디
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						&nbsp;&nbsp;&nbsp;&nbsp; 
-					<input type="button" value="중복 확인" class="id_check">
+						<input type="button" value="중복 확인" class="id_check" onclick="openIdChk()">
 					</div>
-					<input type="text" name="member_id">
-					<div class="text1">비밀번호</div>
-					<input type="password" name="member_pwd">
+					<input type="text" name="member_id" onkeydown="inputIdChk()">
+					<!-- onkeydown : 키보드 입력시 발생하는 이벤트 -->
+					<!-- 사용자가 아이디 중복체크를 하고 난 뒤 아이디 입력란에 사용 가능한 아이디를 지우고 새로운 아이디를 입력햇을 경우에 대처 -->
+					<input type="hidden" name="idDuplication" value="idUncheck">
+					<!-- 아이디 중복체크를 했는지 판단하기위함 value가 idUncheck 이면 중복체크를 하지 않는 것 -->
+					
+					<div class="text1">비밀번호</div>					
+					<input type="password" name="member_pwd" onchange="chkPW()">
+					
 					<div class="text1">비밀번호 확인</div>
-					<input type="password" name="member_pwd1">
+					<input type="password" name="member_pwd1" onchange="chkPW()">
+					<input type="hidden" name="pwdCheck" value="pwdUnmatch">
+					
+					<p id="pwdtext"></p>
+					
 					<div class="text1">이름</div>
 					<input type="text" name="member_name">
+					
 					<div class="text1">생년월일</div>
 					<select name="member_yy">
 						<option value="#">년도 선택</option>
@@ -111,18 +290,27 @@ input {
 					</select>월 <select name="member_dd">
 						<option value="#">일 선택</option>
 					</select>일
+					
 					<div class="text1">성별</div>
 					<input type="radio" class="gender" name="member_gender" value="m">남성
 					<input type="radio" class="gender" name="member_gender" value="f" style="margin-left: 100px;">여성
+					
 					<div class="text1">
-						연락처&nbsp;&nbsp;<a id="account">숫자만 입력해주세요</a>
-					</div>
-					<input type="text" name="member_phone">
+                  		연락처&nbsp;&nbsp;
+               		</div>
+					<input type="text" class="text2" name="member_phone1">&nbsp;&nbsp;-&nbsp;&nbsp;
+					<input type="text" class="text2" name="member_phone2">&nbsp;&nbsp;-&nbsp;&nbsp;
+					<input type="text" class="text2" name="member_phone3">
+					
 					<div class="text1">이메일</div>
 					<input type="email" name="member_email">
+					
 					<div class="text1">주소</div>
-					<input type="text" name="member_address"><br> <br>
-					<br> <input type="submit" value="가입하기" >
+					<input name="member_post" type="text" placeholder="우편번호" readonly onclick="findAddr()"> <br>
+					<input name="member_addr" type="text" placeholder="주소" readonly> <br> 
+					<input name="member_detailAddr" type="text" placeholder="상세주소">
+					<br> <br> <br>
+					<input type="button" value="가입하기" onclick="submitBtn()">
 				</div>
 			</div>
 		</header>

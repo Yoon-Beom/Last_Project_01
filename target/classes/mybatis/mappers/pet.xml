@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.pet">
+	<resultMap id="petResult" type="petVO">
+		<result property="pet_NO" column="pet_NO" />
+		<result property="member_NO" column="member_NO" />
+		<result property="pet_name" column="pet_name" />
+		<result property="pet_age" column="pet_age"/>
+		<result property="pet_scale" column="pet_scale" />
+		<result property="pet_image" column="pet_image" />
+		<result property="pet_joinDate" column="pet_joinDate" />
+	</resultMap>
+
+
+	<select id="selectPetList" resultMap="petResult"   >
+    <![CDATA[
+     SELECT * from t_pet where member_NO=#{member_NO} order by pet_joinDate DESC
+      	
+    ]]>
+  </select>
+  
+	<insert id="insertPet" parameterType="java.util.Map">
+		<![CDATA[
+			INSERT into t_pet(pet_NO, member_NO, pet_name, pet_age, pet_scale, pet_image)
+			VALUES(seq_pet.nextval, #{member_NO}, #{pet_name}, #{pet_age}, #{pet_scale}, #{pet_image})
+		]]>
+	</insert>
+ 
+	<select id="selectPet" resultType="petVO"   parameterType="int">
+    <![CDATA[
+      SELECT * from t_pet
+      where pet_NO = #{pet_NO}		
+    ]]>
+    </select>
+    	
+		<select id="selectPetNO" resultType="int"  >
+		<![CDATA[
+			SELECT  max(pet_NO) from t_pet		
+		]]>
+	</select>
+</mapper>

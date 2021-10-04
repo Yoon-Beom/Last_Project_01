@@ -31,9 +31,9 @@
 			VALUES(seq_member.nextval, #{member_NO}, #{board_code}, #{board_title}, #{board_name}, #{board_content}, #{board_image})
 		]]>  
 </insert>
- <select id="selectNewArticleNO" resultType="int"  >
+ <select id="selectNewBoardNO" resultType="int"  >
 		<![CDATA[
-			SELECT  max(board_NO)+1 from t_board		
+			SELECT  max(board_NO) from t_board		
 		]]>
 	</select>
 	<select id="selectArticle" resultType="boardVO"   parameterType="int">
@@ -42,7 +42,7 @@
       where board_NO = #{board_NO}		
     ]]>
     </select>
-    <delete id="deleteArticle"  parameterType="int">
+    <delete id="deleteBoard"  parameterType="int">
     <![CDATA[
       delete from t_board
       where board_NO = #{board_NO}
@@ -57,4 +57,6 @@
 			</if>
 			where board_NO=#{board_NO}
 	</update>
+	
+
   </mapper>

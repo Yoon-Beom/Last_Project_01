@@ -25,6 +25,9 @@ width: 70%;
 margin:auto;
 }
 
+#petimage{
+width: 120px;
+}
 img{
 width: 120px;
 }
@@ -60,7 +63,7 @@ border-bottom: 3px solid gray;
  <div class="container">
  <div id="box1">
  <br>
- <form name="frmMember" merthod="get" action="${contextPath }" enctype="application/x-www-form-urlencoded">
+ <form name="frmMember" merthod="get" action="${contextPath }">
 <table>
 <tr>
 <td class="title" colspan="2"><p>회원 정보</p><a href="${pageContext.request.contextPath}/mypage/pwdCheck.do"><input type="button" value="수정하기" class="button"></a></td>
@@ -84,37 +87,37 @@ border-bottom: 3px solid gray;
 </table>
 </form>
 <br><br>
+<form name="frmPet" merthod="post" action="${contextPath }" enctype="multipart/form-data">
 <table>
 <tr>
 <td class="title" colspan="4"><p>반려동물</p>
 <a href="${pageContext.request.contextPath}/mypage/petAdd.do"> 
 <input type="button" value="등록하기" class="button"></a></td>
-<tr>
+
+<c:forEach var="pet" items="${petList}">
 <tr><td><br></td></tr>
+<c:choose>
+<c:when test="${petList ==null }">
 <tr>
-<td rowspan="3"><img src="${pageContext.request.contextPath}/resources/assets/img/dog2.png"></td>
- <td >이름 : </td> <td>홍뽀삐</td>
+<td>등록된 애완동물이 없습니다!</td>
+</c:when>
+<c:otherwise>
+<tr>
+<td rowspan="3" id="petimage">${pet.pet_image }</td>
+ <td >이름 : </td> <td>${pet.pet_name }</td>
 </tr>
 <tr>
-<td >나이 : </td><td>2살</td>
+<td >나이 : </td><td>${pet.pet_age }살</td>
 </tr>
 <tr>
-<td>종류 : </td><td>대형견/중형견/소형견</td>
+<td>종류 : </td><td>${pet.pet_scale }</td>
 <td><input type="button"value="수정"><input type="button"value="삭제"></td>
 </tr>
-<tr><td><br></td></tr>
-<tr>
-<td rowspan="3"><img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
- <td >이름 : </td> <td>홍삐삐</td>
-</tr>
-<tr>
-<td >나이 : </td><td>2살</td>
-</tr>
-<tr>
-<td>종류 : </td><td>대형견/중형견/소형견</td>
-<td><input type="button"value="수정"><input type="button"value="삭제"></td>
-</tr>
+</c:otherwise>
+</c:choose>
+</c:forEach>
 </table>
+</form>
 <br><br>
 <table>
 <tr>

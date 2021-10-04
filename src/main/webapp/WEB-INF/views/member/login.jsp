@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
+<c:set var="contextPath" value="${pageContext.request.contextPath}"  />
 
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
@@ -12,8 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 창</title>
-<link rel="stylesheet" type="text/css"
-	href="${contextPath}/resources/css/styles.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/styles.css" />
 <style type="text/css">
 #box {
 	margin: auto;
