@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.test.shop.dao.ShopDAO;
+import com.spring.test.shop.vo.ShopVO;
 
 @Service("shopService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -19,10 +20,22 @@ public class ShopServiceImpl implements ShopService{
 
 	@Override
 	public List listMembers() throws DataAccessException {
+		System.out.println("ShopServiceImpl : listMembers start");
+		
 		List shopList = null;
 		shopList = shopDAO.selectAllShopList();
+
+		System.out.println("ShopServiceImpl : listMembers end");
 		return shopList;
-	
 	}
 
+	@Override
+	public int insertShop(ShopVO shop) throws DataAccessException {
+		System.out.println("ShopServiceImpl : insertShop start");
+		
+		int result = shopDAO.insertShop(shop);
+		
+		System.out.println("ShopServiceImpl : insertShop end");
+		return result;
+	}
 }

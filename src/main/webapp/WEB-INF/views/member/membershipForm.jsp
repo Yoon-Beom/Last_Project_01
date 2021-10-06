@@ -285,7 +285,7 @@ input {
 					<div class="text1">생년월일</div>
 					<select name="member_yy">
 						<option value="#">년도 선택</option>
-					</select>년 <select name="member_mm" id="member_mm">
+					</select>년 <select name="member_mm">
 						<option value="#">월 선택</option>
 					</select>월 <select name="member_dd">
 						<option value="#">일 선택</option>

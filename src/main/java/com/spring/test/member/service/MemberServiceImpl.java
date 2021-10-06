@@ -33,7 +33,7 @@ public class MemberServiceImpl implements MemberService{
 			Hash hash = new Hash();
 			
 			member.setMember_salt(hash.getSALT());
-			System.out.println(member.getMember_salt());
+			System.out.println("salt : " + member.getMember_salt());
 			
 			String hash_pwd = hash.Hashing(member.getMember_pwd().getBytes(), member.getMember_salt());
 			
@@ -47,11 +47,13 @@ public class MemberServiceImpl implements MemberService{
 		System.out.println("MemberServiceImpl : addMember end");
 		return memberDAO.insertMember(member);
 	}
+	
 	@Override
 	public int removeMember(String member_id) throws DataAccessException {
 		System.out.println("removeMemberstart");
 		return memberDAO.deleteMember(member_id);
 	}
+	
 	@Override
 	public MemberVO login(MemberVO member) throws Exception{
 		System.out.println("MemberServiceImpl : login start");
@@ -87,4 +89,10 @@ public class MemberServiceImpl implements MemberService{
 		return memberDAO.selectById(member_id);
 	}
 
+	@Override
+	public int selectMemberNoById(String member_id) throws DataAccessException {
+		System.out.println("MemberServiceImpl : selectMemberNoById start");
+		return memberDAO.selectMemberNoById(member_id);
+		
+	}
 }

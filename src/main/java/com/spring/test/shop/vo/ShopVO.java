@@ -11,8 +11,8 @@ public class ShopVO {
 	private String shop_name;       // 매장 이름
 	private String shop_address;    // 매장 주소 (다음 주소 찾기 API)
 	private String shop_code;       // 사업자 등록 번호
-	private int shop_latitude;      //사업자 지도 위도 latitude
-	private int shop_longitude; 	// 사업자 지도 경도 longitude
+	private double shop_latitude;      //사업자 지도 위도 latitude
+	private double shop_longitude; 	// 사업자 지도 경도 longitude
 	private Date shop_joinDate;		// 등록날짜
 
 	public ShopVO() {
@@ -20,7 +20,7 @@ public class ShopVO {
 	}
 
 	public ShopVO(int shop_NO,int member_NO, String shop_name, String shop_address, String shop_code,
-			int shop_latitude, int shop_longitude) {
+			double shop_latitude, double shop_longitude) {
 		this.shop_NO = shop_NO;
 		this.member_NO = member_NO;
 		this.shop_name = shop_name;
@@ -70,19 +70,19 @@ public class ShopVO {
 		this.shop_code = shop_code;
 	}
 
-	public int getShop_latitude() {
+	public double getShop_latitude() {
 		return shop_latitude;
 	}
 
-	public void setShop_latitude(int shop_latitude) {
+	public void setShop_latitude(double shop_latitude) {
 		this.shop_latitude = shop_latitude;
 	}
 
-	public int getShop_longitude() {
+	public double getShop_longitude() {
 		return shop_longitude;
 	}
 
-	public void setShop_longitude(int shop_longitude) {
+	public void setShop_longitude(double shop_longitude) {
 		this.shop_longitude = shop_longitude;
 	}
 

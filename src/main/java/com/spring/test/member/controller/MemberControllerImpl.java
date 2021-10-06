@@ -67,7 +67,6 @@ public class MemberControllerImpl implements MemberController {
 		System.out.println("MemberControllerImpl : addMember start");
 		
 		request.setCharacterEncoding("euc-kr");
-		response.setCharacterEncoding("text/html; charset=utf-8");
 		
 		int result = 0;
 				
@@ -102,6 +101,8 @@ public class MemberControllerImpl implements MemberController {
 		
 		result = memberService.addMember(member);
 		
+		System.out.println("result : " + result);
+		 
 		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
 		
 		System.out.println("MemberControllerImpl : addMember end");
@@ -135,12 +136,13 @@ public class MemberControllerImpl implements MemberController {
 
 		ModelAndView mav = new ModelAndView();
 		memberVO = memberService.login(member);
-		int memberNO = memberVO.getMember_NO();
+		
 		if(memberVO != null) {
+			int memberNO = memberVO.getMember_NO();
 			HttpSession session = request.getSession();
 			session.setAttribute("member", memberVO);
 			session.setAttribute("isLogOn", true);
-			System.out.println("login member : "+memberNO);
+			System.out.println("login member : " + memberNO);
 			//mav.setViewName("redirect:/member/listMembers.do");
 			String action = (String)session.getAttribute("action");
 			session.removeAttribute("action");
@@ -223,7 +225,7 @@ public class MemberControllerImpl implements MemberController {
 	}
 
 	@Override
-	@RequestMapping(value = "/member/memberIdCheckAction.do", method =  RequestMethod.POST)
+	@RequestMapping(value = "/*/memberIdCheckAction.do", method =  RequestMethod.POST)
 	public ModelAndView memberIdCheckAction (HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("MemberControllerImpl : memberIdCheckAction start");
 		

@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.member">
-<!--<resultMap type="java.util.HashMap" id="memResult">-->	
+	<!--<resultMap type="java.util.HashMap" id="memResult"> -->
 	<resultMap type="memberVO" id="memResult">
 		<result property="member_id" column="member_id" />
 		<result property="member_pwd" column="member_pwd" />
+		<result property="member_salt" column="member_salt" />
 		<result property="member_name" column="member_name" />
 		<result property="member_birth" column="member_birth" />
 		<result property="member_phone" column="member_phone" />
@@ -14,11 +15,13 @@
 		<result property="member_address" column="member_address" />
 		<result property="member_joinDate" column="member_joinDate" />
 	</resultMap>
+	
 	<select id="selectAllMemberList" resultMap="memResult">
 		<![CDATA[
 			select * from t_member order by member_joinDate desc
 		]]>
 	</select>
+
 	<insert id="insertMember" parameterType="memberVO">
 		<![CDATA[		
 			insert into t_member(member_NO, member_id, member_pwd, member_salt,
@@ -29,40 +32,47 @@
 				#{member_gender}, #{member_address})
 		]]>
 	</insert>
-	<delete id="deleteMember"  parameterType="String">
-	<![CDATA[
-	   delete from t_member
-	   where
-	   member_id=#{member_id}
-	]]>      
-  </delete>
-  
-   <select id="loginById"  resultType="memberVO"   parameterType="memberVO" >
-	<![CDATA[
-		select * from t_member	
-		where member_id=#{member_id} and member_pwd=#{member_pwd}		
-	]]>
-  </select>
-  
-  
-  <update id="updateMember"  parameterType="memberVO">
-  <![CDATA[
-  	update t_member
-  	set member_name=#{member_name}, member_address=#{member_address}, member_email=#{member_email}, 
-  	member_phone=#{member_phone},  member_pwd=#{member_pwd} 
-  	where member_id=#{member_id} 
-  ]]>
-  </update> 
-  
-  <select id="selectById" resultType="int" parameterType="string">
+	
+	<delete id="deleteMember" parameterType="String">
+		<![CDATA[
+			delete from t_member
+				where
+				member_id=#{member_id}
+		]]>
+	</delete>
+
+	<select id="loginById" resultType="memberVO" parameterType="memberVO">
+		<![CDATA[
+			select * from t_member	
+				where member_id=#{member_id} and member_pwd=#{member_pwd}		
+		]]>
+	</select>
+
+
+	<update id="updateMember" parameterType="memberVO">
+		 <![CDATA[
+			update t_member
+				set member_name=#{member_name}, member_address=#{member_address}, member_email=#{member_email}, 
+				member_phone=#{member_phone},  member_pwd=#{member_pwd} 
+				where member_id=#{member_id} 
+		]]>
+	</update>
+
+	<select id="selectById" resultType="int" parameterType="string">
 		<![CDATA[
 			select count(*) from t_member where member_id=#{member_id}
 		]]>
-  </select>
-	
-  <select id="selectSaltById" resultType="String" parameterType="String">
+	</select>
+
+	<select id="selectSaltById" resultType="String" parameterType="String">
 		<![CDATA[
 			select member_salt from t_member where member_id=#{member_id}
 		]]>
-  </select>
+	</select>
+
+	<select id="selectMemberNoById" resultType="int" parameterType="String">
+		<![CDATA[
+			select member_NO from t_member where member_id=#{member_id}
+		]]>
+	</select>
 </mapper>

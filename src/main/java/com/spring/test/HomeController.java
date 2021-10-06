@@ -48,7 +48,7 @@ public class HomeController {
 		return "member/membershipForm";
 	}
 	
-	@RequestMapping(value = "/member/IdCheckForm.do", method = RequestMethod.GET)
+	@RequestMapping(value = {"/*/IdCheckForm.do", }, method = RequestMethod.GET)
 	public String IdCheckForm(Locale locale, Model model) {
 
 

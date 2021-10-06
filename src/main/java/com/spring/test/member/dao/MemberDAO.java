@@ -15,6 +15,7 @@ public interface MemberDAO {
 	public int updateMember(MemberVO vo) throws Exception;
 	public int selectById(String member_id) throws DataAccessException;
 	public String selectSaltById(String member_id) throws DataAccessException;
+	public int selectMemberNoById(String member_id) throws DataAccessException;
 	
 	
 }

@@ -12,9 +12,27 @@
 		<result property="shop_longitude" column="shop_longitude"/>
 		<result property="shop_joinDate" column="shop_joinDate"/>
 	</resultMap>
+	
 	<select id="selectAllShopList" resultMap="shopResult"> 
 		<![CDATA[
 			select * from t_shop order by shop_joinDate desc
 		]]>
 	</select>
+	
+	<insert id="insertShop" parameterType="shopVO">
+		<![CDATA[
+			insert into t_shop(shop_NO, member_NO, shop_name, 
+			    shop_address, shop_code, 
+			    shop_latitude, shop_longitude)
+			    values(seq_shop.nextval, #{member_NO}, #{shop_name},
+			    #{shop_address}, #{shop_code},
+			    #{shop_latitude}, #{shop_longitude})
+		]]>
+	</insert>
+	
+	<delete id="deleteShop" parameterType="String">
+		<![CDATA[
+			delete from t_shop where shop_name=#{shop_name}
+		]]>
+	</delete>
 </mapper>
