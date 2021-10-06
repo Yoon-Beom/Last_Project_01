@@ -94,9 +94,12 @@ color: inherit;
   <br>
  <div id="boardmain">
  <div id="boardhead">
- <input type="text" style="width:280px; height:30px;" placeholder="작성자를 입력해 주세요">
- <input type="button" value="검색">&nbsp;&nbsp;&nbsp;
-  <select><option value="#">나열순</option></select>
+<form name="frmsearch" method="post" action="${contextPath}/board/searchQnA.do?board_code=2">
+ <input type="text" style="width:280px; height:30px;" name="search" placeholder="작성자를 입력해 주세요">
+ <input type="submit" value="검색">&nbsp;&nbsp;&nbsp;
+  <select name="optionContent"><option value="board_name">작성자</option>
+  <option value="board_title">제목</option></select>
+   </form>
    </div>
    <a href="javascript:fn_articleForm('${isLogOn}','${contextPath}/board/qnaBoardWriting.do', 
                                                     '${contextPath}/login.do')">
@@ -115,7 +118,7 @@ color: inherit;
  <c:choose>
  <c:when test="${articlesList==null }">
  <tr>
- <td colspan="5">작성된 글이 없습니다.</td>
+ <td colspan="5"><h1>작성된 글이 없습니다.</h1></td>
  </tr>
  </c:when>
  <c:otherwise>

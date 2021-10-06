@@ -98,11 +98,14 @@ color: inherit;
   <br>
  <div id="boardmain">
  <div id="boardhead">
-
- <input type="text" style="width:280px; height:30px;" placeholder="작성자를 입력해 주세요">
- <input type="button" value="검색">&nbsp;&nbsp;&nbsp;
-  <select><option value="#">나열순</option></select>
+<form name="frmsearch" method="post" action="${contextPath}/board/search.do?board_code=1">
+ <input type="text" style="width:280px; height:30px;" name="search" placeholder="작성자를 입력해 주세요">
+ <input type="submit" value="검색">&nbsp;&nbsp;&nbsp;
+  <select name="optionContent"><option value="board_name">작성자</option>
+  <option value="board_title">제목</option></select>
+   </form>
    </div>
+   
   <a href="javascript:fn_articleForm('${isLogOn}','${contextPath}/board/freeBoardWriting.do', 
                                                     '${contextPath}/login.do')">
   <input type="button" value="글쓰기" id="wrting">

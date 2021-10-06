@@ -44,4 +44,10 @@ public class BoardServiceImpl implements BoardService{
 		 System.out.println("service : modArticleStart");
 			boardDAO.updateArticle(articleMap);
 		}
+	
+	@Override
+		public List listsearch(Map<String, Object> searchMap) {
+			List<BoardVO> searchList = boardDAO.selectAllsearchList(searchMap);
+			return searchList;
+		}
 }

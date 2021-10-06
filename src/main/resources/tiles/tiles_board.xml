@@ -14,7 +14,15 @@
 	<definition name="/board/freeBoard" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/board/freeBoard.jsp" />
 	</definition>
-
+	
+	<definition name="/board/search" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/freeBoard.jsp" />
+	</definition>
+	
+	<definition name="/board/searchQnA" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/board/qnaBoard.jsp" />
+	</definition>
+	
 	<definition name="/board/freeContent" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/board/freeContent.jsp" />
 	</definition>

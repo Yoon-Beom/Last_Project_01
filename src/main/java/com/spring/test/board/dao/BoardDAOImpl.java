@@ -72,5 +72,22 @@ public class BoardDAOImpl implements BoardDAO{
 		sqlSession.update("mapper.board.updateArticle", articleMap);
 		System.out.println("DAO : updateArticle END");
 	}
+
+	@Override
+	public List<BoardVO> selectAllsearchList(Map<String, Object> searchMap) {
+		System.out.println("search : "+searchMap);
+		String option = (String) searchMap.get("optionContent");
+		List<BoardVO> searchList=null;
+		if(option.equals("board_name")) {
+			searchList = sqlSession.selectList("mapper.board.selectAllsearchList",searchMap);
+		}else if(option.equals("board_title")) {
+			searchList = sqlSession.selectList("mapper.board.selectTitlesearchList",searchMap);
+		}
+		
+		
+		System.out.println("searchList : "+searchList);
+		
+		return searchList;
+	}
 	
 }

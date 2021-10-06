@@ -58,5 +58,19 @@
 			where board_NO=#{board_NO}
 	</update>
 	
+<select id="selectAllsearchList" resultType="boardVO" parameterType="java.util.Map">
+
+<![CDATA[
+      SELECT * from t_board where board_name like'%'||#{search}||'%' and board_code=#{board_code}
+      ORDER BY board_Date DESC	]]>
+</select>
+
+
+<select id="selectTitlesearchList" resultType="boardVO" parameterType="java.util.Map">
+
+<![CDATA[
+      SELECT * from t_board where board_title like'%'||#{search}||'%' and board_code=#{board_code}
+      ORDER BY board_Date DESC	]]>
+</select>
 
   </mapper>

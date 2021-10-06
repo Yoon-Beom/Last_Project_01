@@ -364,5 +364,37 @@ public ResponseEntity addNewQnABoard(
 	    }
 	    return resEnt;
 	  }
+	 @RequestMapping(value="/board/search*.do", method= {RequestMethod.GET,RequestMethod.POST})
+	 @ResponseBody
+	 public ModelAndView search(@RequestParam("search") String search,
+			 @RequestParam("board_code") String board_code,
+				HttpServletRequest request, HttpServletResponse response) throws Exception {
+			System.out.println("listBoardStart");
+			String viewName = (String)request.getAttribute("viewName");
+			System.out.println("search : "+search);
+			ModelAndView mav = new ModelAndView(viewName);
+			if (search==null||search=="") {
+				
+			List searchList = boardService.listArticles(board_code);
+			mav.addObject("articlesList",searchList);
+			}else {
+				Map<String,Object> searchMap = new HashMap<String, Object>();
+				Enumeration enu=request.getParameterNames();
+				while(enu.hasMoreElements()){
+					String name=(String)enu.nextElement();
+					System.out.println("name : "+name);
+					String value=request.getParameter(name);
+					System.out.println("value : "+value);
+					searchMap.put(name,value);
+				}
+				searchMap.put("board_code", board_code);
+				searchMap.put("search", search);
+				System.out.println("searchMap : "+searchMap);
+				List searchList = boardService.listsearch(searchMap);	
+				mav.addObject("articlesList",searchList);
+			}
+			
+			return mav;
+}
 	  
 }
