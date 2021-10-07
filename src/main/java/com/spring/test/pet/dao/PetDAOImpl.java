@@ -49,5 +49,13 @@ public class PetDAOImpl implements PetDAO{
 	private int selectPetNO() throws DataAccessException {
 		return sqlSession.selectOne("mapper.pet.selectPetNO");
 	}
+	
 
+	@Override
+	public int updatePet(Map articleMap) throws DataAccessException {
+		System.out.println("DAOImpl : updatePet : "+articleMap);
+		sqlSession.update("mapper.pet.updatePet", articleMap);
+		int pet_NO = selectPetNO();
+		return pet_NO;
+	}
 }

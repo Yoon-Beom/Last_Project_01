@@ -23,6 +23,7 @@ function fn_enable(obj){
 		document.getElementById("i_imageFileName").disabled=false;
 		document.getElementById("tr_file_upload").style.display="block";
 	};
+	
 	 document.getElementById("tr_btn_modify").style.display="block";
 	 document.getElementById("board_content").disabled=false;
 	 document.getElementById("board_title").disabled=false;
@@ -209,7 +210,7 @@ outline: none;
   <c:when test="${not empty board.board_image && board.board_image!='null' }">
    <tr id="tr_file_upload"> 
    <td>
-   <input  type= "hidden"   name="originalFileName" value="${board.board_image }" id="board_image"/>
+   <input  type= "hidden"  name="originalFileName" value="${board.board_image }" id="board_image"/>
 		    <img src="${contextPath}/download.do?board_NO=${board.board_NO}&board_image=${board.board_image}" id="preview" width="300" height="200px" />
 		    <input  type="file"  name="board_image" id="i_imageFileName"   disabled   onchange="readURL(this);"   />
 		    </td>

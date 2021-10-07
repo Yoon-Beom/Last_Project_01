@@ -10,12 +10,16 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.test.member.vo.MemberVO;
+import com.spring.test.pet.vo.PetVO;
 
 public interface PetController {
 	public ModelAndView listPet( HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ResponseEntity addPet(@ModelAttribute("member") MemberVO member, MultipartHttpServletRequest multipartRequest,HttpServletResponse response) throws Exception;
-	
-//	  public ModelAndView viewPet(@RequestParam("pet_NO") int pet_NO,
-//	 HttpServletRequest request, HttpServletResponse response) throws Exception;
+	/*
+	 * public ModelAndView updatePet(PetVO vo, HttpServletRequest request,
+	 * HttpServletResponse response, MultipartHttpServletRequest multipartRequest)
+	 * throws Exception;
+	 */
+
 	 
 }

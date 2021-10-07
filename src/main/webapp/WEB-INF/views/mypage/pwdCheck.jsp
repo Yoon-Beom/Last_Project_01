@@ -37,11 +37,11 @@ font-size: 30px;
  <div class="container">
  <div id="box">
 비밀번호 : <input type="password" name="pwdcheck" id="pwdcheck">&nbsp;&nbsp;
-<input type="submit" value="확인"></a>
+<input type="submit" value="확인">
 <br><br><br><a href = "${pageContext.request.contextPath}/mypage/myPage.do"><input type="button" value="취소"></a>
  </div>
  </div>
- </header>
  </form>
+ </header>
 </body>
 </html>

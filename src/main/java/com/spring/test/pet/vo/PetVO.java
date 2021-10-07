@@ -12,7 +12,7 @@ public class PetVO {
 	private int pet_NO; // 반려동물 일련번호
 	private int member_NO; // 회원 일련 번호
 	private String pet_name; // 반려동물 이름
-	private String pet_age; // 반려동물 나이
+	private int pet_age; // 반려동물 나이
 	private String pet_scale; // 반려동물 크기 (소, 중, 대 : 1, 2, 3)
 	private String pet_image; // 반려동물 사진
 	private Date pet_joinDate; // 등록일자
@@ -23,7 +23,7 @@ public class PetVO {
 
 	}
 
-	public PetVO(int pet_NO, String pet_name, String pet_age, String pet_scale, String pet_image) {
+	public PetVO(int pet_NO, String pet_name, int pet_age, String pet_scale, String pet_image) {
 		this.pet_NO = pet_NO;
 		this.pet_name = pet_name;
 		this.pet_age = pet_age;
@@ -57,10 +57,10 @@ public class PetVO {
 	public void setPet_name(String pet_name) {
 		this.pet_name = pet_name;
 	}
-	public String getPet_age() {
+	public int getPet_age() {
 		return pet_age;
 	}
-	public void setPet_age(String pet_age) {
+	public void setPet_age(int pet_age) {
 		this.pet_age = pet_age;
 	}
 	public String getPet_scale() {

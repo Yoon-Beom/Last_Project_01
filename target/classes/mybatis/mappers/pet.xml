@@ -40,4 +40,16 @@
 			SELECT  max(pet_NO) from t_pet		
 		]]>
 	</select>
+	
+	
+		  <update id="updatePet"  parameterType="java.util.Map">
+	  	update t_pet
+	  	set pet_name=#{pet_name}, pet_age=#{pet_age}, pet_scale=#{pet_scale}
+	  	
+	  	<if test="pet_image!='' and pet_image!=null">
+	  	 ,pet_image=#{pet_image}
+	  	</if>
+	  	where pet_NO=#{pet_NO}
+	  	
+  </update> 
 </mapper>

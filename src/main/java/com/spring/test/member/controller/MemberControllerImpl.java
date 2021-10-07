@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.test.member.dao.MemberDAO;
+import com.spring.test.member.hash.Hash;
 import com.spring.test.member.service.MemberService;
 import com.spring.test.member.vo.MemberVO;
 
@@ -28,6 +30,9 @@ public class MemberControllerImpl implements MemberController {
 	private MemberService memberService;
 	@Autowired
 	MemberVO memberVO;
+	
+	@Autowired
+	MemberDAO memberDAO;
 
 	@RequestMapping(value = { "/", "/main.do" }, method = RequestMethod.GET)
 	private ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
@@ -176,27 +181,34 @@ public class MemberControllerImpl implements MemberController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/mypage/check.do", method = RequestMethod.POST)
-	public ModelAndView pwdCheck(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		HttpSession session= request.getSession();
-		MemberVO vo = (MemberVO) session.getAttribute("member");
-		String pwd = vo.getMember_pwd();
-		String pwdcheck = request.getParameter("pwdcheck");
-		System.out.println("pwd : " + pwd);
-		System.out.println("pwdcheck : " + pwdcheck);
-		ModelAndView mav = new ModelAndView();
-		if(pwdcheck != null) {
-			if(pwd.equals(pwdcheck)) {
-				mav.setViewName("redirect:/mypage/membershipMod.do");
-			} else {
-				rAttr.addFlashAttribute("result", "pwdCheckFail");
-				mav.setViewName("redirect:/mypage/pwdCheck.do");
-			}
-		}
-		return mav;
+	 @RequestMapping(value = "/mypage/check.do", method = RequestMethod.POST)
+	   public ModelAndView pwdCheck(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
+	         HttpServletRequest request, HttpServletResponse response) throws Exception {
+	      HttpSession session= request.getSession();
+	      MemberVO vo = (MemberVO) session.getAttribute("member");
+	      System.out.println("mypage id : " + vo.getMember_id());
+	      System.out.println("mypage pwd : " + vo.getMember_pwd());
+	      Hash hash = new Hash();
+	      String salt = memberDAO.selectSaltById(vo.getMember_id());
+	      String pwd = vo.getMember_pwd();
+	      String pwdcheck = request.getParameter("pwdcheck");
+	      String hash_pwd = hash.Hashing(pwdcheck.getBytes(), salt);
+	      vo.setMember_pwd(hash_pwd);
+	      System.out.println("pwd : " + pwd);
+	      System.out.println("pwdcheck : " + hash_pwd);
+	      ModelAndView mav = new ModelAndView();
+	      if(hash_pwd != null) {
+	         if(pwd.equals(hash_pwd)) {
+	            mav.setViewName("redirect:/mypage/membershipMod.do");
+	         } else {
+	            rAttr.addFlashAttribute("result", "pwdCheckFail");
+	            mav.setViewName("redirect:/mypage/pwdCheck.do");
+	         }
+	      }
+	      return mav;
 
-	}
+	   }
+
 
 	@Override
 	@RequestMapping(value = "/mypage/update.do", method = RequestMethod.POST)

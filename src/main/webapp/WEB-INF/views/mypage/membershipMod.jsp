@@ -25,7 +25,8 @@ input {
 
 #box1 {
 	width: 80%;
-	height: 900px;
+	height: 100%;
+	padding: 0 0 40px 0;
 	position: relative;
 	top: 50px;
 	margin: auto;
@@ -86,13 +87,13 @@ input {
 					<input type="text" class="text2"name="member_phone2"   value="${fn:substring(member.member_phone,4,8)}">&nbsp;&nbsp;-&nbsp;&nbsp;
 					<input type="text" class="text2"name="member_phone3"   value="${fn:substring(member.member_phone,9,13)}">
 		
-					<div class="text1">비밀번호</div>
+					<%-- <div class="text1">비밀번호</div>
 					<input type="password" name="member_pwd" value="${member.member_pwd}">
 					<div class="text1">비밀번호 확인</div>
 					<div class="pwdcheck">
 						<input type="password" name="member_pwd1" value="${member.member_pwd}"> &nbsp;&nbsp;
 						<input type="button" value="확인" class="button">
-					</div>
+					</div> --%>
 					<br> <br> <br> <input type="submit" value="수정"
 						class="button">&nbsp;&nbsp;&nbsp; 
 						<a href="${pageContext.request.contextPath}/mypage/myPage.do">

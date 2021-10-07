@@ -37,5 +37,9 @@ public class PetServiceImpl implements PetService {
 		return petVO;
 	}
 
-
+	@Override
+	public void updatePet(Map articleMap) throws Exception {
+		// TODO Auto-generated method stub
+		petDAO.updatePet(articleMap);
+	}
 }

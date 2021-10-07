@@ -21,7 +21,7 @@ public class FileDownloadController {
 	protected void download(@RequestParam("board_image") String board_image,
 							@RequestParam("board_NO") String board_NO,
 			                 HttpServletResponse response)throws Exception {
-		System.out.println("downloadstart");
+		System.out.println("FileDownloadController : download start");
 		OutputStream out = response.getOutputStream();
 		String downFile = ARTICLE_IMAGE_REPO + "\\" +board_NO+"\\"+ board_image;
 		File file = new File(downFile);
@@ -38,12 +38,13 @@ public class FileDownloadController {
 		}
 		in.close();
 		out.close();
+		System.out.println("FileDownloadController : download end");
 	}
 	@RequestMapping("/downloadPet.do")
 	protected void downloadPet(@RequestParam("pet_image") String pet_image,
 							@RequestParam("pet_NO") String pet_NO,
 			                 HttpServletResponse response)throws Exception {
-		System.out.println("downloadstart");
+		System.out.println("FileDownloadController : downloadPet start");
 		OutputStream out = response.getOutputStream();
 		String downFile = ARTICLE_IMAGE_PET + "\\" +pet_NO+"\\"+ pet_image;
 		File file = new File(downFile);
@@ -60,5 +61,6 @@ public class FileDownloadController {
 		}
 		in.close();
 		out.close();
+		System.out.println("FileDownloadController : downloadPet end");
 	}
 }

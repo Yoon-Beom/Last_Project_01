@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,7 +32,8 @@ import com.spring.test.pet.vo.PetVO;
 
 @Controller("petController")
 public class PetControllerImpl implements PetController {
-	private static final String ARTICLE_IMAGE_REPO = "C:\\workspace\\pet_image";
+	private static final String ARTICLE_IMAGE_PET = "C:\\workspace\\pet_image";
+	
 	@Autowired
 	private PetService petService;
 	@Autowired
@@ -45,7 +47,6 @@ public class PetControllerImpl implements PetController {
 	public ModelAndView listPet(
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-			System.out.println("이거되나");
 			HttpSession session = request.getSession();
 			memberVO = (MemberVO) session.getAttribute("member");
 			int member_NO = memberVO.getMember_NO();
@@ -56,7 +57,6 @@ public class PetControllerImpl implements PetController {
 		mav.addObject("member", memberVO);
 		mav.addObject("petList", petList);
 		String a = petVO.getPet_name();
-		System.out.println("이거 나오나 : " + a);
 		return mav;
 	}
 
@@ -64,7 +64,6 @@ public class PetControllerImpl implements PetController {
 	@RequestMapping(value = "/mypage/petAdd.do", method = RequestMethod.POST)
 	public ResponseEntity addPet(@ModelAttribute("member") MemberVO member,
 			MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
-		System.out.println("petAdd 시작");
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String, Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
@@ -96,8 +95,8 @@ public class PetControllerImpl implements PetController {
 
 			System.out.println("NO : " + pet_NO);
 			if (pet_image != null && pet_image.length() != 0) {
-				File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + pet_image);
-				File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + pet_NO);
+				File srcFile = new File(ARTICLE_IMAGE_PET + "\\" + "temp" + "\\" + pet_image);
+				File destDir = new File(ARTICLE_IMAGE_PET + "\\" + pet_NO);
 				FileUtils.moveFileToDirectory(srcFile, destDir, true);
 			}
 			message = "<script>";
@@ -107,7 +106,7 @@ public class PetControllerImpl implements PetController {
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 			System.out.println(articleMap);
 		} catch (Exception e) {
-			File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + pet_image);
+			File srcFile = new File(ARTICLE_IMAGE_PET + "\\" + "temp" + "\\" + pet_image);
 			srcFile.delete();
 
 			message = " <script>";
@@ -131,7 +130,7 @@ public class PetControllerImpl implements PetController {
 		mav.setViewName(viewName);
 		mav.addObject("pet", "petVO");
 		String name = petVO.getPet_name();
-		String age = petVO.getPet_age();
+		int age = petVO.getPet_age();
 		String scale = petVO.getPet_scale();
 		String image = petVO.getPet_image();
 		System.out.println("펫 이름 : " + name);
@@ -147,27 +146,118 @@ public class PetControllerImpl implements PetController {
 //	}
 
 	private String upload(MultipartHttpServletRequest multipartRequest) throws Exception {
+		System.out.println("PetControllerImpl : upload start");
 		String pet_image = null;
 		Map<String, String> articleMap = new HashMap<String, String>();
-		Iterator<String> pet_fileNames = multipartRequest.getFileNames();
+		Iterator<String> fileNames = multipartRequest.getFileNames();
 
-		while (pet_fileNames.hasNext()) {
-			String pet_fileName = pet_fileNames.next();
-			MultipartFile pet_mFile = multipartRequest.getFile(pet_fileName);
-			pet_image = pet_mFile.getOriginalFilename();
-			File file = new File(ARTICLE_IMAGE_REPO + "\\" + pet_fileName);
-			if (pet_mFile.getSize() != 0) {
+		while (fileNames.hasNext()) {
+			String fileName = fileNames.next();
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			pet_image = mFile.getOriginalFilename();
+			File file = new File(ARTICLE_IMAGE_PET + "\\" + fileName);
+			if (mFile.getSize() != 0) {
 				if (!file.exists()) {
 					if (file.getParentFile().mkdirs()) {
 						file.createNewFile();
 					}
 				}
-				pet_mFile.transferTo(new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + pet_image));
+				mFile.transferTo(new File(ARTICLE_IMAGE_PET + "\\" + "temp" + "\\" + pet_image));
 			}
 		}
+		System.out.println("PetControllerImpl : upload end");
 		return pet_image;
 	}
 
-
-
+	/*
+	 * @Override
+	 * 
+	 * @RequestMapping(value = "/mypage/updatePet.do", method = RequestMethod.POST)
+	 * public ModelAndView updatePet(PetVO vo, HttpServletRequest request,
+	 * HttpServletResponse response, MultipartHttpServletRequest multipartRequest)
+	 * throws Exception {
+	 * 
+	 * int result = 0; int pet_NO =
+	 * Integer.parseInt(request.getParameter("pet_NO")); String pet_scale =
+	 * request.getParameter("pet_scale"+ pet_NO); int member_NO =
+	 * Integer.parseInt(request.getParameter("member_NO")); String pet_name =
+	 * request.getParameter("pet_name"); int pet_age =
+	 * Integer.parseInt(request.getParameter("pet_age"));
+	 * vo.setPet_scale(pet_scale); vo.setPet_age(pet_age); vo.setPet_name(pet_name);
+	 * vo.setPet_NO(pet_NO); vo.setMember_NO(member_NO); result =
+	 * petService.updatePet(vo);
+	 * 
+	 * 
+	 * ModelAndView mav = new ModelAndView("redirect:/mypage/myPage.do"); return
+	 * mav; }
+	 */
+	
+	
+	@RequestMapping(value="/mypage/updatePet.do" ,method = RequestMethod.POST)
+	  @ResponseBody
+	  public ResponseEntity updatePet(MultipartHttpServletRequest multipartRequest,  
+	    HttpServletResponse response) throws Exception{
+		System.out.println("petUpdate 시작");
+	    multipartRequest.setCharacterEncoding("utf-8");
+		Map<String,Object> articleMap = new HashMap<String, Object>();
+		Enumeration enu=multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()){
+			String name=(String)enu.nextElement();
+			System.out.println("pet_name : "+name);
+			String value=multipartRequest.getParameter(name);
+			articleMap.put(name,value);
+			System.out.println("pet_value : "+value);
+		}
+		
+		String pet_image= upload(multipartRequest);
+		HttpSession session = multipartRequest.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("member");
+		String member_id = memberVO.getMember_id();
+		int member_NO = memberVO.getMember_NO();
+		String pet_NO = multipartRequest.getParameter("pet_NO");
+		String pet_scale = multipartRequest.getParameter("pet_scale"+ pet_NO); 
+		String pet_name = multipartRequest.getParameter("pet_name"); 
+		int pet_age = Integer.parseInt(multipartRequest.getParameter("pet_age"));
+		
+		articleMap.put("pet_age",pet_age);
+		 articleMap.put("pet_NO",pet_NO); 
+		articleMap.put("pet_scale",pet_scale);
+		articleMap.put("pet_name",pet_name);
+		articleMap.put("member_NO",member_NO);
+		articleMap.put("member_id", member_id);
+		articleMap.put("pet_image", pet_image);
+		System.out.println("pet_controller : update : "+articleMap);
+		pet_NO =(String)articleMap.get("pet_NO");
+		String message;
+		ResponseEntity resEnt=null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+	    try {
+	       petService.updatePet(articleMap);
+	       if(pet_image!=null && pet_image.length()!=0) {
+	         File srcFile = new File(ARTICLE_IMAGE_PET+"\\"+"temp"+"\\"+pet_image);
+	         File destDir = new File(ARTICLE_IMAGE_PET+"\\"+pet_NO);
+	         FileUtils.moveFileToDirectory(srcFile, destDir, true);
+	         
+	         String originalFileName = (String)articleMap.get("originalFileName");
+	         File oldFile = new File(ARTICLE_IMAGE_PET+"\\"+pet_NO+"\\"+originalFileName);
+	         oldFile.delete();
+	       }	
+	       message = "<script>";
+		   message += " alert('반려동물 정보를 수정했습니다.');";
+		   message += " location.href='" + multipartRequest.getContextPath() + "/mypage/myPage.do'; ";
+		   message +=" </script>";
+	       resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+	    }catch(Exception e) {
+	      File srcFile = new File(ARTICLE_IMAGE_PET+"\\"+"temp"+"\\"+pet_image);
+	      srcFile.delete();
+	      message = "<script>";
+		  message += " alert('오류가 발생했습니다.다시 수정해주세요');";
+		  message += " location.href='" + multipartRequest.getContextPath() + "/mypage/myPage.do'; ";
+		  message +=" </script>";
+	      resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+	    }
+	    return resEnt;
+	  }
+	
 }
