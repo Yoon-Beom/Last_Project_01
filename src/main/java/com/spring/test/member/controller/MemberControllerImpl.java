@@ -215,21 +215,20 @@ public class MemberControllerImpl implements MemberController {
 	public ModelAndView updateMember(@ModelAttribute("member") MemberVO vo, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String birth = vo.getMember_birth();
-		System.out.println("birth : " + birth);
 		System.out.println("member수정 시작");
 		int result = 0;
 		String phone1 = request.getParameter("member_phone1");
 		String phone2 = request.getParameter("member_phone2");
 		String phone3 = request.getParameter("member_phone3");
-		System.out.println("phone1 : " + phone1);
-		vo.setMember_phone(phone1 + "-" + phone2 + "-" + phone3);
-		result = memberService.updateMember(vo);
 		
+		String member_post = request.getParameter("member_post");
+		String member_addr = request.getParameter("member_addr");
+		String member_detailAddr = request.getParameter("member_detailAddr");
+		vo.setMember_phone(phone1 + "-" + phone2 + "-" + phone3);
+		vo.setMember_address(member_post + "," + member_addr + "," + member_detailAddr);
+		result = memberService.updateMember(vo);
 		HttpSession session = request.getSession();
-		/*
-		 * session.removeAttribute("member"); session.setAttribute("member", vo);
-		 */
-		  session.invalidate();		
+		/* session.invalidate();  세션 제거*/	
 		request.getSession().setAttribute("member", vo);
 		ModelAndView mav = new ModelAndView("redirect:/mypage/myPage.do");
 		System.out.println("member수정 끝");
