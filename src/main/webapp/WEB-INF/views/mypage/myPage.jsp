@@ -103,7 +103,9 @@ border-bottom: 3px solid gray;
 </c:when>
 <c:otherwise>
 <tr>
-<td rowspan="3" id="petimage">${pet.pet_image }</td>
+<td rowspan="3" id="petimage">
+<img src="${contextPath}/downloadPet.do?pet_NO=${pet.pet_NO}&pet_image=${pet.pet_image}" id="pet_preview" width="120px" />
+</td>
  <td >이름 : </td> <td>${pet.pet_name }</td>
 </tr>
 <tr>

@@ -55,17 +55,14 @@ font-size:15px;
 width: 100px;
 }
 </style>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
-window.onload=function(){
-	$('#pet_preview').hide();
-}
 function readURL(input) {
     if (input.files && input.files[0]) {
-    	$('#pet_preview').show();
 	      var reader = new FileReader();
 	      reader.onload = function (e) {
 	        $('#pet_preview').attr('src', e.target.result);
-	        $('textarea').css("rows","15","cols","40%");
+	       
         }
        reader.readAsDataURL(input.files[0]);
     }
