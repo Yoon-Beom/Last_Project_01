@@ -45,4 +45,5 @@
 		<put-attribute name="title" value="아이디중복창" />
 		<put-attribute name="content" value="/WEB-INF/views/member/IdCheckForm.jsp" />
 	</definition>
+	
 </tiles-definitions>

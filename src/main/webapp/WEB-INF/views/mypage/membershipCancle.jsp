@@ -2,7 +2,7 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 
 <% request.setCharacterEncoding("utf-8"); %>
@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원정보수정 비밀번호 확인창</title>
+<title>회원 탈퇴창</title>
 <style type="text/css">
 #box{
 margin:auto;
@@ -29,11 +29,19 @@ font-size: 30px;
 	    }
 	  </script>
 	</c:when>
+	
+	<c:when test="${result == 'memCancle'}">
+	  <script>
+	  window.onload=function(){
+	      alert("탈퇴되었습니다.");
+	    }
+	  </script>
+	</c:when>
 </c:choose>  
 </head>
 <body>
  <header class="masthead">
- <form name="cancleMem" method="post"  action="${contextPath}/mypage/checkMem.do">
+ <form name="pwdcheckMem" method="post"  action="${contextPath}/mypage/memCancle.do">
  <div class="container">
  <div id="box">
   <h1>회원 탈퇴</h1>

@@ -65,6 +65,12 @@
 				where member_id=#{member_id} 
 		]]>
 	</update>
+	
+		<delete id="deleteMem" parameterType="String">
+		 <![CDATA[
+			delete from t_member where member_id=#{member_id} 
+		]]>
+	</delete>
 
 	<select id="selectById" resultType="int" parameterType="string">
 		<![CDATA[

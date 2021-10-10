@@ -113,5 +113,11 @@ public class MemberDAOImpl implements MemberDAO{
 		System.out.println("MemberDAOImpl : selectMemberNoById end");
 		return result;
 	}
-
+	
+	@Override
+	public int deleteMem(String member_id) throws DataAccessException {
+		// TODO Auto-generated method stub
+		int result = sqlSession.delete("mapper.member.deleteMem", member_id);
+		return result;
+	}
 }

@@ -145,6 +145,12 @@ public class HomeController {
 		return "mypage/pwdCheckPwd";
 	}
 	
+	@RequestMapping(value = "/mypage/membershipCancle.do", method = RequestMethod.GET)
+	public String membershipCancle(Locale locale, Model model) {
+
+		return "mypage/membershipCancle";
+	}
+	
 	@RequestMapping(value = "/mypage/membershipMod.do", method = RequestMethod.GET)
 	public String membershipMod(Locale locale, Model model) {
 

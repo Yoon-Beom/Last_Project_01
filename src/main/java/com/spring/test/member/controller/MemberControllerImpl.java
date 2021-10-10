@@ -268,7 +268,40 @@ public class MemberControllerImpl implements MemberController {
 		System.out.println("member수정 끝");
 		return mav;
 	}
-
+	
+		// 회원 탈퇴
+		 @RequestMapping(value = "/mypage/memCancle.do", method = RequestMethod.POST)
+		   public ModelAndView pwdCancle(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
+		         HttpServletRequest request, HttpServletResponse response) throws Exception {
+		      HttpSession session= request.getSession();
+		      MemberVO vo = (MemberVO) session.getAttribute("member");
+		      String member_id = vo.getMember_id();
+		      System.out.println("mypage id : " + vo.getMember_id());
+		      System.out.println("mypage pwd : " + vo.getMember_pwd());
+		      Hash hash = new Hash();
+		      String salt = memberDAO.selectSaltById(vo.getMember_id());
+		      String pwd = vo.getMember_pwd();
+		      String pwdcheck = request.getParameter("pwdcheck");
+		      String hash_pwd = hash.Hashing(pwdcheck.getBytes(), salt);
+		      vo.setMember_pwd(hash_pwd);
+		      System.out.println("pwd : " + pwd);
+		      System.out.println("pwdcheck : " + hash_pwd);
+		      ModelAndView mav = new ModelAndView();
+		      if(hash_pwd != null) {
+		         if(pwd.equals(hash_pwd)) {
+		        	 rAttr.addFlashAttribute("result", "memCancle");
+		        	 mav.setViewName("redirect:/mypage/membershipCancle.do");
+		        	 memberService.removeMem(member_id);
+		        	 session.invalidate();
+		        	 
+		         } else {
+		            rAttr.addFlashAttribute("result", "pwdCheckFail");
+		            mav.setViewName("redirect:/mypage/membershipCancle.do");
+		         }
+		      }
+		      return mav;
+		   }
+	
 	@Override
 	@RequestMapping(value = "/*/memberIdCheckAction.do", method =  RequestMethod.POST)
 	public ModelAndView memberIdCheckAction (HttpServletRequest request, HttpServletResponse response) throws Exception {

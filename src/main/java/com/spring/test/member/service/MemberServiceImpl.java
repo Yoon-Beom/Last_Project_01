@@ -100,7 +100,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int selectMemberNoById(String member_id) throws DataAccessException {
 		System.out.println("MemberServiceImpl : selectMemberNoById start");
-		return memberDAO.selectMemberNoById(member_id);
-		
+		return memberDAO.selectMemberNoById(member_id);	
 	}
+	
+	@Override
+	   public int removeMem(String member_id) throws DataAccessException {
+	      return memberDAO.deleteMem(member_id);
+	   }
 }

@@ -48,6 +48,10 @@
       <put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheckPwd.jsp" />
    </definition>
    
+     <definition name="mypage/membershipCancle" extends="baseLayout">
+      <put-attribute name="content" value="/WEB-INF/views/mypage/membershipCancle.jsp" />
+   </definition>
+	
 <definition name="mypage/membershipMod" extends="baseLayout">
       <put-attribute name="content" value="/WEB-INF/views/mypage/membershipMod.jsp" />
    </definition>

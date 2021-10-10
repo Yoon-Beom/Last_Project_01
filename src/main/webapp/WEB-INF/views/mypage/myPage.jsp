@@ -464,9 +464,10 @@ window.onload = function() {
 				<table>
 					
 					<tr>
-						<td width="7%">회원탈퇴</td>
-						<td width="21%">
-						<input type="button" value="회원탈퇴">
+						<td width="7%">
+							<a href="${pageContext.request.contextPath}/mypage/membershipCancle.do">
+							<input type="button" value="회원탈퇴">
+							</a>
 						</td>
 					</tr>
 				</table>
