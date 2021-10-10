@@ -459,6 +459,17 @@ window.onload = function() {
 						</tr>
 					</c:forEach>
 				</table>
+				
+				<br> <br>		
+				<table>
+					
+					<tr>
+						<td width="7%">회원탈퇴</td>
+						<td width="21%">
+						<input type="button" value="회원탈퇴">
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</header>

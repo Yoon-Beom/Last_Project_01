@@ -9,5 +9,6 @@
 		<typeAlias type="com.spring.test.shop.vo.ShopVO" alias="shopVO" />
 		<typeAlias type="com.spring.test.comment.vo.CommentVO" alias="commentVO" />
 		<typeAlias type="com.spring.test.pet.vo.PetVO" alias="petVO" />
+		<typeAlias type="com.spring.test.board.vo.Criteria" alias="criteria" />
 	</typeAliases>
 </configuration>
