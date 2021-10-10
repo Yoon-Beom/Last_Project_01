@@ -58,4 +58,11 @@ public class PetDAOImpl implements PetDAO{
 		int pet_NO = selectPetNO();
 		return pet_NO;
 	}
+	
+	@Override
+	public int deletePet(int pet_NO) throws DataAccessException {
+		// TODO Auto-generated method stub
+		int result = sqlSession.delete("mapper.pet.deletePet", pet_NO);
+		return result;
+	}
 }

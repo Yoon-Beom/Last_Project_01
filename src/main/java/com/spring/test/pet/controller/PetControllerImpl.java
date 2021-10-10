@@ -260,4 +260,21 @@ public class PetControllerImpl implements PetController {
 	    return resEnt;
 	  }
 	
+	
+
+	@Override
+	@RequestMapping(value="/mypage/removePet.do" ,method = RequestMethod.GET)
+	public ModelAndView removePet(@RequestParam("pet_NO") int pet_NO, 
+			           HttpServletRequest request, HttpServletResponse response) throws Exception{
+		request.setCharacterEncoding("utf-8");
+		/*
+		 * System.out.println("pet_NO : "+pet_NO); pet_NO =
+		 * Integer.parseInt(request.getParameter("pet_NO"));
+		 */
+		System.out.println("remove_pet 시작");
+		System.out.println("pet_NO : " + pet_NO);
+		petService.removePet(pet_NO);
+		ModelAndView mav = new ModelAndView("redirect:/mypage/myPage.do");
+		return mav;
+	}
 }

@@ -13,5 +13,6 @@ public interface PetDAO {
 	public int insertPet(Map aticleMap) throws DataAccessException;
 	public PetVO selectPet(int pet_NO) throws DataAccessException;
 	public int updatePet(Map<String, Object> articleMap) throws DataAccessException;
+	public int deletePet(int pet_NO) throws DataAccessException;
 
 }

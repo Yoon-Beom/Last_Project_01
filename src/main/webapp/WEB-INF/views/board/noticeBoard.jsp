@@ -68,6 +68,12 @@ background-color: #e6e6e6;
 #title{
 color: inherit;
 }
+li {
+list-style: none;
+float: left;
+padding: 6px;
+text-align: center;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css"/>
 </head>
@@ -115,7 +121,19 @@ color: inherit;
   
   </table>
   <div id="page">
-  <p>< 1 2 3 4 5 6 7 8 9 ></p>
+<ul>
+    <c:if test="${pageMaker.prev}">
+    	<li><a href="freeBoard.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&board_code=3">이전</a></li>
+    </c:if> 
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li><a href="freeBoard.do${pageMaker.makeQuery(idx)}&board_code=3">${idx}</a></li>
+    </c:forEach>
+
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li><a href="freeBoard.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&board_code=3">다음</a></li>
+    </c:if> 
+  </ul>
   </div>
  </div>
  </div>

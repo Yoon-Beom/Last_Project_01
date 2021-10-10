@@ -40,8 +40,12 @@
       <put-attribute name="content" value="/WEB-INF/views/mypage/myPage.jsp" />
    </definition>
    
-   <definition name="mypage/pwdCheck" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheck.jsp" />
+   <definition name="mypage/pwdCheckMem" extends="baseLayout">
+      <put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheckMem.jsp" />
+   </definition>
+   
+     <definition name="mypage/pwdCheckPwd" extends="baseLayout">
+      <put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheckPwd.jsp" />
    </definition>
    
 <definition name="mypage/membershipMod" extends="baseLayout">

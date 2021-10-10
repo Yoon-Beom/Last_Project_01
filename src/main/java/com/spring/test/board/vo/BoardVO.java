@@ -17,8 +17,14 @@ public class BoardVO {
     private String board_image ;// 사진
     private int board_score ; // 조회수
     private String board_level ;// 상단 공지(일반 : 0, 공지 : 1)
-    
-    public BoardVO() {
+    private int rnum;
+    public int getRnum() {
+		return rnum;
+	}
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+	public BoardVO() {
 		 
 	 }
 	 public BoardVO(String board_code, String board_screct, String board_title, String board_name,

@@ -33,7 +33,7 @@ font-size: 30px;
 </head>
 <body>
  <header class="masthead">
- <form name="pwdcheck" method="post"  action="${contextPath}/mypage/check.do">
+ <form name="pwdcheckMem" method="post"  action="${contextPath}/mypage/checkMem.do">
  <div class="container">
  <div id="box">
 비밀번호 : <input type="password" name="pwdcheck" id="pwdcheck">&nbsp;&nbsp;

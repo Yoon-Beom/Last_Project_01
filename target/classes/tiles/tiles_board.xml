@@ -11,15 +11,15 @@
 		<put-attribute name="side" value="" />
 	</definition>
 
-	<definition name="/board/freeBoard" extends="baseLayout">
+	<definition name="board/freeBoard" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/board/freeBoard.jsp" />
 	</definition>
 	
-	<definition name="/board/search" extends="baseLayout">
+	<definition name="board/search" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/board/freeBoard.jsp" />
 	</definition>
 	
-	<definition name="/board/searchQnA" extends="baseLayout">
+	<definition name="board/searchQnA" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/board/qnaBoard.jsp" />
 	</definition>
 	
@@ -31,7 +31,7 @@
 		<put-attribute name="content" value="/WEB-INF/views/board/freeBoardWriting.jsp" />
 	</definition>
 
-	<definition name="/board/qnaBoard" extends="baseLayout">
+	<definition name="board/qnaBoard" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/board/qnaBoard.jsp" />
 	</definition>
 

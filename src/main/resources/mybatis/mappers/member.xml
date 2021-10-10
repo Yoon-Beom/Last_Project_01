@@ -57,6 +57,14 @@
 				where member_id=#{member_id} 
 		]]>
 	</update>
+	
+	<update id="updateMemPwd" parameterType="memberVO">
+		 <![CDATA[
+			update t_member
+				set member_pwd=#{member_pwd}, member_salt=#{member_salt}
+				where member_id=#{member_id} 
+		]]>
+	</update>
 
 	<select id="selectById" resultType="int" parameterType="string">
 		<![CDATA[

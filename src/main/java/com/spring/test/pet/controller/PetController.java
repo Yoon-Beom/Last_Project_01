@@ -15,11 +15,8 @@ import com.spring.test.pet.vo.PetVO;
 public interface PetController {
 	public ModelAndView listPet( HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ResponseEntity addPet(@ModelAttribute("member") MemberVO member, MultipartHttpServletRequest multipartRequest,HttpServletResponse response) throws Exception;
-	/*
-	 * public ModelAndView updatePet(PetVO vo, HttpServletRequest request,
-	 * HttpServletResponse response, MultipartHttpServletRequest multipartRequest)
-	 * throws Exception;
-	 */
+
+	public ModelAndView removePet(int pet_NO, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 	 
 }

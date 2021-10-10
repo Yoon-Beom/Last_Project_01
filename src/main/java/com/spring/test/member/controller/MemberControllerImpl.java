@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.tiles.template.AddAttributeModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -90,7 +93,6 @@ public class MemberControllerImpl implements MemberController {
 		member.setMember_birth(yy + "-" + mm + "-" + dd);
 		member.setMember_phone(member_phone1 + "-" + member_phone2 + "-" + member_phone3);
 		member.setMember_address(member_post + "," + member_addr + "," + member_detailAddr);
-
 		System.out.println("---------- member VO ----------");
 		System.out.println("member_id : " + member.getMember_id());
 		System.out.println("member_pwd : " + member.getMember_pwd());
@@ -101,15 +103,10 @@ public class MemberControllerImpl implements MemberController {
 		System.out.println("member_email : " + member.getMember_email());
 		System.out.println("member_gender : " + member.getMember_gender());
 		System.out.println("member_address : " + member.getMember_address());
-		System.out.println("-------------------------------");
-
-		
-		result = memberService.addMember(member);
-		
-		System.out.println("result : " + result);
-		 
-		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
-		
+		System.out.println("-------------------------------");	
+		result = memberService.addMember(member);	
+		System.out.println("result : " + result); 
+		ModelAndView mav = new ModelAndView("redirect:/main.do");
 		System.out.println("MemberControllerImpl : addMember end");
 		return mav;
 	}
@@ -180,9 +177,10 @@ public class MemberControllerImpl implements MemberController {
 		System.out.println("MemberControllerImpl : logout end");
 		return mav;
 	}
-
-	 @RequestMapping(value = "/mypage/check.do", method = RequestMethod.POST)
-	   public ModelAndView pwdCheck(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
+	
+	// 마이 페이지 회원정보 수정 비밀번호 확인
+	 @RequestMapping(value = "/mypage/checkMem.do", method = RequestMethod.POST)
+	   public ModelAndView pwdCheckMem(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
 	         HttpServletRequest request, HttpServletResponse response) throws Exception {
 	      HttpSession session= request.getSession();
 	      MemberVO vo = (MemberVO) session.getAttribute("member");
@@ -202,14 +200,50 @@ public class MemberControllerImpl implements MemberController {
 	            mav.setViewName("redirect:/mypage/membershipMod.do");
 	         } else {
 	            rAttr.addFlashAttribute("result", "pwdCheckFail");
-	            mav.setViewName("redirect:/mypage/pwdCheck.do");
+	            mav.setViewName("redirect:/mypage/pwdCheckMem.do");
 	         }
 	      }
 	      return mav;
-
 	   }
 
-
+	 
+		// 마이 페이지 비밀번호 수정
+	 @RequestMapping(value = "/mypage/checkPwd.do", method = RequestMethod.POST)
+	   public ModelAndView pwdCheckPwd(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
+	         HttpServletRequest request, HttpServletResponse response) throws Exception {
+	      HttpSession session= request.getSession();
+	      MemberVO vo = (MemberVO) session.getAttribute("member");
+	      int result = 0;
+	      System.out.println("mypage id : " + vo.getMember_id());
+	      System.out.println("mypage pwd : " + vo.getMember_pwd());
+	      Hash hash = new Hash();
+	      String salt = memberDAO.selectSaltById(vo.getMember_id());
+	      String pwd = vo.getMember_pwd();
+	      String pwdNow = request.getParameter("pwdNow");
+	      String hash_pwd = hash.Hashing(pwdNow.getBytes(), salt);
+	      String member_pwd = request.getParameter("member_pwd");
+	      String member_pwd2 = request.getParameter("member_pwd2");
+	      vo.setMember_pwd(hash_pwd);
+	      System.out.println("pwd : " + pwd);
+	      System.out.println("pwdNow : " + hash_pwd);
+	      ModelAndView mav = new ModelAndView();
+	      if(hash_pwd != null) {
+	         if(!(pwd.equals(hash_pwd))) {
+	            rAttr.addFlashAttribute("result", "pwdCheckFail");
+	            mav.setViewName("redirect:/mypage/pwdCheckPwd.do");
+	         } else {
+	        	
+		        		vo.setMember_pwd(member_pwd);
+		        		result = memberService.updateMemPwd(vo);
+		        		rAttr.addFlashAttribute("result", "pwdChange");
+						mav.setViewName("redirect:/mypage/myPage.do");
+		        
+	         }
+	      }
+	      return mav;
+	   }
+	 
+	 // 마이페이지 회원정보 수정
 	@Override
 	@RequestMapping(value = "/mypage/update.do", method = RequestMethod.POST)
 	public ModelAndView updateMember(@ModelAttribute("member") MemberVO vo, HttpServletRequest request,

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,4 +43,10 @@ public class PetServiceImpl implements PetService {
 		// TODO Auto-generated method stub
 		petDAO.updatePet(articleMap);
 	}
+	
+	 
+	@Override
+	   public int removePet(int pet_NO) throws DataAccessException {
+	      return petDAO.deletePet(pet_NO);
+	   }
 }

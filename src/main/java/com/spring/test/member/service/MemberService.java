@@ -15,5 +15,6 @@ public interface MemberService {
 	public int updateMember(MemberVO vo) throws Exception;
 	public int selectById(String member_id) throws DataAccessException;
 	public int selectMemberNoById(String member_id) throws DataAccessException;
+	public int updateMemPwd(MemberVO vo) throws Exception;
 	
 }

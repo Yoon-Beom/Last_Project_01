@@ -132,16 +132,21 @@ public class HomeController {
 		return "mypage/myPage";
 	}*/
 	
-	@RequestMapping(value = "/mypage/pwdCheck.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/mypage/pwdCheckMem.do", method = RequestMethod.GET)
 	public String pwdCheck(Locale locale, Model model) {
 
 
-		return "mypage/pwdCheck";
+		return "mypage/pwdCheckMem";
+	}
+	
+	@RequestMapping(value = "/mypage/pwdCheckPwd.do", method = RequestMethod.GET)
+	public String pwdCheckPwd(Locale locale, Model model) {
+
+		return "mypage/pwdCheckPwd";
 	}
 	
 	@RequestMapping(value = "/mypage/membershipMod.do", method = RequestMethod.GET)
 	public String membershipMod(Locale locale, Model model) {
-
 
 		return "mypage/membershipMod";
 	}
@@ -149,13 +154,11 @@ public class HomeController {
 	@RequestMapping(value = "/mypage/petAdd.do", method = RequestMethod.GET)
 	public String petAdd(Locale locale, Model model) {
 
-
 		return "mypage/petAdd";
 	}
 	
 	@RequestMapping(value = "/mypage/review.do", method = RequestMethod.GET)
 	public String review(Locale locale, Model model) {
-
 
 		return "mypage/review";
 	}

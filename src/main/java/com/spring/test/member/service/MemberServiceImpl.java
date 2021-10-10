@@ -31,12 +31,9 @@ public class MemberServiceImpl implements MemberService{
 
 		try {
 			Hash hash = new Hash();
-			
 			member.setMember_salt(hash.getSALT());
 			System.out.println("salt : " + member.getMember_salt());
-			
 			String hash_pwd = hash.Hashing(member.getMember_pwd().getBytes(), member.getMember_salt());
-			
 			System.out.println("hash_pwd : " + hash_pwd);
 			member.setMember_pwd(hash_pwd);
 			
@@ -59,16 +56,12 @@ public class MemberServiceImpl implements MemberService{
 		System.out.println("MemberServiceImpl : login start");
 		
 		try {
-			Hash hash = new Hash();
-			
+			Hash hash = new Hash();	
 			String salt = memberDAO.selectSaltById(member.getMember_id());
-			System.out.println("salt : " + salt);
-			
-			String hash_pwd = hash.Hashing(member.getMember_pwd().getBytes(), salt);
-			
+			System.out.println("salt : " + salt);	
+			String hash_pwd = hash.Hashing(member.getMember_pwd().getBytes(), salt);	
 			System.out.println("hash_pwd : " + hash_pwd);
-			member.setMember_pwd(hash_pwd);
-			
+			member.setMember_pwd(hash_pwd);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,8 +72,23 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int updateMember(MemberVO vo) throws Exception {
-		return memberDAO.updateMember(vo);
+		return memberDAO.updateMember(vo);	
+	}
+	
+	@Override
+	public int updateMemPwd(MemberVO vo) throws Exception {
+		try {
+			Hash hash = new Hash();		
+			vo.setMember_salt(hash.getSALT());				
+			String hash_pwd = hash.Hashing(vo.getMember_pwd().getBytes(), vo.getMember_salt());
+			vo.setMember_pwd(hash_pwd);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		System.out.println("MemberServiceImpl : addMember end");
+		return memberDAO.updateMemPwd(vo);	
 	}
 
 	@Override

@@ -59,6 +59,7 @@ height: 80px;
 border: 1px solid gray;
 width: 90%;
 margin:auto;
+border-collapse:collapse;
 }
 #boardhead{
 padding-top:30px;
@@ -70,6 +71,7 @@ height: 60px;
 .td{
 height:35px;
 border-bottom: 1px solid gray;
+border-collapse:collapse;
 }
 #page{
 font-size: 25px;
@@ -83,6 +85,13 @@ background-color: #e6e6e6;
 #title{
 color: inherit;
 }
+#page li {
+list-style: none;
+float: center;
+padding: 6px;
+display: inline;
+}
+
 </style>
 <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/styles.css"/>
 </head>
@@ -123,11 +132,11 @@ color: inherit;
  
   </tr>
   
-  <c:forEach var="board" items="${articlesList}">
+  <c:forEach var="board" items="${list}">
    
     <tr>
     
-  <td width="7%" name="board_NO" class="td">${board.board_NO}</td>
+  <td width="7%" name="board_NO" class="td">${board.rnum}</td>
   <td width="30%" name="board_title" class="td">
   <a href="${contextPath}/board/freeContent.do?board_NO=${board.board_NO}" id="title">${board.board_title}</a></td>
   <td width="14%" name="board_name" class="td">${board.board_name}</td>
@@ -141,7 +150,35 @@ color: inherit;
   </table>
   </form>
   <div id="page">
-  <p>< 1 2 3 4 5 6 7 8 9 ></p>
+  <ul>
+  <c:choose>
+  <c:when test="${search == 'AllList'}">
+  <c:if test="${pageMaker.prev}">
+    	<li><a href="freeBoard.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&board_code=1">이전</a></li>
+    </c:if> 
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li><a href="freeBoard.do${pageMaker.makeQuery(idx)}&board_code=1">${idx}</a></li>
+    </c:forEach>
+    
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li><a href="freeBoard.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&board_code=1">다음</a></li>
+    </c:if>
+  </c:when>
+  <c:otherwise>
+  <c:if test="${pageMaker.prev}">
+    	<li><a href="search.do${pageMaker.makeSearch(pageMaker.startPage - 1)}&board_code=1">이전</a></li>
+    </c:if>
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li><a href="search.do${pageMaker.makeSearch(idx)}&board_code=1">${idx}</a></li>
+    </c:forEach>
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li><a href="search.do${pageMaker.makeSearch(pageMaker.endPage + 1)}&board_code=1">다음</a></li>
+    </c:if>
+  </c:otherwise>
+  </c:choose>    
+  </ul>
   </div>
  </div>
  </div>

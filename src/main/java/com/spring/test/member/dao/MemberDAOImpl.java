@@ -72,7 +72,16 @@ public class MemberDAOImpl implements MemberDAO{
 		
 		System.out.println("MemberDAOImpl : updateMember end");
 		return result;
-
+	}
+	
+	@Override
+	public int updateMemPwd(MemberVO vo) throws Exception {
+		System.out.println("MemberDAOImpl : updateMemPwd start");
+		
+		int result = sqlSession.update("mapper.member.updateMemPwd", vo);
+		
+		System.out.println("MemberDAOImpl : updateMemPwd end");
+		return result;
 	}
 
 	@Override

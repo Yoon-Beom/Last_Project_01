@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.test.board.dao.BoardDAO;
 import com.spring.test.board.service.BoardService;
 import com.spring.test.board.vo.BoardVO;
+import com.spring.test.board.vo.Criteria;
 
 @Service("boardService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -20,11 +21,18 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	BoardDAO boardDAO;
 	
-	@Override
+/*	@Override
 	public List<BoardVO> listArticles(String board_code) throws Exception {
 		List<BoardVO> articlesList = boardDAO.selectAllArticlesList(board_code);
 		return articlesList;
+	}*/
+	
+	@Override
+	public List list(Criteria cri, String board_code) throws Exception {
+		List list = boardDAO.List(cri, board_code);
+		return list;
 	}
+	
 	 @Override
 		public int addNewArticle(Map articleMap) throws Exception {
 		
@@ -46,8 +54,22 @@ public class BoardServiceImpl implements BoardService{
 		}
 	
 	@Override
-		public List listsearch(Map<String, Object> searchMap) {
-			List<BoardVO> searchList = boardDAO.selectAllsearchList(searchMap);
+		public List listsearch(Map<String, Object> searchMap, Criteria cri) {
+			List searchList = boardDAO.selectAllsearchList(searchMap,cri);
 			return searchList;
 		}
+
+	@Override
+	public int listCount(String board_code) throws Exception {
+		// TODO Auto-generated method stub
+		return boardDAO.listCount(board_code);
+	}
+	
+
+	@Override
+	public int searchCount(Map<String, Object> searchMap) {
+		// TODO Auto-generated method stub
+		return boardDAO.searchCount(searchMap);
+	}
+	
 }

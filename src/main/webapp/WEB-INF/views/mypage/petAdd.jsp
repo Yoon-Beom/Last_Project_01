@@ -57,8 +57,13 @@ width: 100px;
 </style>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
+window.onload = function () {
+	$('#pet_preview').hide();
+}
 function readURL(input) {
     if (input.files && input.files[0]) {
+    	$('#pet_cover').hide();
+    	$('#pet_preview').show();
 	      var reader = new FileReader();
 	      reader.onload = function (e) {
 	        $('#pet_preview').attr('src', e.target.result);
@@ -76,6 +81,7 @@ function readURL(input) {
 <div id="box1">
 <h1>반려동물 등록</h1>
 <div id="pet_img">
+<img src="${pageContext.request.contextPath}/resources/assets/img/pet_image.png" id="pet_cover">
 <img  id="pet_preview" src="#" width=300 height=300/><br>
 <input type="file" id="file" name="pet_image" onchange="readURL(this);">
 </div>

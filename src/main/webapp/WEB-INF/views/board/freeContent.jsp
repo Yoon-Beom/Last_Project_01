@@ -23,7 +23,6 @@ function fn_enable(obj){
 		document.getElementById("i_imageFileName").disabled=false;
 		document.getElementById("tr_file_upload").style.display="block";
 	};
-	
 	 document.getElementById("tr_btn_modify").style.display="block";
 	 document.getElementById("board_content").disabled=false;
 	 document.getElementById("board_title").disabled=false;
@@ -181,9 +180,12 @@ outline: none;
    </div>
    <div class="wrting" id="tr_btn">
    <c:if test="${board.board_name == member.member_name }">
+    <a href = "${pageContext.request.contextPath}/board/removeArticle.do?board_NO=${board.board_NO }">
   <input type="button" value="삭제하기" id="delete" onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${board.board_NO})">
-   <input type="button" value="수정하기" id="mod" onClick="javascript:fn_enable(this.form)">
-   <input type=button value="수정반영하기" id="tr_btn_modify"  onClick="javascript:fn_modify_article(frmBoard)" >
+  </a>
+   <input type="button" value="수정하기" id="mod" onClick="javascript:fn_enable(this.form)" >
+  
+   <input type="submit" value="수정반영하기" id="tr_btn_modify"  onClick="javascript:fn_modify_article(frmBoard)" >
    </c:if>
    <c:if test="${board.board_name != member.member_name }">
    <a href ="${pageContext.request.contextPath}/board/freeBoard.do?board_code=1">

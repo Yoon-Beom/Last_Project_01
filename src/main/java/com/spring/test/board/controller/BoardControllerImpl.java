@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.test.board.controller.BoardController;
 import com.spring.test.board.service.BoardService;
 import com.spring.test.board.vo.BoardVO;
+import com.spring.test.board.vo.Criteria;
+import com.spring.test.board.vo.PageMaker;
+import com.spring.test.board.vo.SearchCriteria;
 import com.spring.test.comment.service.CommentService;
 import com.spring.test.comment.vo.CommentVO;
 import com.spring.test.member.vo.MemberVO;
@@ -44,7 +48,7 @@ public class BoardControllerImpl implements BoardController{
 	@Autowired
 	private CommentVO commentVO;
 	
-	@Override
+	/*@Override
 	@RequestMapping(value="/board/*Board.do", method= {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView listBoard(@RequestParam("board_code") String board_code,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -57,6 +61,24 @@ public class BoardControllerImpl implements BoardController{
 		mav.addObject("articlesList",articlesList);
 
 		return mav;
+	}*/
+	@RequestMapping(value="/board/*Board.do", method= {RequestMethod.GET,RequestMethod.POST})
+	public Model list(
+			@RequestParam("board_code") String board_code,
+			Model model, Criteria cri) throws Exception{
+		System.out.println("*Board");
+		model.addAttribute("list", boardService.list(cri,board_code));
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		pageMaker.setTotalCount(boardService.listCount(board_code));
+		
+		System.out.println(cri.toString());
+
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("search", "AllList");
+		return model;
 	}
 	
 	@Override
@@ -195,6 +217,7 @@ public ResponseEntity addNewQnABoard(
 				if(! file.exists()) {
 					if(file.getParentFile().mkdirs()) {
 						file.createNewFile();
+						
 					}
 				}
 				mFile.transferTo(new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image));
@@ -366,17 +389,13 @@ public ResponseEntity addNewQnABoard(
 	  }
 	 @RequestMapping(value="/board/search*.do", method= {RequestMethod.GET,RequestMethod.POST})
 	 @ResponseBody
-	 public ModelAndView search(@RequestParam("search") String search,
+	 public Model searchList(@RequestParam("search") String search,
 			 @RequestParam("board_code") String board_code,
-				HttpServletRequest request, HttpServletResponse response) throws Exception {
-			System.out.println("listBoardStart");
-			String viewName = (String)request.getAttribute("viewName");
-			System.out.println("search : "+search);
-			ModelAndView mav = new ModelAndView(viewName);
+			 Model model, SearchCriteria cri,Criteria cr, HttpServletRequest request) throws Exception {
+		 
 			if (search==null||search=="") {
 				
-			List searchList = boardService.listArticles(board_code);
-			mav.addObject("articlesList",searchList);
+				model = list(board_code, model, cr);
 			}else {
 				Map<String,Object> searchMap = new HashMap<String, Object>();
 				Enumeration enu=request.getParameterNames();
@@ -387,14 +406,26 @@ public ResponseEntity addNewQnABoard(
 					System.out.println("value : "+value);
 					searchMap.put(name,value);
 				}
-				searchMap.put("board_code", board_code);
+				System.out.println(cri.toString());
+				cri.setBoard_code(board_code);
+				//searchMap.put("board_code", board_code);
 				searchMap.put("search", search);
-				System.out.println("searchMap : "+searchMap);
-				List searchList = boardService.listsearch(searchMap);	
-				mav.addObject("articlesList",searchList);
+				searchMap.put("cri", cri);
+				System.out.println("searchMap : "+searchMap);		
+				model.addAttribute("list", boardService.listsearch(searchMap,cri));
+				
+				PageMaker pageMaker = new PageMaker();
+				pageMaker.setCri(cri);
+				pageMaker.setTotalCount(boardService.searchCount(searchMap));
+				System.out.println("controller Search : "+cri.getSearch());
+				System.out.println("controller OptionContent : "+cri.getOptionContent());
+				model.addAttribute("pageMaker", pageMaker);
+				model.addAttribute("search", search);
+				model.addAttribute("optionContent", searchMap.get("optionContent"));
 			}
 			
-			return mav;
+	
+			return model;
 }
 	  
 }

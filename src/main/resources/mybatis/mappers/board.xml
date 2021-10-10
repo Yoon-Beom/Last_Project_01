@@ -3,74 +3,137 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mapper.board">
-<resultMap id="boardResult" type="boardVO">
- 	<result property="board_NO" column="board_NO" />
-    <result property="member_NO" column="member_NO" />
-    <result property="board_code" column="board_code" />
-    <result property="board_screct" column="board_screct" />
-    <result property="board_title" column="board_title" />
-    <result property="board_name" column="board_name" />
-    <result property="board_content" column="board_content" />
-    <result property="board_Date" column="board_Date" />
-    <result property="board_image" column="board_image" />
-    <result property="board_score" column="board_score" />
-    <result property="board_level" column="board_level" />
-  </resultMap> 
-  
-  <select id="selectAllArticlesList" resultType="boardVO"   >
-    <![CDATA[
-      SELECT board_NO, board_title, board_name, board_Date, board_score
-      from t_board where board_code=#{board_code}
-      ORDER BY board_Date DESC		
-    ]]>
-  </select>
-  
-  <insert id="insertNewArticle"  parameterType="java.util.Map">
+	<resultMap id="boardResult" type="boardVO">
+		<result property="board_NO" column="board_NO" />
+		<result property="member_NO" column="member_NO" />
+		<result property="board_code" column="board_code" />
+		<result property="board_screct" column="board_screct" />
+		<result property="board_title" column="board_title" />
+		<result property="board_name" column="board_name" />
+		<result property="board_content" column="board_content" />
+		<result property="board_Date" column="board_Date" />
+		<result property="board_image" column="board_image" />
+		<result property="board_score" column="board_score" />
+		<result property="board_level" column="board_level" />
+		<result property="rnum" column="rnum" />
+	</resultMap>
+<!-- private int page;
+		private int perPageNum;
+		private int rowStart;
+		private int rowEnd; -->
+			<resultMap id="criteriaResult" type="criteria">
+		<result property="page" column="page" />
+		<result property="perPageNum" column="perPageNum" />
+		<result property="rowStart" column="rowStart" />
+		<result property="rowEnd" column="rowEnd" />
+		<result property="board_code" column="board_code" />
+	</resultMap>
+		
+	<!-- <select id="selectAllArticlesList" resultType="boardVO" > <![CDATA[ 
+		SELECT board_NO, board_title, board_name, board_Date, board_score from t_board 
+		where board_code=#{board_code} ORDER BY board_Date DESC ]]> </select> -->
+
+	<select id="listPage" resultType="BoardVO" parameterType="criteria">
+		<![CDATA[
+		select rnum, board_NO, member_NO, board_code, board_screct, board_title,
+    	board_name, board_content, board_Date, board_image, board_score, board_level
+    from(
+        select
+        rownum as rnum, board_NO, member_NO,
+        board_code, board_screct, board_title,
+        board_name, board_content, board_Date,
+        board_image, board_score, board_level
+        from (
+            select * 
+            from t_board 
+            order by board_date desc)
+        where board_code = #{board_code})where rnum between #{rowStart} and #{rowEnd}
+		]]>
+	</select>
+
+	<insert id="insertNewArticle" parameterType="java.util.Map">
 		<![CDATA[
 			INSERT into t_board(board_NO, member_NO, board_code, board_title, board_name, board_content, board_image)
 			VALUES(seq_member.nextval, #{member_NO}, #{board_code}, #{board_title}, #{board_name}, #{board_content}, #{board_image})
-		]]>  
-</insert>
- <select id="selectNewBoardNO" resultType="int"  >
+		]]>
+	</insert>
+
+	<select id="selectNewBoardNO" resultType="int">
 		<![CDATA[
 			SELECT  max(board_NO) from t_board		
 		]]>
 	</select>
-	<select id="selectArticle" resultType="boardVO"   parameterType="int">
-    <![CDATA[
+
+	<select id="selectArticle" resultType="boardVO"
+		parameterType="int">
+    	<![CDATA[
       SELECT * from t_board
       where board_NO = #{board_NO}		
-    ]]>
-    </select>
-    <delete id="deleteBoard"  parameterType="int">
-    <![CDATA[
+    	]]>
+	</select>
+	<delete id="deleteBoard" parameterType="int">
+    	<![CDATA[
       delete from t_board
       where board_NO = #{board_NO}
-    ]]>      
-  </delete>
-  <update id="updateArticle"  parameterType="java.util.Map">
-			update t_board
-			set board_title=#{board_title},	 
-			board_content=#{board_content}
-			 <if test="board_image!='' and board_image!=null">
-			  , board_image=#{board_image}
-			</if>
-			where board_NO=#{board_NO}
+    	]]>
+	</delete>
+	<update id="updateArticle" parameterType="java.util.Map">
+		update t_board
+		set board_title=#{board_title},
+		board_content=#{board_content}
+		<if test="board_image!='' and board_image!=null">
+			, board_image=#{board_image}
+		</if>
+		where board_NO=#{board_NO}
 	</update>
+
+	<select id="selectAllsearchList" resultType="boardVO" parameterType="java.util.Map">
+		<![CDATA[
+      select rnum, board_NO, member_NO, board_code, board_screct, board_title,
+    	board_name, board_content, board_Date, board_image, board_score, board_level
+    from(
+        select
+        rownum as rnum, board_NO, member_NO,
+        board_code, board_screct, board_title,
+        board_name, board_content, board_Date,
+        board_image, board_score, board_level
+        from (
+            SELECT * from t_board where board_name like'%'||#{search}||'%' and board_code=#{board_code}
+      ORDER BY board_Date DESC)
+        )where rnum between #{rowStart} and #{rowEnd}	]]>
+	</select>
+
+	<select id="selectTitlesearchList" resultType="boardVO" parameterType="java.util.Map">
+		<![CDATA[
+      select rnum, board_NO, member_NO, board_code, board_screct, board_title,
+    	board_name, board_content, board_Date, board_image, board_score, board_level
+    from(
+        select
+        rownum as rnum, board_NO, member_NO,
+        board_code, board_screct, board_title,
+        board_name, board_content, board_Date,
+        board_image, board_score, board_level
+        from (
+            SELECT * from t_board where board_title like'%'||#{search}||'%' and board_code=#{board_code}
+      ORDER BY board_Date DESC)
+        )where rnum between #{rowStart} and #{rowEnd}	]]>
+	</select>
+
+	<select id="BoardCount" resultType="int">
+		<![CDATA[
+			SELECT count(board_NO) from t_board	where board_code=#{board_code}	
+		]]>
+	</select>
 	
-<select id="selectAllsearchList" resultType="boardVO" parameterType="java.util.Map">
+<select id="nameCount" resultType="int" parameterType="java.util.Map">
+		<![CDATA[
+			SELECT count(board_NO) from t_board	where board_name like'%'||#{search}||'%' and board_code=#{board_code}	
+		]]>
+	</select>
+	<select id="titleCount" resultType="int" parameterType="java.util.Map">
+		<![CDATA[
+			SELECT count(board_NO) from t_board	where board_title like'%'||#{search}||'%' and board_code=#{board_code}	
+		]]>
+	</select>
 
-<![CDATA[
-      SELECT * from t_board where board_name like'%'||#{search}||'%' and board_code=#{board_code}
-      ORDER BY board_Date DESC	]]>
-</select>
-
-
-<select id="selectTitlesearchList" resultType="boardVO" parameterType="java.util.Map">
-
-<![CDATA[
-      SELECT * from t_board where board_title like'%'||#{search}||'%' and board_code=#{board_code}
-      ORDER BY board_Date DESC	]]>
-</select>
-
-  </mapper>
+</mapper>

@@ -1,14 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%
-request.setCharacterEncoding("utf-8");
+	request.setCharacterEncoding("utf-8");
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<%
-request.setCharacterEncoding("UTF-8");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,13 +73,14 @@ window.onload = function() {
 		var p_btn_Ok = '#modPetCheck' + ${pet.pet_NO};
 		var p_btn_can = '#cancle' + ${pet.pet_NO};
 		var p_btn_file = '#file' + ${pet.pet_NO};
-		var p_origin_file = 'originFile' + ${pet.pet_NO};
-	
+		var p_origin_file = '#originFile' + ${pet.pet_NO};
+		var p_previewNon='#pet_previewNon' +${pet.pet_NO};
 		$(p_btn_mod).show();
 		$(p_btn_del).show();
     	$(p_btn_Ok).hide();
     	$(p_btn_can).hide();
     	$(p_btn_file).hide();
+    	$(p_previewNon).hide();
     	
 		var pscale1 = '#pet_scale' + ${pet.pet_NO } + '1';
 		var pscale2 = '#pet_scale' + ${pet.pet_NO } + '2';
@@ -144,21 +142,53 @@ window.onload = function() {
 	    $(p_btn_Ok).show();
 	    $(p_btn_can).show();
 	    $(p_btn_file).show();
-	}
+	};
 	
 	function readURL(input, pet_NO) {
 	    if (input.files && input.files[0]) {
 		      var reader = new FileReader();
 		      
+		      //동물 이미지를 가져오면 커버 사진 숨김
+		      var p_cover ="#pet_cover" + pet_NO;
+		      $(p_cover).hide();
+		      
+		      //가져온 동물 이미지 보여줌
+		      var p_previewNon='#pet_previewNon' +pet_NO;
+		      $(p_previewNon).show();
+		      
 		      var p_preview = '#pet_preview' + pet_NO;
+		      
 		      reader.onload = function (e) {
 		        $(p_preview).attr('src', e.target.result);
+		        $(p_previewNon).attr('src', e.target.result);
 		       
 	        }
 	       reader.readAsDataURL(input.files[0]);
 	    }
 	};
+	
+	function delPet(pet_NO) {
+ 	
+		if(!confirm("반려동물 정보를 삭제하시겠습니까?")){
+			alert("취소되었습니다.");
+		} else {
+			
+			location.href="${pageContext.request.contextPath}/mypage/removePet.do?pet_NO="+pet_NO;
+			alert("삭제되었습니다.");
+		}
+	}; 
 </script>
+<c:choose>
+
+	<c:when test="${result == 'pwdChange'}">
+	  <script>
+	  window.onload=function(){
+	      alert("비밀번호가 수정되었습니다.");
+	    }
+	  </script>
+	</c:when>
+	
+</c:choose>
 <title>마이페이지</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/styles.css" />
@@ -168,12 +198,12 @@ window.onload = function() {
 		<div class="container">
 			<div id="box1">
 				<br>
-				<form name="frmMember" merthod="get" action="${contextPath }">
+				<form name="frmMember" method="get" action="${contextPath }">
 					<table>
 						<tr>
-							<td class="title" colspan="2"><p>회원 정보</p> <a
-								href="${pageContext.request.contextPath}/mypage/pwdCheck.do"><input
-									type="button" value="수정하기" class="button"></a></td>
+							<td class="title" colspan="2"><p>회원 정보</p> 
+							<a href="${pageContext.request.contextPath}/mypage/pwdCheckMem.do">
+							<input type="button" value="수정하기" class="button"></a></td>
 						</tr>
 						<tr>
 							<td><br></td>
@@ -200,85 +230,119 @@ window.onload = function() {
 						</tr>
 					</table>
 				</form>
+
 				<br> <br>
-				<%-- <form name="frmPet" merthod="post" action="${contextPath }"
-					enctype="multipart/form-data"> --%>
-					<form method="post" name="modPet" action="${contextPath}/mypage/updatePet.do" enctype="multipart/form-data">
+				
+				<table>
+					<tr>
+						<td class="title" colspan="2"><p>보안 설정</p> 
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<br>
+						</td>
+					</tr>
+					<tr>
+						<td width="7%">비밀번호</td>
+						<td width="21%">
+						<a href="${pageContext.request.contextPath}/mypage/pwdCheckPwd.do">
+						<input type="button" value="암호변경">
+						</a>
+						</td>
+					</tr>
+				</table>
+				
+				<br> <br>
+				
+				<form method="post" name="modPet" action="${contextPath}/mypage/updatePet.do" enctype="multipart/form-data">
 					<table>
 						<tr>
-							<td class="title" colspan="4"><p>반려동물</p> <a
+							<td class="title" colspan="4">
+								<p>반려동물</p> <a
 								href="${pageContext.request.contextPath}/mypage/petAdd.do">
 									<input type="button" value="등록하기" class="button">
-							</a></td>
-								</tr>
-								<c:forEach var="pet" items="${petList}">
+							</a>
+							</td>
+						</tr>
+
+						<tr>
+							<td><br></td>
+						</tr>
+
+
+						<c:choose>
+							<c:when test="${empty petList}">
 								<tr>
-									<td><br></td>
+									<td>등록된 반려동물이 없습니다!</td>
 								</tr>
-								<c:choose>
-									<c:when test="${petList ==null }">
-										<tr>
-											<td>등록된 반려동물이 없습니다!</td>
-									</c:when>
-									<c:otherwise>
-											<tr>
-											<c:if test="${pet.pet_image == null }">
-												<td rowspan="3" id="petimage">
-												<!-- <input type="image" id="pet_preview" src="#" width=120 height=120 value="이미지 없음"/> -->
-												<img src="${contextPath}/downloadPet.do?pet_NO=${pet.pet_NO}&pet_image=${pet.pet_image}" id="pet_preview${pet.pet_NO }" width="120px" />
-												<input type="file" id="file${pet.pet_NO }" name="pet_image"  onchange="readURL(this,${pet.pet_NO });">
-												<%-- <input type="hidden" name="originalFileName" value="${pet.pet_image }" id="originFile${pet.pet_NO }"/> --%>
-												</td>
-											</c:if>
-											<c:if test="${pet.pet_image != null }">
-												<td rowspan="3" id="petimage">
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="pet" items="${petList}">
+									<tr>
+										<c:if test="${pet.pet_image == null }">
+											<td rowspan="3" id="petimage">
+												<img src="${pageContext.request.contextPath}/resources/assets/img/pet_image.png" id="pet_cover${pet.pet_NO }">
+												<img src="${contextPath}/downloadPet.do?pet_NO=${pet.pet_NO}&pet_image=${pet.pet_image}" id="pet_previewNon${pet.pet_NO }" width="120px" />
+												<input type="file" id="file${pet.pet_NO }" name="pet_image" onchange="readURL(this,${pet.pet_NO });">
+											</td>
+										</c:if>
+										
+										<c:if test="${pet.pet_image != null }">
+											<td rowspan="3" id="petimage">
 												<img src="${contextPath}/downloadPet.do?pet_NO=${pet.pet_NO}&pet_image=${pet.pet_image}" id="pet_preview${pet.pet_NO }" width="120px" />
 												<input type="file" id="file${pet.pet_NO }" name="pet_image" onchange="readURL(this,${pet.pet_NO });">
-												<input type="hidden" name="originalFileName" value="${pet.pet_image }" id="originFile${pet.pet_NO }"/>
-												</td>
-											</c:if>	
-													<input type="hidden" name="pet_NO" value="${pet.pet_NO }" readonly>
-													<input type="hidden" name="member_NO" value="${member.member_NO }" readonly>
-												<td>이름 :</td>
-												<td>
-													<input type="text" name="pet_name" id="pet_name${pet.pet_NO }" value="${pet.pet_name }">
-												</td>
-											</tr>
-											
-											<tr>
-												<td>나이 :</td>
-												<td>
-													<input type="number" name="pet_age" id="pet_age${pet.pet_NO }" value="${pet.pet_age }" >살
-												</td>
-											</tr>
-											
-											<tr>
-												<td>크기 :</td>
-												<td>
-													<input type="radio" name="pet_scale${pet.pet_NO }" id="pet_scale${pet.pet_NO }1"
-													value="소형">소형&nbsp;&nbsp;&nbsp; 
-													
-													<input type="radio" name="pet_scale${pet.pet_NO }" id="pet_scale${pet.pet_NO }2" 
-													value="중형">중형&nbsp;&nbsp;&nbsp;
-													
-													<input type="radio" name="pet_scale${pet.pet_NO }" id="pet_scale${pet.pet_NO }3" 
-													value="대형">대형
-												</td>
-												
-												<td>
-													<input type="button" value="수정" id="modPet${pet.pet_NO }" onclick="petMod(${pet.pet_NO})">
-													<input type="button" value="삭제" id="delPet${pet.pet_NO }">
-													<input type="submit" value="확인" id="modPetCheck${pet.pet_NO }">
-													<a href="${pageContext.request.contextPath}/mypage/myPage.do">
-													<input type="button" value="취소" id="cancle${pet.pet_NO }"></a>
-												</td>
-											</tr>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
+												<input type="hidden" name="originalFileName" value="${pet.pet_image }" id="originFile${pet.pet_NO }" />
+											</td>
+										</c:if>
+										
+										
+										
+										<td>이름 :</td>
+										<td>
+											<input type="text" name="pet_name" id="pet_name${pet.pet_NO }" value="${pet.pet_name }" style="border: none;"/>
+											<input type="hidden" name="pet_NO" value="${pet.pet_NO }" readonly>
+											<input type="hidden" name="member_NO" value="${member.member_NO }" readonly>
+										</td>
+									</tr>
+
+									<tr>
+										<td>나이 :</td>
+										<td>
+											<input type="number" name="pet_age" id="pet_age${pet.pet_NO }" value="${pet.pet_age }" style="width: 50px; border: none;">살
+										</td>
+									</tr>
+
+									<tr>
+										<td>크기 :</td>
+										<td>
+											<input type="radio" name="pet_scale${pet.pet_NO }" id="pet_scale${pet.pet_NO }1" value="소형">
+											소형&nbsp;&nbsp;&nbsp;
+
+											<input type="radio" name="pet_scale${pet.pet_NO }" id="pet_scale${pet.pet_NO }2" value="중형">
+											중형&nbsp;&nbsp;&nbsp;
+
+											<input type="radio" name="pet_scale${pet.pet_NO }" id="pet_scale${pet.pet_NO }3" value="대형">
+											대형
+										</td>
+
+										<td>
+											<input type="button" value="수정" id="modPet${pet.pet_NO }" onclick="petMod(${pet.pet_NO})">
+									<!-- 	<a href="${contextPath }/mypage/removePet.do?pet_NO=${pet.pet_NO}"> --!>
+									<!-- 	</a> -->
+											<input type="button" value="삭제" id="delPet${pet.pet_NO }" onclick="delPet(${pet.pet_NO})">
+											<input type="submit" value="확인" id="modPetCheck${pet.pet_NO }">
+											<a href="${pageContext.request.contextPath}/mypage/myPage.do">
+												<input type="button" value="취소" id="cancle${pet.pet_NO }">
+											</a>
+										</td>
+									</tr>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
 					</table>
-							</form>
-				
+				</form>
+
 				<br> <br>
 				<table>
 					<tr>

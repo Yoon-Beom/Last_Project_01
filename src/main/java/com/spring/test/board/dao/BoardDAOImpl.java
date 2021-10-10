@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.test.board.dao.BoardDAO;
 import com.spring.test.board.vo.BoardVO;
+import com.spring.test.board.vo.Criteria;
 
 @Repository("boardDAO")
 public class BoardDAOImpl implements BoardDAO{
@@ -21,12 +22,23 @@ public class BoardDAOImpl implements BoardDAO{
 	BoardVO boardVO;
 	
 	@Override
+	public List List(Criteria cri, String board_code) throws DataAccessException {
+		
+		System.out.println("dao code : "+board_code);
+
+		 cri.setBoard_code(board_code);
+		 List List = sqlSession.selectList("mapper.board.listPage",cri);
+		 System.out.println(List);
+		return List;
+	}
+	
+/*	@Override
 	public List selectAllArticlesList(String board_code) throws DataAccessException {
 		
 		System.out.println("dao code : "+board_code);
 		List<BoardVO> articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList",board_code);
 		return articlesList;
-	}
+	}*/
 	
 	@Override
 	public int insertNewArticle(Map articleMap) throws DataAccessException {
@@ -46,8 +58,6 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		sqlSession.insert("mapper.board.insertNewArticle",articleMap);
 		int board_NO = selectNewBoardNO();
-		System.out.println("insert articleMap : "+articleMap);
-		
 		return board_NO;
 		
 }
@@ -74,10 +84,16 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public List<BoardVO> selectAllsearchList(Map<String, Object> searchMap) {
+	public List selectAllsearchList(Map<String, Object> searchMap, Criteria cri) {
 		System.out.println("search : "+searchMap);
 		String option = (String) searchMap.get("optionContent");
-		List<BoardVO> searchList=null;
+		List searchList=null;
+
+		System.out.println(searchMap.get("cri"));
+		System.out.println(searchMap.get("board_code"));
+		searchMap.put("rowStart", cri.getRowStart());
+		searchMap.put("rowEnd", cri.getRowEnd());
+		System.out.println("DAO : "+cri);
 		if(option.equals("board_name")) {
 			searchList = sqlSession.selectList("mapper.board.selectAllsearchList",searchMap);
 		}else if(option.equals("board_title")) {
@@ -88,6 +104,25 @@ public class BoardDAOImpl implements BoardDAO{
 		System.out.println("searchList : "+searchList);
 		
 		return searchList;
+	}
+
+	@Override
+	public int listCount(String board_code) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("mapper.board.BoardCount", board_code);
+	}
+	
+	@Override
+	public int searchCount(Map<String, Object> searchMap) {
+		int searchCount = 0;
+		
+		String option = (String) searchMap.get("optionContent");
+		if(option.equals("board_name")) {
+			searchCount = sqlSession.selectOne("mapper.board.nameCount",searchMap);
+		}else if(option.equals("board_title")) {
+			searchCount = sqlSession.selectOne("mapper.board.titleCount",searchMap);
+		}
+		return searchCount;
 	}
 	
 }

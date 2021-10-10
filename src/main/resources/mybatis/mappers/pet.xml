@@ -7,49 +7,56 @@
 		<result property="pet_NO" column="pet_NO" />
 		<result property="member_NO" column="member_NO" />
 		<result property="pet_name" column="pet_name" />
-		<result property="pet_age" column="pet_age"/>
+		<result property="pet_age" column="pet_age" />
 		<result property="pet_scale" column="pet_scale" />
 		<result property="pet_image" column="pet_image" />
 		<result property="pet_joinDate" column="pet_joinDate" />
 	</resultMap>
 
 
-	<select id="selectPetList" resultMap="petResult"   >
+	<select id="selectPetList" resultMap="petResult">
     <![CDATA[
      SELECT * from t_pet where member_NO=#{member_NO} order by pet_joinDate DESC
       	
     ]]>
-  </select>
-  
+	</select>
+
 	<insert id="insertPet" parameterType="java.util.Map">
 		<![CDATA[
 			INSERT into t_pet(pet_NO, member_NO, pet_name, pet_age, pet_scale, pet_image)
 			VALUES(seq_pet.nextval, #{member_NO}, #{pet_name}, #{pet_age}, #{pet_scale}, #{pet_image})
 		]]>
 	</insert>
- 
-	<select id="selectPet" resultType="petVO"   parameterType="int">
+
+	<select id="selectPet" resultType="petVO" parameterType="int">
     <![CDATA[
       SELECT * from t_pet
       where pet_NO = #{pet_NO}		
     ]]>
-    </select>
-    	
-		<select id="selectPetNO" resultType="int"  >
+	</select>
+
+	<select id="selectPetNO" resultType="int">
 		<![CDATA[
 			SELECT  max(pet_NO) from t_pet		
 		]]>
 	</select>
+
+
+	<update id="updatePet" parameterType="java.util.Map">
+		update t_pet
+		set pet_name=#{pet_name}, pet_age=#{pet_age},
+		pet_scale=#{pet_scale}
+
+		<if test="pet_image!='' and pet_image!=null">
+			,pet_image=#{pet_image}
+		</if>
+		where pet_NO=#{pet_NO}
+	</update>
 	
 	
-		  <update id="updatePet"  parameterType="java.util.Map">
-	  	update t_pet
-	  	set pet_name=#{pet_name}, pet_age=#{pet_age}, pet_scale=#{pet_scale}
-	  	
-	  	<if test="pet_image!='' and pet_image!=null">
-	  	 ,pet_image=#{pet_image}
-	  	</if>
-	  	where pet_NO=#{pet_NO}
-	  	
-  </update> 
+	<delete id="deletePet" parameterType="String" >
+		<![CDATA[
+			delete from t_pet where pet_NO=#{pet_NO}
+		]]>
+	</delete>
 </mapper>

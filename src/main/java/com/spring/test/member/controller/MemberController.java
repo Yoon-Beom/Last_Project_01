@@ -23,8 +23,10 @@ public interface MemberController {
             HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
-	public ModelAndView pwdCheck(MemberVO member, RedirectAttributes rAttr, HttpServletRequest request,
-			HttpServletResponse response) throws Exception;
+	
+	 public ModelAndView pwdCheckMem(MemberVO member, RedirectAttributes rAttr,
+	 HttpServletRequest request, HttpServletResponse response) throws Exception;
+	
 
 	public ModelAndView updateMember(MemberVO vo, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;
