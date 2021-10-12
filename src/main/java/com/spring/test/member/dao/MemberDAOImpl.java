@@ -53,13 +53,15 @@ public class MemberDAOImpl implements MemberDAO{
 	public MemberVO loginById(MemberVO memberVO) throws DataAccessException{
 		System.out.println("MemberDAOImpl : loginById start");
 		
+		MemberVO vo = sqlSession.selectOne("mapper.member.loginById", memberVO);
+		
 		String id = memberVO.getMember_id();
 		String pwd = memberVO.getMember_pwd();
-
+		String status = memberVO.getMember_status();
 		System.out.println("id : " + id);
 		System.out.println("pwd : " + pwd);
-		MemberVO vo = sqlSession.selectOne("mapper.member.loginById", memberVO);
-
+		System.out.println("status : " + status);
+		
 		System.out.println("MemberDAOImpl : loginById end");
 		return vo;
 	}
@@ -115,9 +117,9 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public int deleteMem(String member_id) throws DataAccessException {
+	public int cancleMem(MemberVO vo) throws DataAccessException {
 		// TODO Auto-generated method stub
-		int result = sqlSession.delete("mapper.member.deleteMem", member_id);
+		int result = sqlSession.delete("mapper.member.cancleMem", vo);
 		return result;
 	}
 }

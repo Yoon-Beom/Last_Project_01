@@ -104,7 +104,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
-	   public int removeMem(String member_id) throws DataAccessException {
-	      return memberDAO.deleteMem(member_id);
+	   public int cancleMem(MemberVO vo) throws DataAccessException {
+	      return memberDAO.cancleMem(vo);
 	   }
 }

@@ -36,7 +36,7 @@ font-size: 30px;
  <form name="cancleMem" method="post"  action="${contextPath}/mypage/checkMem.do">
  <div class="container">
  <div id="box">
-  <h1>회원 탈퇴</h1>
+  <h1>회원정보 수정</h1>
 비밀번호 : <input type="password" name="pwdcheck" id="pwdcheck">&nbsp;&nbsp;
 <input type="submit" value="확인">
 <br><br><br><a href = "${pageContext.request.contextPath}/mypage/myPage.do"><input type="button" value="취소"></a>

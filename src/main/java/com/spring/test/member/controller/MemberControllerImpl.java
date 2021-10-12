@@ -150,7 +150,9 @@ public class MemberControllerImpl implements MemberController {
 			session.removeAttribute("action");
 
 			if(action!= null) {
+			
 				mav.setViewName("redirect:" + action);
+				mav.setViewName("redirect:/main.do");	
 			} else {
 				mav.setViewName("redirect:/main.do");	
 			}
@@ -289,10 +291,11 @@ public class MemberControllerImpl implements MemberController {
 		      ModelAndView mav = new ModelAndView();
 		      if(hash_pwd != null) {
 		         if(pwd.equals(hash_pwd)) {
+		        	 vo.setMember_status("0"); /* 회원 상태를 0으로 바꿈 (탈퇴) */
 		        	 rAttr.addFlashAttribute("result", "memCancle");
 		        	 mav.setViewName("redirect:/mypage/membershipCancle.do");
-		        	 memberService.removeMem(member_id);
-		        	 session.invalidate();
+		        	 memberService.cancleMem(vo);
+		        	 session.invalidate();/* 세션 제거 */
 		        	 
 		         } else {
 		            rAttr.addFlashAttribute("result", "pwdCheckFail");
