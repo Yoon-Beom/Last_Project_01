@@ -85,4 +85,13 @@ public class PageMaker {
 		return uriComponents.toUriString();
 	}
 	
+	public String makePage(int page) {
+		UriComponents uriComponents =
+		UriComponentsBuilder.newInstance()
+						    .queryParam("page", page)
+							.build();
+		   
+		return uriComponents.toUriString();
+	}
+	
 }

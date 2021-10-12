@@ -17,69 +17,72 @@ import com.spring.test.board.vo.Criteria;
 public class BoardDAOImpl implements BoardDAO{
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Autowired
 	BoardVO boardVO;
 	
+	//페이징 O
 	@Override
 	public List List(Criteria cri, String board_code) throws DataAccessException {
-		
-		System.out.println("dao code : "+board_code);
 
-		 cri.setBoard_code(board_code);
-		 List List = sqlSession.selectList("mapper.board.listPage",cri);
-		 System.out.println(List);
-		return List;
+		System.out.println("dao code : "+board_code);
+		cri.setBoard_code(board_code);	
+		List list = sqlSession.selectList("mapper.board.listPage",cri); 
+
+
+		return list;
 	}
-	
-/*	@Override
+
+	/*	@Override 페이징 X
 	public List selectAllArticlesList(String board_code) throws DataAccessException {
-		
+
 		System.out.println("dao code : "+board_code);
 		List<BoardVO> articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList",board_code);
 		return articlesList;
 	}*/
-	
+
 	@Override
-	public int insertNewArticle(Map articleMap) throws DataAccessException {
+	public int insertNewBoard(Map articleMap) throws DataAccessException {
 		System.out.println("insertNewArticlestart");
 
 		String board_code = (String) articleMap.get("board_code");
 		String board_image = (String) articleMap.get("board_image");
 		String board_name = (String) articleMap.get("board_name");
-		
-		String board_title = boardVO.getBoard_title();
-		String board_content=boardVO.getBoard_content();
+
+		String board_title = (String) articleMap.get("board_title");
+		String board_content=(String) articleMap.get("board_content");
 		System.out.println("board_name : "+board_name);
 		System.out.println("board_title : "+board_title);
 		System.out.println("board_content : "+board_content);
 		System.out.println("board_image : "+board_image);
 		System.out.println("board_code : "+board_code);
-		
-		sqlSession.insert("mapper.board.insertNewArticle",articleMap);
+
+		sqlSession.insert("mapper.board.insertNewBoard",articleMap);
 		int board_NO = selectNewBoardNO();
 		return board_NO;
-		
-}
-	
-	@Override
-	public BoardVO selectArticle(int board_NO) throws DataAccessException {
-		return sqlSession.selectOne("mapper.board.selectArticle", board_NO);
+
 	}
+
+	@Override
+	public BoardVO selectBoard(int board_NO) throws DataAccessException {
+		sqlSession.update("mapper.board.selectBoardScore",board_NO);
 	
+		return sqlSession.selectOne("mapper.board.selectBoard", board_NO);
+	}
+
 	private int selectNewBoardNO() throws DataAccessException {
 		return sqlSession.selectOne("mapper.board.selectNewBoardNO");
 	}
 	@Override
-	public void deleteArticle(int board_NO) throws DataAccessException {
+	public void deleteBoard(int board_NO) throws DataAccessException {
 		sqlSession.delete("mapper.comment.deleteBoard", board_NO);
 		sqlSession.delete("mapper.board.deleteBoard", board_NO);
-	
+
 	}
 	@Override
-	public void updateArticle(Map articleMap) throws DataAccessException {
+	public void updateBoard(Map articleMap) throws DataAccessException {
 		System.out.println("DAO : updateArticle START");
-		sqlSession.update("mapper.board.updateArticle", articleMap);
+		sqlSession.update("mapper.board.updateBoard", articleMap);
 		System.out.println("DAO : updateArticle END");
 	}
 
@@ -99,10 +102,10 @@ public class BoardDAOImpl implements BoardDAO{
 		}else if(option.equals("board_title")) {
 			searchList = sqlSession.selectList("mapper.board.selectTitlesearchList",searchMap);
 		}
-		
-		
+
+
 		System.out.println("searchList : "+searchList);
-		
+
 		return searchList;
 	}
 
@@ -111,11 +114,11 @@ public class BoardDAOImpl implements BoardDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("mapper.board.BoardCount", board_code);
 	}
-	
+
 	@Override
 	public int searchCount(Map<String, Object> searchMap) {
 		int searchCount = 0;
-		
+
 		String option = (String) searchMap.get("optionContent");
 		if(option.equals("board_name")) {
 			searchCount = sqlSession.selectOne("mapper.board.nameCount",searchMap);
@@ -124,5 +127,5 @@ public class BoardDAOImpl implements BoardDAO{
 		}
 		return searchCount;
 	}
-	
+
 }

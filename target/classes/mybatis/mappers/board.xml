@@ -46,15 +46,15 @@
         from (
             select * 
             from t_board 
-            order by board_date desc)
+            order by board_level desc, board_date desc)
         where board_code = #{board_code})where rnum between #{rowStart} and #{rowEnd}
 		]]>
 	</select>
 
-	<insert id="insertNewArticle" parameterType="java.util.Map">
+	<insert id="insertNewBoard" parameterType="java.util.Map">
 		<![CDATA[
-			INSERT into t_board(board_NO, member_NO, board_code, board_title, board_name, board_content, board_image)
-			VALUES(seq_member.nextval, #{member_NO}, #{board_code}, #{board_title}, #{board_name}, #{board_content}, #{board_image})
+			INSERT into t_board(board_NO, member_NO, board_code, board_title, board_name, board_content, board_image, board_level)
+			VALUES(seq_board.nextval, #{member_NO}, #{board_code}, #{board_title}, #{board_name}, #{board_content}, #{board_image}, #{board_level})
 		]]>
 	</insert>
 
@@ -64,7 +64,7 @@
 		]]>
 	</select>
 
-	<select id="selectArticle" resultType="boardVO"
+	<select id="selectBoard" resultType="boardVO"
 		parameterType="int">
     	<![CDATA[
       SELECT * from t_board
@@ -77,7 +77,7 @@
       where board_NO = #{board_NO}
     	]]>
 	</delete>
-	<update id="updateArticle" parameterType="java.util.Map">
+	<update id="updateBoard" parameterType="java.util.Map">
 		update t_board
 		set board_title=#{board_title},
 		board_content=#{board_content}
@@ -124,6 +124,11 @@
 			SELECT count(board_NO) from t_board	where board_code=#{board_code}	
 		]]>
 	</select>
+	<update id="selectBoardScore" >
+		<![CDATA[
+			update t_board set board_score = board_score+1 where board_NO = #{board_NO}	
+		]]>
+	</update>
 	
 <select id="nameCount" resultType="int" parameterType="java.util.Map">
 		<![CDATA[

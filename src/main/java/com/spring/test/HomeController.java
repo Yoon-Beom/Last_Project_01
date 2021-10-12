@@ -111,7 +111,7 @@ public class HomeController {
 		return "board/qnaBoardWriting";
 	}
 
-	@RequestMapping(value = "/board/noticeBoard.do", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/board/noticeBoard.do", method = RequestMethod.GET)
 	public String noticeBoard(Locale locale, Model model) {
 
 
@@ -123,6 +123,13 @@ public class HomeController {
 
 
 		return "board/noticeContent";
+	}*/
+	
+	@RequestMapping(value = "/board/noticeBoardWriting.do", method = RequestMethod.GET)
+	public String noticeboardWriting(Locale locale, Model model) {
+
+
+		return "board/noticeBoardWriting";
 	}
 
 /*	@RequestMapping(value = "/mypage/myPage.do", method = RequestMethod.GET)

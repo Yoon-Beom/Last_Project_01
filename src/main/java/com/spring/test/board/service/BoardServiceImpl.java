@@ -34,23 +34,23 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	 @Override
-		public int addNewArticle(Map articleMap) throws Exception {
+		public int addNewBoard(Map articleMap) throws Exception {
 		
-			return boardDAO.insertNewArticle(articleMap);
+			return boardDAO.insertNewBoard(articleMap);
 		}
 	 @Override
-		public BoardVO viewArticle(int board_NO) throws Exception {
-			BoardVO boardVO = boardDAO.selectArticle(board_NO);
+		public BoardVO viewBoard(int board_NO) throws Exception {
+			BoardVO boardVO = boardDAO.selectBoard(board_NO);
 			return boardVO;
 		}
 	 @Override
-		public void removeArticle(int board_NO) throws Exception {
-			boardDAO.deleteArticle(board_NO);
+		public void removeBoard(int board_NO) throws Exception {
+			boardDAO.deleteBoard(board_NO);
 		}
 	 @Override
-		public void modArticle(Map articleMap) throws Exception {
+		public void modBoard(Map articleMap) throws Exception {
 		 System.out.println("service : modArticleStart");
-			boardDAO.updateArticle(articleMap);
+			boardDAO.updateBoard(articleMap);
 		}
 	
 	@Override

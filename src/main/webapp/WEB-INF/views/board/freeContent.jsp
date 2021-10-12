@@ -48,7 +48,7 @@ function fn_remove_article(url,board_NO){
 
 };
 function fn_modify_article(obj){
-	 obj.action="${contextPath}/board/modArticle.do?board_NO="+${board.board_NO};
+	 obj.action="${contextPath}/board/modBoard.do?board_NO="+${board.board_NO};
 	 obj.submit();
 };
 function readURL(input) {
@@ -176,18 +176,16 @@ outline: none;
 
  <div id="boardmain">
  <div id="boardhead">
- 조회수: 99
+ 조회수: ${board.board_score }
    </div>
    <div class="wrting" id="tr_btn">
-   <c:if test="${board.board_name == member.member_name }">
-    <a href = "${pageContext.request.contextPath}/board/removeArticle.do?board_NO=${board.board_NO }">
-  <input type="button" value="삭제하기" id="delete" onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${board.board_NO})">
-  </a>
+   <c:if test="${board.member_NO == member.member_NO ||member.member_id=='admin'}">
+  <input type="button" value="삭제하기" id="delete" onClick="fn_remove_article('${contextPath}/board/removeBoard.do', ${board.board_NO})">
    <input type="button" value="수정하기" id="mod" onClick="javascript:fn_enable(this.form)" >
   
    <input type="submit" value="수정반영하기" id="tr_btn_modify"  onClick="javascript:fn_modify_article(frmBoard)" >
    </c:if>
-   <c:if test="${board.board_name != member.member_name }">
+   <c:if test="${board.member_NO != member.member_NO }">
    <a href ="${pageContext.request.contextPath}/board/freeBoard.do?board_code=1">
   <input type="button" value="뒤로가기" >
   </a>
@@ -232,10 +230,7 @@ outline: none;
   </c:choose>
   </table>
    </form>
-<div style="text-align:'center';">
-<a style="font-size:30px;">♥</a>&nbsp;&nbsp;&nbsp; 
-20
-</div>
+<br><br>
 <form method="post" action="${contextPath}/board/addcomment.do" name="comment" enctype="multipart/form-data">
  <table class="comment">
  <tr>

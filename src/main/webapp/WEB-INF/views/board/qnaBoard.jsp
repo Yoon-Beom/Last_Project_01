@@ -18,7 +18,16 @@
 	    alert("로그인 후 글쓰기가 가능합니다.")
 	    location.href=login+'?action=/board/freeBoardWriting.do';
 	  }
-	}
+	};
+	function show_board_title(boardMember,memberMember,board_NO,memberName){
+		if(memberName=='admin'){
+			location.href='/test/board/qnaContent.do?board_NO='+board_NO;	
+		}else if(boardMember!= memberMember){
+			 alert("해당 게시글 권한이 없습니다.\n"+boardMember+"\n"+memberMember);		
+		}else{
+			location.href='/test/board/qnaContent.do?board_NO='+board_NO;
+		}	
+	};
 </script>
 <style type="text/css">
 
@@ -87,6 +96,7 @@ float: center;
 padding: 6px;
 display: inline;
 }
+
 </style>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css"/>
 </head>
@@ -134,9 +144,10 @@ display: inline;
    
     <tr>
     
-  <td width="7%" id="board_NO" class="td">${board.board_NO }</td>
-  <td width="30%" id="board_title" class="td"> 
-  <a href="${contextPath}/board/qnaContent.do?board_NO=${board.board_NO }" id="title">비밀글 입니다.</a></td>
+  <td width="7%" id="board_NO" class="td">${board.rnum}</td> 
+
+   <td width="30%" id="board_title" class="td" onclick="show_board_title('${board.member_NO}','${member.member_NO}','${ board.board_NO}','${member.member_name }')">
+  <a href="#" id="title" style="text-decoration:none;" >비밀글 입니다.</a></td>
   <td width="14%" id="board_name" class="td">${board.board_name }</td>
   <td width="20%" id="board_Date" class="td">${board.board_Date }</td>
   <td width="14%" id="board_score" class="td">${board.board_score}</td>
@@ -154,27 +165,41 @@ display: inline;
   <c:choose>
   <c:when test="${search == 'AllList'}">
   <c:if test="${pageMaker.prev}">
-    	<li><a href="freeBoard.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&board_code=1">이전</a></li>
+    	<li><a href="qnaBoard.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&board_code=2" style="text-decoration:none;">이전</a></li>
     </c:if> 
 
     <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-    	<li><a href="freeBoard.do${pageMaker.makeQuery(idx)}&board_code=1">${idx}</a></li>
+    	<c:choose>
+			<c:when test="${page==idx }">
+				<li><a href="qnaBoard.do${pageMaker.makeQuery(idx)}&board_code=2" style="color: #F8863E;">${idx}</a></li>
+			</c:when>
+			<c:otherwise>
+				<li><a href="qnaBoard.do${pageMaker.makeQuery(idx)}&board_code=2" style="text-decoration:none;">${idx}</a></li>
+			</c:otherwise>
+		</c:choose>
     </c:forEach>
     
     <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-    	<li><a href="freeBoard.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&board_code=1">다음</a></li>
+    	<li><a href="qnaBoard.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&board_code=2" style="text-decoration:none;">다음</a></li>
     </c:if>
   </c:when>
   <c:otherwise>
   <c:if test="${pageMaker.prev}">
-    	<li><a href="search.do${pageMaker.makeSearch(pageMaker.startPage - 1)}&board_code=1">이전</a></li>
+    	<li><a href="searchQnA.do${pageMaker.makeSearch(pageMaker.startPage - 1)}&board_code=2" style="text-decoration:none;">이전</a></li>
     </c:if>
 
     <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-    	<li><a href="search.do${pageMaker.makeSearch(idx)}&board_code=1">${idx}</a></li>
+    	  	<c:choose>
+			<c:when test="${page==idx }">
+				<li><a href="searchQnA.do${pageMaker.makeSearch(idx)}&board_code=2" style="color: #F8863E;">${idx}</a></li>
+			</c:when>
+			<c:otherwise>
+				<li><a href="searchQnA.do${pageMaker.makeSearch(idx)}&board_code=2" style="text-decoration:none;">${idx}</a></li>
+			</c:otherwise>
+		</c:choose>
     </c:forEach>
     <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-    	<li><a href="search.do${pageMaker.makeSearch(pageMaker.endPage + 1)}&board_code=1">다음</a></li>
+    	<li><a href="searchQnA.do${pageMaker.makeSearch(pageMaker.endPage + 1)}&board_code=2" style="text-decoration:none;">다음</a></li>
     </c:if>
   </c:otherwise>
   </c:choose>    
