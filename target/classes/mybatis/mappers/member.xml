@@ -14,6 +14,7 @@
 		<result property="member_gender" column="member_gender" />
 		<result property="member_address" column="member_address" />
 		<result property="member_status" column="member_status" />
+		<result property="member_code" column="member_code" />
 		<result property="member_joinDate" column="member_joinDate" />
 	</resultMap>
 	
@@ -29,10 +30,10 @@
 		<![CDATA[		
 			insert into t_member(member_NO, member_id, member_pwd, member_salt,
 				member_name, member_birth, member_phone, member_email,
-				member_gender, member_address) 
+				member_gender, member_address, member_code) 
 				values(seq_member.nextval, #{member_id}, #{member_pwd}, #{member_salt},
 				#{member_name}, #{member_birth}, #{member_phone}, #{member_email},
-				#{member_gender}, #{member_address})
+				#{member_gender}, #{member_address}, #{member_code})
 		]]>
 	</insert>
 	

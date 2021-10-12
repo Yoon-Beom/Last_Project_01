@@ -76,7 +76,7 @@ public class ShopControllerImpl implements ShopController{
 		member.setMember_birth(yy + "-" + mm + "-" + dd);
 		member.setMember_phone(member_phone1 + "-" + member_phone2 + "-" + member_phone3);
 		member.setMember_address(member_post + "," + member_addr + "," + member_detailAddr);
-
+		member.setMember_code("2");
 		System.out.println("---------- member VO ----------");
 		System.out.println("member_id : " + member.getMember_id());
 		System.out.println("member_pwd : " + member.getMember_pwd());
@@ -107,7 +107,6 @@ public class ShopControllerImpl implements ShopController{
 
 		double latitude = bodyJson.getDocuments().get(0).getX();
 		double longitude = bodyJson.getDocuments().get(0).getY();
-		
 		shop.setMember_NO(member_NO);
 		shop.setShop_address(shop_post + "," + shop_addr + "," + shop_detailAddr);
 		shop.setShop_latitude(latitude);

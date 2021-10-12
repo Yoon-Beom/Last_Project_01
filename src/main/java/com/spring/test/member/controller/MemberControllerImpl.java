@@ -89,10 +89,10 @@ public class MemberControllerImpl implements MemberController {
 		String member_post = request.getParameter("member_post");
 		String member_addr = request.getParameter("member_addr");
 		String member_detailAddr = request.getParameter("member_detailAddr");
-		
 		member.setMember_birth(yy + "-" + mm + "-" + dd);
 		member.setMember_phone(member_phone1 + "-" + member_phone2 + "-" + member_phone3);
 		member.setMember_address(member_post + "," + member_addr + "," + member_detailAddr);
+		member.setMember_code("1");
 		System.out.println("---------- member VO ----------");
 		System.out.println("member_id : " + member.getMember_id());
 		System.out.println("member_pwd : " + member.getMember_pwd());

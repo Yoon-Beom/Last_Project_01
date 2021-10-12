@@ -369,8 +369,8 @@ input {
 					</select>일
 					
 					<div class="text1">성별</div>
-					<input type="radio" class="gender" name="member_gender" name="남성">남성
-					<input type="radio" class="gender" name="member_gender" name="여성" style="margin-left: 100px;">여성
+					<input type="radio" class="gender" name="member_gender" value="m">남성
+					<input type="radio" class="gender" name="member_gender" value="f" style="margin-left: 100px;">여성
 					
 					<div class="text1">
 						연락처&nbsp;&nbsp;
