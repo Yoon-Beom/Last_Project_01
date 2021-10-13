@@ -100,7 +100,20 @@ $(function() {
 		for (var d = 1; d <= 31; d++) {
 			membership.member_dd.add(new Option((d) + '일'));
 		}
-
+		for(var h=00; h<=23; h++){
+			if(h<10){
+			membership.open_time.add(new Option('0'+(h) + ':00'));
+			membership.open_time.add(new Option('0'+(h) + ':30'));
+			membership.close_time.add(new Option('0'+(h) + ':00'));
+			membership.close_time.add(new Option('0'+(h) + ':30'));
+			}else{
+			membership.open_time.add(new Option((h) + ':00'));	
+			membership.open_time.add(new Option((h) + ':30'));
+			membership.close_time.add(new Option((h) + ':00'));
+			membership.close_time.add(new Option((h) + ':30'));
+			}
+		}
+			
 	};
 	
 	// 회원 주소 찾기
@@ -147,7 +160,7 @@ $(function() {
 	            document.membership.shop_detailAddr.focus();
 	        }
 	    }).open();
-	}
+	};
 	
 	function inputIdChk() {
 		document.membership.idDuplication.value="idUncheck";
@@ -203,6 +216,33 @@ $(function() {
 		} else if(frm.member_detailAddr.value == "") {
 			alert("상세 주소를 입력하세요.");
 			frm.member_post.focus();	
+		} else if(frm.shop_name.value == "") {
+			alert("매장명을 입력하세요.");
+			frm.shop_name.focus();	
+		} else if(frm.shop_ceo.value == "") {
+			alert("대표자 명을 입력하세요.");
+			frm.shop_ceo.focus();	
+		} else if(frm.shop_post.value == "" || frm.shop_addr.value == "") {
+			alert("매장 주소를 입력하세요.");
+			frm.shop_post.focus();			
+		} else if(frm.shop_detailAddr.value == "") {
+			alert("매장 상세 주소를 입력하세요.");
+			frm.shop_post.focus();	
+		} else if(frm.open_time.value == "") {
+			alert("오픈시간을 입력하세요.");
+			frm.open_time.focus();	
+		} else if(frm.close_time.value == "") {
+			alert("마감시간을 입력하세요.");
+			frm.close_time.focus();	
+		} else if(frm.shop_phone1.value == "" || frm.shop_phone2.value == "" || frm.shop_phone3.value == "") {
+			alert("매장전화를 입력하세요.");
+			frm.shop_phone1.value = null;
+			frm.shop_phone2.value = null;
+			frm.shop_phone3.value = null;
+			frm.shop_phone1.focus();
+		} else if(frm.shop_code.value == "") {
+			alert("사업자 등록번호를 입력하세요.");
+			frm.shop_code.focus();	
 		} else {
 			frm.action = '${contextPath}/shop/addShop.do';
 			frm.method = 'post';
@@ -264,6 +304,9 @@ $(function() {
 	}
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" ></script>
+
+<!-- ㅡ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+
 <style type="text/css">
 img {
 	width: 50px;
@@ -325,6 +368,8 @@ input {
 	top: 2px;
 }
 
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+
 </style>
 </head>
 <body>
@@ -362,9 +407,11 @@ input {
 					<div class="text1">생년월일</div>
 					<select name="member_yy">
 						<option value="#">년도 선택</option>
-					</select>년 <select name="member_mm">
+					</select>년 
+					<select name="member_mm">
 						<option value="#">월 선택</option>
-					</select>월 <select name="member_dd">
+					</select>월 
+					<select name="member_dd">
 						<option value="#">일 선택</option>
 					</select>일
 					
@@ -405,6 +452,16 @@ input {
 					<input name="shop_post" type="text" placeholder="우편번호" readonly onclick="shopFindAddr()"> <br>
 					<input name="shop_addr" type="text" placeholder="주소" readonly> <br> 
 					<input name="shop_detailAddr" type="text" placeholder="상세주소"><br>
+					
+					
+					<div class="text1">운영시간</div>
+					<select name="open_time">
+						<option value="#">오픈시간 선택</option>
+					</select>
+					<select name="close_time">
+						<option value="#">마감시간 선택</option>
+					</select>		
+					
 					
 					<div class="text1">매장 전화</div>
 					<input type="text" class="text2" name="shop_phone1">&nbsp;&nbsp;-&nbsp;&nbsp;
