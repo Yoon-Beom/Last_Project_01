@@ -18,6 +18,7 @@ import com.spring.test.kakao.KakaoGeoRes;
 import com.spring.test.member.service.MemberService;
 import com.spring.test.member.vo.MemberVO;
 import com.spring.test.shop.service.ShopService;
+import com.spring.test.shop.vo.ShopDetailVO;
 import com.spring.test.shop.vo.ShopVO;
 
 @Controller("shopController")
@@ -31,6 +32,9 @@ public class ShopControllerImpl implements ShopController{
 	MemberVO memberVO;
 	@Autowired
 	ShopVO shopVO;
+	
+	@Autowired
+	ShopDetailVO shopDetailVO;
 	
 	@Override
 	@RequestMapping(value = "map.do", method = RequestMethod.GET)
@@ -51,7 +55,8 @@ public class ShopControllerImpl implements ShopController{
 	
 	@Override
 	@RequestMapping(value="/shop/addShop.do", method = RequestMethod.POST)
-	public ModelAndView addShop(@ModelAttribute("member") MemberVO member, @ModelAttribute("shop") ShopVO shop, 
+	public ModelAndView addShop(@ModelAttribute("member") MemberVO member, @ModelAttribute("shop") ShopVO shop,
+			 @ModelAttribute("shopDetail") ShopDetailVO shopDetail,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("ShopControllerImpl : addShop start");
 
@@ -60,6 +65,7 @@ public class ShopControllerImpl implements ShopController{
 
 		int member_result = 0;
 		int shop_result = 0;
+		int shopDetail_result = 0;
 
 		String yy = request.getParameter("member_yy");
 		String mm = request.getParameter("member_mm");
@@ -92,11 +98,7 @@ public class ShopControllerImpl implements ShopController{
 
 		member_result = memberService.addMember(member);
 		int member_NO = memberService.selectMemberNoById(member.getMember_id());
-
-		String shop_phone1 = request.getParameter("shop_phone1");
-		String shop_phone2 = request.getParameter("shop_phone2");
-		String shop_phone3 = request.getParameter("shop_phone3");
-
+		
 		String shop_post = request.getParameter("shop_post");
 		String shop_addr = request.getParameter("shop_addr");
 		String shop_detailAddr = request.getParameter("shop_detailAddr");
@@ -123,7 +125,22 @@ public class ShopControllerImpl implements ShopController{
 		System.out.println("-------------------------------");
 
 		shop_result = shopService.insertShop(shop);
+		int shop_NO = shopService.selectShop_No(shop.getMember_NO());
 		
+		String shop_phone1 = request.getParameter("shop_phone1");
+		String shop_phone2 = request.getParameter("shop_phone2");
+		String shop_phone3 = request.getParameter("shop_phone3");
+		String shop_ceo = request.getParameter("shop_ceo");
+		String open = request.getParameter("open_time");
+		String close = request.getParameter("close_time");
+		
+		shopDetail.setShop_NO(shop_NO);
+		shopDetail.setShop_phone(shop_phone1 + "-" + shop_phone2 + "-" + shop_phone3);
+		shopDetail.setShop_ceo(shop_ceo);
+		shopDetail.setShop_open_time(open);
+		shopDetail.setShop_close_time(close);
+		
+		shopDetail_result = shopService.insertShopDetail(shopDetail);
 		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
 
 		System.out.println("ShopControllerImpl : addShop end");

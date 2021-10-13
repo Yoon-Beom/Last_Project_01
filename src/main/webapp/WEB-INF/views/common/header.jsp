@@ -46,9 +46,14 @@
 						href="${pageContext.request.contextPath}/map.do">내주변</a></li>
 					<c:choose>
 						<c:when test="${isLogOn == true  && member!= null}">
+						<c:if test="${member.member_code =='1' }">
 							<li class="nav-item"><a class="nav-link"
 								href="${pageContext.request.contextPath}/mypage/myPage.do">마이페이지</a></li>
-
+						</c:if>	
+						<c:if test="${member.member_code =='2' }">
+							<li class="nav-item"><a class="nav-link"
+								href="${pageContext.request.contextPath}/shop/shopMyPage.do">매장페이지</a></li>
+						</c:if>							
 						</c:when>
 						<c:otherwise>
 							<li class="nav-item"><a class="nav-link"

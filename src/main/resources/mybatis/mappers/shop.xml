@@ -13,11 +13,28 @@
 		<result property="shop_joinDate" column="shop_joinDate"/>
 	</resultMap>
 	
-	<select id="selectAllShopList" resultMap="shopResult"> 
-		<![CDATA[
-			select * from t_shop order by shop_joinDate desc
-		]]>
-	</select>
+	<resultMap type="shopDetailVO" id="shopDetailResult">
+		<result property="shopDetail_NO" column="shopDetail_NO"/>
+		<result property="shop_NO" column="shop_NO"/>
+		<result property="shop_ceo" column="shop_ceo"/>
+		<result property="shop_phone" column="shop_phone"/>
+		<result property="shop_open_time" column="shop_open_time"/>
+		<result property="shop_close_time" column="shop_close_time"/>
+		<result property="shop_introduce" column="shop_introduce"/>
+		<result property="shop_starScore" column="shop_starScore"/>
+		<result property="shop_imageMain" column="shop_imageMain"/>
+		<result property="shop_imageSub" column="shop_imageSub"/>
+		<result property="shop_heartScore" column="shop_heartScore"/>
+		<result property="shop_reserveScore" column="shop_reserveScore"/>
+		<result property="shop_Detail_joinDate" column="shop_Detail_joinDate"/>
+	</resultMap>
+	
+ <select id="selectAllShopList" resultMap="shopResult"> 
+      <![CDATA[
+         select * from t_shop order by shop_joinDate desc
+      ]]>
+   </select>
+
 	
 	<insert id="insertShop" parameterType="shopVO">
 		<![CDATA[
@@ -30,9 +47,36 @@
 		]]>
 	</insert>
 	
+		<insert id="insertShopDetail" parameterType="shopDetailVO">
+		<![CDATA[
+			insert into t_shopDetail(shopDetail_NO, shop_NO, shop_ceo,
+				shop_phone, shop_open_time, shop_close_time)
+				values(seq_shopDetail.nextval, #{shop_NO}, #{shop_ceo},
+			    #{shop_phone}, #{shop_open_time}, #{shop_close_time})
+		]]>
+	</insert>
+	
+	<!-- 		<insert id="insertShopDetail" parameterType="shopDetailVO">
+		<![CDATA[
+			insert into t_shopDetail(shopDetail_NO, shop_NO, shop_ceo,
+				shop_phone, shop_open_time, shop_close_time, shop_introduce,
+				shop_starScore, shop_imageMain, shop_imageSub, shop_heartScore,
+				shop_reserveScore)
+				values(seq_shopDetail.nextval, #{shop_NO}, #{shop_ceo},
+			    #{shop_phone}, #{shop_open_time}, #{shop_close_time},
+			    #{shop_introduce}, #{shop_starScore}, #{shop_imageMain},
+			    #{shop_imageSub}, #{shop_heartScore}, #{shop_reserveScore})
+		]]>
+	</insert> -->
 	<delete id="deleteShop" parameterType="String">
 		<![CDATA[
 			delete from t_shop where shop_name=#{shop_name}
 		]]>
 	</delete>
+	
+	<select id="selectShop_NO" resultType="int" parameterType="String">
+		<![CDATA[
+			select shop_NO from t_shop where member_NO=#{member_NO}
+		]]>
+	</select>
 </mapper>
