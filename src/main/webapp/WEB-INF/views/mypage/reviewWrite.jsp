@@ -121,28 +121,28 @@ text-shadow: 0 0 0 #f0f0f0; /* 새 이모지 색상 부여 */
   <tr id="boardmenu">
   <td width="20%" class="td">제목</td>
   <td id="board_title" width="80%" class="td" style="background-color: white;">
-  <input type="text" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;font-size: 20px;" ></input></td>
+  <input type="text" name="review_title" style="resize:none;width: 100%;height:100%;padding: 0;border-width: 0;font-size: 20px;" ></input></td>
   </tr>
     <tr> 
   <td colspan="2" width="85%" class="td">내용</td>
   </tr>
    <tr> 
- <td colspan="2" id="board_content" class="td"><textarea rows="13" cols="100%" style="resize:none;" ></textarea></td>
+ <td colspan="2" id="board_content" class="td"><textarea name="review_content" rows="13" cols="100%" style="resize:none;" ></textarea></td>
   </tr>
   <tr>
   <td width="10%" class="td">이미지 첨부</td>
-  <td colspan="2" width="85%" class="td"><input type="file" class="file">
+  <td colspan="2" width="85%" class="td"><input type="file" class="file" name="review_image">
  
   </table>
   <br>
 <form name="myform" id="myform" method="post" action="./save">
     <fieldset>
     
-        <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
-        <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
-        <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
-        <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
-        <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+        <input type="radio" name="review_starScore" value="5" id="rate1"><label for="rate1">⭐</label>
+        <input type="radio" name="review_starScore" value="4" id="rate2"><label for="rate2">⭐</label>
+        <input type="radio" name="review_starScore" value="3" id="rate3"><label for="rate3">⭐</label>
+        <input type="radio" name="review_starScore" value="2" id="rate4"><label for="rate4">⭐</label>
+        <input type="radio" name="review_starScore" value="1" id="rate5"><label for="rate5">⭐</label>
         별점 
     </fieldset>
 </form>

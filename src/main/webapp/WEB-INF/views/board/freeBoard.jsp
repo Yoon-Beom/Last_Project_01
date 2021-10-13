@@ -14,13 +14,12 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <meta charset="UTF-8">
 <title>자유게시판</title>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script> 
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
 	function fn_articleForm(isLogOn, freeBoardWriting, login) {
 		if (isLogOn != '' && isLogOn != 'false') {
 			location.href = freeBoardWriting;
-		}else {
-		
+		} else {
 			alert("로그인 후 글쓰기가 가능합니다.")
 			location.href = login + '?action=/board/freeBoardWriting.do';
 		}
@@ -102,6 +101,7 @@ request.setCharacterEncoding("UTF-8");
 	padding: 6px;
 	display: inline;
 }
+
 </style>
 <link rel="stylesheet" type="text/css"
 	href="${contextPath}/resources/css/styles.css" />
@@ -129,9 +129,10 @@ request.setCharacterEncoding("UTF-8");
 					</form>
 				</div>
 
-				<a href="javascript:fn_articleForm('${isLogOn}','${contextPath}/board/freeBoardWriting.do', 
+				<a
+					href="javascript:fn_articleForm('${isLogOn}','${contextPath}/board/freeBoardWriting.do', 
                                                     '${contextPath}/login.do')">
-                                                    
+
 					<input type="button" value="글쓰기" id="wrting">
 
 				</a> <br>
@@ -145,23 +146,30 @@ request.setCharacterEncoding("UTF-8");
 							<td width="14%" class="td">조회수</td>
 
 						</tr>
+						<c:choose>
+							<c:when test="${empty list}">
+								<tr>
+									<td colspan="5"><h3>작성된 글이 없습니다.</h3></td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="board" items="${list}">
 
-						<c:forEach var="board" items="${list}">
+									<tr>
 
-							<tr>
-
-								<td width="7%" name="board_NO" class="td">${board.rnum}</td>
-								<td width="30%" name="board_title" class="td"><a
-									href="${contextPath}/board/freeContent.do?board_NO=${board.board_NO}"
-									id="title" style="text-decoration: none;">${board.board_title}</a></td>
-								<td width="14%" name="board_name" class="td">${board.board_name}</td>
-								<td width="20%" name="board_Date" class="td">${board.board_Date}</td>
-								<td width="14%" name="board_score" class="td">${board.board_score}</td>
+										<td width="7%" name="board_NO" class="td">${board.rnum}</td>
+										<td width="30%" name="board_title" class="td"><a
+											href="${contextPath}/board/freeContent.do?board_NO=${board.board_NO}"
+											id="title" style="text-decoration: none;">${board.board_title}</a></td>
+										<td width="14%" name="board_name" class="td">${board.board_name}</td>
+										<td width="20%" name="board_Date" class="td">${board.board_Date}</td>
+										<td width="14%" name="board_score" class="td">${board.board_score}</td>
 
 
-							</tr>
-						</c:forEach>
-
+									</tr>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
 					</table>
 				</form>
 				<div id="page">
@@ -170,45 +178,58 @@ request.setCharacterEncoding("UTF-8");
 							<c:when test="${search == 'AllList'}">
 								<c:if test="${pageMaker.prev}">
 									<li><a
-										href="freeBoard.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&board_code=1" style="text-decoration:none;">이전</a></li>
+										href="freeBoard.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&board_code=1"
+										style="text-decoration: none;">이전</a></li>
 								</c:if>
 
 								<c:forEach begin="${pageMaker.startPage}"
 									end="${pageMaker.endPage}" var="idx">
 									<c:choose>
 										<c:when test="${page==idx }">
-											<li><a href="freeBoard.do${pageMaker.makeQuery(idx)}&board_code=1" style="color: #F8863E;">${idx}</a></li>
+											<li><a
+												href="freeBoard.do${pageMaker.makeQuery(idx)}&board_code=1"
+												style="color: #F8863E;">${idx}</a></li>
 										</c:when>
 										<c:otherwise>
-											<li><a href="freeBoard.do${pageMaker.makeQuery(idx)}&board_code=1" style="text-decoration:none;">${idx}</a></li>
+											<li><a
+												href="freeBoard.do${pageMaker.makeQuery(idx)}&board_code=1"
+												style="text-decoration: none;">${idx}</a></li>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
 
 								<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 									<li><a
-										href="freeBoard.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&board_code=1" style="text-decoration:none;">다음</a></li>
+										href="freeBoard.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&board_code=1"
+										style="text-decoration: none;">다음</a></li>
 								</c:if>
 							</c:when>
 							<c:otherwise>
 								<c:if test="${pageMaker.prev}">
-									<li><a href="search.do${pageMaker.makeSearch(pageMaker.startPage - 1)}&board_code=1" style="text-decoration:none;">이전</a></li>
+									<li><a
+										href="search.do${pageMaker.makeSearch(pageMaker.startPage - 1)}&board_code=1"
+										style="text-decoration: none;">이전</a></li>
 								</c:if>
 
 								<c:forEach begin="${pageMaker.startPage}"
 									end="${pageMaker.endPage}" var="idx">
-										<c:choose>
+									<c:choose>
 										<c:when test="${page==idx }">
-											<li><a href="search.do${pageMaker.makeSearch(idx)}&board_code=1" style="color: #F8863E;">${idx}</a></li>
+											<li><a
+												href="search.do${pageMaker.makeSearch(idx)}&board_code=1"
+												style="color: #F8863E;">${idx}</a></li>
 										</c:when>
 										<c:otherwise>
-											<li><a href="search.do${pageMaker.makeSearch(idx)}&board_code=1" style="text-decoration:none;">${idx}</a></li>
+											<li><a
+												href="search.do${pageMaker.makeSearch(idx)}&board_code=1"
+												style="text-decoration: none;">${idx}</a></li>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
 								<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 									<li><a
-										href="search.do${pageMaker.makeSearch(pageMaker.endPage + 1)}&board_code=1" style="text-decoration:none;">다음</a></li>
+										href="search.do${pageMaker.makeSearch(pageMaker.endPage + 1)}&board_code=1"
+										style="text-decoration: none;">다음</a></li>
 								</c:if>
 							</c:otherwise>
 						</c:choose>

@@ -134,7 +134,7 @@ display: inline;
   <td width="14%" class="td">조회수</td>
   </tr>
  <c:choose>
- <c:when test="${list==null }">
+ <c:when test="${empty list}">
  <tr>
  <td colspan="5"><h3>작성된 글이 없습니다.</h3></td>
  </tr>

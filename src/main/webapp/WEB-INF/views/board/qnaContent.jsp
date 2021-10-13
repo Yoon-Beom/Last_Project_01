@@ -63,6 +63,7 @@ function readURL(input) {
 };
 function addComment(obj){
 	if(${member.member_NO==null}){
+		 alert("로그인후 작성 가능합니다.");
 		 location.href="${contextPath}/login.do";
 	 }else{
 	document.getElementById("comment_name").disabled=false;

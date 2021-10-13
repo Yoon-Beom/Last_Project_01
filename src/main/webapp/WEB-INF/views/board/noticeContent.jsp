@@ -62,6 +62,7 @@ function readURL(input) {
 };
  function addComment(obj){
 	 if(${member.member_NO==null}){
+		 alert("로그인후 작성 가능합니다.");
 		 location.href="${contextPath}/login.do";
 	 }else{
 	document.getElementById("comment_name").disabled=false;
@@ -184,7 +185,7 @@ outline: none;
    <input type="button" value="수정하기" id="mod" onClick="javascript:fn_enable(this.form)" > 
    <input type="submit" value="수정반영하기" id="tr_btn_modify"  onClick="javascript:fn_modify_article(frmBoard)" >
    </c:if>
-   <c:if test="${board.board_name != member.member_name }">
+   <c:if test="${board.board_name != member.member_name || member.member_id=='admin'}">
    <a href ="${pageContext.request.contextPath}/board/noticeBoard.do?board_code=3">
   <input type="button" value="뒤로가기" >
   </a>
