@@ -27,6 +27,7 @@
 		<result property="rowStart" column="rowStart" />
 		<result property="rowEnd" column="rowEnd" />
 		<result property="board_code" column="board_code" />
+		<result property="shop_NO" column="board_code" />
 	</resultMap>
 		
 	<!-- <select id="selectAllArticlesList" resultType="boardVO" > <![CDATA[ 

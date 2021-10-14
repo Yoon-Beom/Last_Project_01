@@ -11,5 +11,7 @@
 		<typeAlias type="com.spring.test.comment.vo.CommentVO" alias="commentVO" />
 		<typeAlias type="com.spring.test.pet.vo.PetVO" alias="petVO" />
 		<typeAlias type="com.spring.test.board.vo.Criteria" alias="criteria" />
+		<typeAlias type="com.spring.test.review.vo.ReviewVO" alias="reviewVO" />
+		<typeAlias type="com.spring.test.review.vo.Criteria1" alias="criteria1" />
 	</typeAliases>
 </configuration>

@@ -170,13 +170,13 @@ public class HomeController {
 		return "mypage/petAdd";
 	}
 	
-	@RequestMapping(value = "/mypage/review.do", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/mypage/review.do", method = RequestMethod.GET)
 	public String review(Locale locale, Model model) {
 
 		return "mypage/review";
-	}
+	}*/
 	
-	@RequestMapping(value = "/mypage/reviewWrite.do", method = RequestMethod.GET)
+	@RequestMapping(value = "mypage/reviewWrite.do", method = RequestMethod.GET)
 	public String reviewWrite(Locale locale, Model model) {
 
 

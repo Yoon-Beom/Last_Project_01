@@ -1,14 +1,18 @@
-package com.spring.test.board.vo;
+package com.spring.test.review.vo;
 
 import org.springframework.stereotype.Component;
 
-@Component("criteria")
-public class Criteria {		
+
+@Component("criteria1")
+public class Criteria1 {		
 		private int page;
 		private int perPageNum;
 		private int rowStart;
 		private int rowEnd;
 		private String board_code;
+		private int shop_NO;
+		private int member_NO;
+		
 		public int getMember_NO() {
 			return member_NO;
 		}
@@ -16,10 +20,6 @@ public class Criteria {
 		public void setMember_NO(int member_NO) {
 			this.member_NO = member_NO;
 		}
-
-
-		private int shop_NO;
-		private int member_NO;
 		
 		public int getShop_NO() {
 			return shop_NO;
@@ -37,7 +37,7 @@ public class Criteria {
 			this.board_code = board_code;
 		}
 
-		public Criteria() {
+		public Criteria1() {
 			this.page = 1;
 			this.perPageNum = 10;
 		}

@@ -6,9 +6,6 @@ request.setCharacterEncoding("utf-8");
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-<%
-request.setCharacterEncoding("UTF-8");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +20,8 @@ request.setCharacterEncoding("UTF-8");
 			alert("로그인 후 글쓰기가 가능합니다.")
 			location.href = login + '?action=/board/freeBoardWriting.do';
 		}
-	}
+	};
+
 </script>
 
 <style type="text/css">
@@ -80,11 +78,7 @@ request.setCharacterEncoding("UTF-8");
 	border-collapse: collapse;
 }
 
-#page {
-	font-size: 25px;
-	padding: 10px;
-	padding-top: 20px;
-}
+
 
 #boardmenu {
 	height: 50px;
@@ -94,15 +88,19 @@ request.setCharacterEncoding("UTF-8");
 #title {
 	color: inherit;
 }
-
+#page {
+	font-size: 25px;
+	padding: 10px;
+	padding-top: 20px;
+}
 #page li {
 	list-style: none;
 	float: center;
 	padding: 6px;
 	display: inline;
 }
-
 </style>
+
 <link rel="stylesheet" type="text/css"
 	href="${contextPath}/resources/css/styles.css" />
 </head>

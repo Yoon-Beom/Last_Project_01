@@ -79,11 +79,11 @@ li {
 </head>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
-	// 가로스크롤 이동 함수 (이동할 거리만큼의 매개변수는 버튼에서 함수 호출 시 지정)
-	function moveScroll(x, y) {
-	   var table = document.getElementById('table-box');
-	    table.scrollBy(x, y);
-	};
+   // 가로스크롤 이동 함수 (이동할 거리만큼의 매개변수는 버튼에서 함수 호출 시 지정)
+   function moveScroll(x, y) {
+      var table = document.getElementById('table-box');
+       table.scrollBy(x, y);
+   };
 
 /* function calDis(){
    var test = map.getCenter().toString().slice(0, -1).slice(1),
@@ -109,105 +109,105 @@ li {
 
 } */
 
-	// 두 좌표간의 거리 계산 함수
-	function calculateDistance(lat1, lon1, lat2, lon2) {
-		//Radius of the earth in:  1.609344 miles,  6371 km  | var R = (6371 / 1.609344);
-		var R = 6371; 
-		var dLat = toRad(lat2-lat1);
-		var dLon = toRad(lon2-lon1); 
-		var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-		Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
-		Math.sin(dLon/2) * Math.sin(dLon/2); 
-		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-		var d = R * c;
-		return d;
-	}
+   // 두 좌표간의 거리 계산 함수
+   function calculateDistance(lat1, lon1, lat2, lon2) {
+      //Radius of the earth in:  1.609344 miles,  6371 km  | var R = (6371 / 1.609344);
+      var R = 6371; 
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1); 
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+   }
 
-	function toRad(Value) {
-		return Value * Math.PI / 180;
-	}
+   function toRad(Value) {
+      return Value * Math.PI / 180;
+   }
 
-	// 현 위치에서 재검색 버튼 함수
-	function reSearchShop(){ 
-		// 내 위치의 위도, 경도 
-		var myLC = map.getCenter().toString().slice(0,-1).slice(1).split(', '),
-		myLCLat = myLC[0],
-		myLCLon   = myLC[1];
-		   
-		// 밑에 forEach 문의 조건을 만족할 시 push 할 데이터들의 배열
-		const arr = [];
-		<c:forEach var="shop" items="${shopList}">
-			// 현재 내 위치와 매장간의 거리를 담을 객체
-			var calDis = calculateDistance(myLCLat,myLCLon,${shop.shop_latitude},${shop.shop_longitude});
-			
-			//
-			if(calDis < 1.0) {
-				var mCal = Math.round(calDis * 1000);
-				document.getElementById(${shop.shop_NO}+'List').innerText='거리 : ' + mCal +'m';
-			} else {
-				document.getElementById(${shop.shop_NO}+'List').innerText='거리 : ' + calDis.toFixed(1) +'km';
-			}
-			
-			// 만약 거리가 5키로 이내일 경우,
-			if(calDis <= 5.0) {
-				// 배열에 담습니다   ':' <- 구분자
-				arr.push('${shop.shop_NO} : ${shop.shop_name} : ${shop.shop_latitude} : ${shop.shop_longitude} : ${shop.shop_address} : '+calDis);
-				// 추천 매장 테이블 정보 변경
-				
-			}
-		</c:forEach>
-		 
-		// 만약 배열이 비어있다면,
-		if(arr.length === 0){
-			
-			alert('5km 이내에 매장이 없습니다!');
-			
-		// 만약 5키로 이내의 매장이 하나밖에 없다면,
-		} else if(arr.length === 1){
-		    
-		    
-			// split은 문자열을 배열로 전환시켜주기 때문에 join함수를 이용해 문자열로 바꾼 후 다시 구분자를 통해 나눕니다
-			var arrS = arr.join().split(' : ');
-			    
-			var no = arrS[0], 
-			name = arrS[1], 
-			lat = arrS[2], 
-			lon = arrS[3],
-			address = arrS[4];
-			    
-			alert('5km 이내에 있는 매장은 "' + name + '" 밖에 없습니다.\n매장 위치로 이동합니다.');
-			// search함수를 재사용합니다
-			search(lat+','+lon+','+name+','+address);
-		// 만약 매장이 여러 곳 이라면?     
-		} else {
-			alert(arr);
-			// 재검색 버튼 숨기기
-			document.getElementById('reSearch').style.display = 'none';
-			
-			// (메뉴 컨테이너, 매장이 뜰 목록창, 페이지 넘버요소 객체, 자식객체를 받아둘 임시 컨테이너 객체 선언) 			                        
-			var menuEl = document.getElementById('menu_wrap'),       
-			listEl = document.getElementById('placesList'),        
-			paginationEl = document.getElementById('pagination'),        
-			fragment = document.createDocumentFragment(),
-			bounds = new kakao.maps.LatLngBounds(), listStr = '';
-			
-			// search 함수 호출 시 이전 정보들을 제거하는 작업들
-			// 검색란 비우기, 페이지번호 삭제, 검색목록에 추가된 항목들 제거, 인포윈도우 제거, 마커 제거
-			var keyword = document.getElementById('keyword');
-			keyword.value = '';
-			
-			while (paginationEl.hasChildNodes()) {
-				paginationEl.removeChild(paginationEl.lastChild);
-			}
-			
-			removeAllChildNods(listEl);
-			removeWindows();
-			removeMarker();
-			
-			
-			
-//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 중요 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ		
-			for (var i = 0; i < arr.length; i++) {
+   // 현 위치에서 재검색 버튼 함수
+   function reSearchShop(){ 
+      // 내 위치의 위도, 경도 
+      var myLC = map.getCenter().toString().slice(0,-1).slice(1).split(', '),
+      myLCLat = myLC[0],
+      myLCLon   = myLC[1];
+         
+      // 밑에 forEach 문의 조건을 만족할 시 push 할 데이터들의 배열
+      const arr = [];
+      <c:forEach var="shop" items="${shopList}">
+         // 현재 내 위치와 매장간의 거리를 담을 객체
+         var calDis = calculateDistance(myLCLat,myLCLon,${shop.shop_latitude},${shop.shop_longitude});
+         
+         //
+         if(calDis < 1.0) {
+            var mCal = Math.round(calDis * 1000);
+            document.getElementById(${shop.shop_NO}+'List').innerText='거리 : ' + mCal +'m';
+         } else {
+            document.getElementById(${shop.shop_NO}+'List').innerText='거리 : ' + calDis.toFixed(1) +'km';
+         }
+         
+         // 만약 거리가 5키로 이내일 경우,
+         if(calDis <= 5.0) {
+            // 배열에 담습니다   ':' <- 구분자
+            arr.push('${shop.shop_NO} : ${shop.shop_name} : ${shop.shop_latitude} : ${shop.shop_longitude} : ${shop.shop_address} : '+calDis);
+            // 추천 매장 테이블 정보 변경
+            
+         }
+      </c:forEach>
+       
+      // 만약 배열이 비어있다면,
+      if(arr.length === 0){
+         
+         alert('5km 이내에 매장이 없습니다!');
+         
+      // 만약 5키로 이내의 매장이 하나밖에 없다면,
+      } else if(arr.length === 1){
+          
+          
+         // split은 문자열을 배열로 전환시켜주기 때문에 join함수를 이용해 문자열로 바꾼 후 다시 구분자를 통해 나눕니다
+         var arrS = arr.join().split(' : ');
+             
+         var no = arrS[0], 
+         name = arrS[1], 
+         lat = arrS[2], 
+         lon = arrS[3],
+         address = arrS[4];
+             
+         alert('5km 이내에 있는 매장은 "' + name + '" 밖에 없습니다.\n매장 위치로 이동합니다.');
+         // search함수를 재사용합니다
+         search(lat+','+lon+','+name+','+address);
+      // 만약 매장이 여러 곳 이라면?     
+      } else {
+         alert(arr);
+         // 재검색 버튼 숨기기
+         document.getElementById('reSearch').style.display = 'none';
+         
+         // (메뉴 컨테이너, 매장이 뜰 목록창, 페이지 넘버요소 객체, 자식객체를 받아둘 임시 컨테이너 객체 선언)                                  
+         var menuEl = document.getElementById('menu_wrap'),       
+         listEl = document.getElementById('placesList'),        
+         paginationEl = document.getElementById('pagination'),        
+         fragment = document.createDocumentFragment(),
+         bounds = new kakao.maps.LatLngBounds(), listStr = '';
+         
+         // search 함수 호출 시 이전 정보들을 제거하는 작업들
+         // 검색란 비우기, 페이지번호 삭제, 검색목록에 추가된 항목들 제거, 인포윈도우 제거, 마커 제거
+         var keyword = document.getElementById('keyword');
+         keyword.value = '';
+         
+         while (paginationEl.hasChildNodes()) {
+            paginationEl.removeChild(paginationEl.lastChild);
+         }
+         
+         removeAllChildNods(listEl);
+         removeWindows();
+         removeMarker();
+         
+         
+         
+//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 중요 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ      
+         for (var i = 0; i < arr.length; i++) {
                 // 마커를 생성하고 지도에 표시합니다
                 var location = arr[i].split(' : ');//경로1
                 var placePosition = new kakao.maps.LatLng(location[2], location[3]), 
@@ -253,11 +253,11 @@ li {
              // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
              map.setBounds(bounds);
              
-		}
-	  
-	}
-	
-	// 검색결과 항목을 Element로 반환하는 함수입니다
+      }
+     
+   }
+   
+   // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem2(index, name, address) {
     
        var el = document.createElement('li'), 
@@ -275,12 +275,12 @@ li {
        return el;
     }
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-	
-	/* function changeTest(){
-		document.getElementById(${shopList[0].shop_NO}+'List').innerText='제발 돼라';
-	} */ 
+   
+   /* function changeTest(){
+      document.getElementById(${shopList[0].shop_NO}+'List').innerText='제발 돼라';
+   } */ 
 
-	
+   
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b47d4f2e1f1f2f33a525416b1d6042d0&libraries=services"></script>
 <body>
@@ -874,9 +874,9 @@ li {
                       el.className = 'item1';
 
                    return el;
-               	}
+                  }
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-				
+            
             </script>
          </div>
       </div>

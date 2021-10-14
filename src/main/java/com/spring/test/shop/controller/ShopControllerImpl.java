@@ -107,8 +107,8 @@ public class ShopControllerImpl implements ShopController{
 		
 		KakaoGeoRes bodyJson = kAddr.getPoint(shop_addr);
 
-		double latitude = bodyJson.getDocuments().get(0).getX();
-		double longitude = bodyJson.getDocuments().get(0).getY();
+		double latitude = bodyJson.getDocuments().get(0).getY();
+		double longitude = bodyJson.getDocuments().get(0).getX();
 		shop.setMember_NO(member_NO);
 		shop.setShop_address(shop_post + "," + shop_addr + "," + shop_detailAddr);
 		shop.setShop_latitude(latitude);

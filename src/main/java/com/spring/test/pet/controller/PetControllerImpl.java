@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.test.member.vo.MemberVO;
 import com.spring.test.pet.service.PetService;
 import com.spring.test.pet.vo.PetVO;
+import com.spring.test.review.service.ReviewService;
 
 @Controller("petController")
 public class PetControllerImpl implements PetController {
@@ -40,7 +41,8 @@ public class PetControllerImpl implements PetController {
 	private PetVO petVO;
 	@Autowired
 	private MemberVO memberVO;
-
+	@Autowired
+	private ReviewService reviewService;
 	
 	@Override
 	@RequestMapping(value = "/mypage/myPage.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -54,8 +56,10 @@ public class PetControllerImpl implements PetController {
 		String viewName = (String) request.getAttribute("viewName");
 		List petList = petService.listPet(member_NO);
 		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("reviewList", reviewService.myPageReview(member_NO));
 		mav.addObject("member", memberVO);
 		mav.addObject("petList", petList);
+		
 		String a = petVO.getPet_name();
 		return mav;
 	}
@@ -121,7 +125,7 @@ public class PetControllerImpl implements PetController {
 		return resEnt;
 	}
 
-	@RequestMapping(value = "/mypage/*.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/mypage/*Form.do", method = RequestMethod.GET)
 	public ModelAndView viewPet(@RequestParam("member_NO") int member_NO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String viewName = (String) request.getAttribute("viewName");

@@ -418,13 +418,14 @@ window.onload = function() {
 						<td class="td" width="21%">작성날짜</td>
 
 					</tr>
-					<c:forEach var="i" begin="1" end="3">
+					<c:forEach var="review" items="${reviewList}">
 						<tr>
-							<td class="td">1</td>
-							<td class="td">A매장</td>
-							<td class="td">넘 좋았어요</td>
-							<td class="td">홍뽀삐</td>
-							<td class="td">09.23.21</td>
+							<td class="td">${review.rnum }</td>
+							<td class="td">${review.shop_name }</td>
+							<td class="td">${review.review_content }</td>
+							<td class="td">${review.pet_name }</td>
+							<td class="td">${review.review_Date }</td>
+							
 						</tr>
 					</c:forEach>
 				</table>
@@ -452,8 +453,7 @@ window.onload = function() {
 							<td class="td">A매장</td>
 							<td class="td">홍뽀삐</td>
 							<td class="td">09.23.21</td>
-							<td class="td"><a
-								href="${pageContext.request.contextPath}/mypage/reviewWrite.do">
+							<td class="td"><a href="${pageContext.request.contextPath}/mypage/reviewWrite.do">
 									<input type="button" value="리뷰쓰기">
 							</a></td>
 						</tr>
