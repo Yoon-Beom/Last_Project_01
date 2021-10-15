@@ -9,8 +9,13 @@ import com.spring.test.shop.vo.ShopVO;
 
 public interface ShopService {
 	
-	public List listMembers() throws DataAccessException;
+	public List listShop() throws DataAccessException;
+	
 	public int insertShop(ShopVO shop) throws DataAccessException;
 	public int insertShopDetail(ShopDetailVO shopD) throws DataAccessException;
 	public int selectShop_No(int member_NO);
+	/* public List listShopAndDetail() throws DataAccessException; */
+	public List listShop(int member_NO) throws DataAccessException;
+	public List listDShop(int member_NO) throws DataAccessException;
+
 }

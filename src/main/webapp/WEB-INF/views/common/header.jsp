@@ -31,7 +31,8 @@
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
 		<div class="container">
-			<a class="navbar-brand" href="#page-top">로고자리</a>
+			<a class="navbar-brand" style="height: 60px;padding: 0 0 5px 0;" href="${pageContext.request.contextPath}/main.do">
+			<img src="${pageContext.request.contextPath}/resources/assets/img/logo.png" style="height: 60px;"></a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
 				aria-controls="navbarResponsive" aria-expanded="false"

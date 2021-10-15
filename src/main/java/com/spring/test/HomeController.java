@@ -190,15 +190,22 @@ public class HomeController {
 		return "mypage/visit";
 	}
 	
-	@RequestMapping(value = "/shop/shopMyPage.do", method = RequestMethod.GET)
-	public String shopMyPage(Locale locale, Model model) {
-
-		return "shop/shopMyPage";
-	}
+	/*
+	 * @RequestMapping(value = "/shop/shopMyPage.do", method = RequestMethod.GET)
+	 * public String shopMyPage(Locale locale, Model model) {
+	 * 
+	 * return "shop/shopMyPage"; }
+	 */
 	
 	@RequestMapping(value = "/shop/shopMod.do", method = RequestMethod.GET)
 	public String shopMod(Locale locale, Model model) {
 
 		return "shop/shopMod";
+	}
+	
+	@RequestMapping(value = "/shop/shopDetail.do", method = RequestMethod.GET)
+	public String shopDetail(Locale locale, Model model) {
+
+		return "shop/shopDetail";
 	}
 }

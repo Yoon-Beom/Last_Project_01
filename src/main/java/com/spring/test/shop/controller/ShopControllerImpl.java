@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +19,7 @@ import com.spring.test.kakao.KakaoAddr;
 import com.spring.test.kakao.KakaoGeoRes;
 import com.spring.test.member.service.MemberService;
 import com.spring.test.member.vo.MemberVO;
+import com.spring.test.shop.dao.ShopDAO;
 import com.spring.test.shop.service.ShopService;
 import com.spring.test.shop.vo.ShopDetailVO;
 import com.spring.test.shop.vo.ShopVO;
@@ -36,22 +39,43 @@ public class ShopControllerImpl implements ShopController{
 	@Autowired
 	ShopDetailVO shopDetailVO;
 	
+	
 	@Override
 	@RequestMapping(value = "map.do", method = RequestMethod.GET)
 	public ModelAndView listShop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("ShopControllerImpl : listShop start");
 		
 		String viewName = (String)request.getAttribute("viewName");
-		List shopList = shopService.listMembers();
+		List shopList = shopService.listShop();
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("shopList", shopList);
 		System.out.println("리턴 값 : " + mav);
 		HttpSession session = request.getSession();
 		session.setAttribute("shopList", shopList);
-
+		String a = shopList.get(0).toString();
 		System.out.println("ShopControllerImpl : listShop end");
 		return mav;
 	}
+	
+	@Override
+	@RequestMapping(value="/shop/shopMyPage.do", method = RequestMethod.GET)
+	public ModelAndView listShopAndDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("ShopControllerImpl : listShopAndDetail start");
+		
+		HttpSession session = request.getSession();
+		memberVO = (MemberVO) session.getAttribute("member");
+		int member_NO = memberVO.getMember_NO();
+		System.out.println("/shopMyPage : memberNO = " + member_NO);
+		List shopList = shopService.listShop(member_NO);		
+		List shopDList = shopService.listDShop(member_NO);
+		String viewName = (String)request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("shopList", shopList);
+		mav.addObject("shopDList", shopDList);
+		
+		return mav;
+	}
+	
 	
 	@Override
 	@RequestMapping(value="/shop/addShop.do", method = RequestMethod.POST)
@@ -141,7 +165,7 @@ public class ShopControllerImpl implements ShopController{
 		shopDetail.setShop_close_time(close);
 		
 		shopDetail_result = shopService.insertShopDetail(shopDetail);
-		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
+		ModelAndView mav = new ModelAndView("redirect:/main.do");
 
 		System.out.println("ShopControllerImpl : addShop end");
 		return mav;

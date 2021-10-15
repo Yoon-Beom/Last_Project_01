@@ -97,6 +97,10 @@ public class BoardControllerImpl implements BoardController{
 		articleMap.put("member_NO",member_NO);
 		articleMap.put("board_image",board_image);
 		System.out.println("imageFileName : "+board_image);
+		String board_level=(String) articleMap.get("board_level");
+		if(board_level==null) {
+			articleMap.put("board_level", "0");
+		}
 		String message;
 		ResponseEntity resEnt=null;
 		HttpHeaders responseHeaders = new HttpHeaders();
@@ -157,6 +161,10 @@ public class BoardControllerImpl implements BoardController{
 		articleMap.put("member_NO",member_NO);
 		articleMap.put("board_image",board_image);
 		System.out.println("imageFileName : "+board_image);
+		String board_level=(String) articleMap.get("board_level");
+		if(board_level==null) {
+			articleMap.put("board_level", "0");
+		}
 		String message;
 		ResponseEntity resEnt=null;
 		HttpHeaders responseHeaders = new HttpHeaders();

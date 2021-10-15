@@ -29,13 +29,45 @@
 		<result property="shop_Detail_joinDate" column="shop_Detail_joinDate"/>
 	</resultMap>
 	
- <select id="selectAllShopList" resultMap="shopResult"> 
+<!-- 	<resultMap type="joinShopVO" id="ShopJoinMap">
+		<collection property="shopVO" resultMap="shopResult" />
+		<collection property="shopDetailVO" resultMap="shopDetailResult" />
+	</resultMap> -->
+	
+ 	<select id="selectAllShopList" resultMap="shopResult"> 
       <![CDATA[
          select * from t_shop order by shop_joinDate desc
       ]]>
-   </select>
-
-	
+    </select>
+   
+ 	<select id="selectShopList" resultType="shopVO" parameterType="int"> 
+      <![CDATA[
+         SELECT t.shop_name, t.shop_code, t.shop_address 
+         FROM t_shop t 
+         WHERE t.shop_No= #{member_NO}
+      ]]>
+    </select>
+ 	<select id="selectShopDList" resultType="shopDetailVO" parameterType="int"> 
+      <![CDATA[
+         SELECT td.shop_heartScore,td.shop_reserveScore,
+	         td.shop_starScore,td.shop_imageMain,td.shop_imagesub,
+	         td.shop_open_time, td.shop_close_time,td.shop_phone,
+	         td.shop_introduce 
+         FROM t_shopDetail td 
+         WHERE td.shop_NO = #{member_NO}
+      ]]>
+    </select>
+   
+   
+<!--  	<select id="selectShopAndDetailList" resultMap="ShopJoinMap"> 
+      <![CDATA[
+        SELECT t.shop_NO,t.member_NO,t.shop_name,t.shop_address,t.shop_code,
+		td.shopDetail_NO,td.shop_ceo,td.shop_phone, td.shop_open_time,
+		td.shop_close_time,td.shop_imageMain,td.shop_imageSub 
+		FROM t_shop t, t_shopDetail td WHERE t.shop_NO = td.shopDetail_NO
+      ]]>
+   </select> -->
+    		
 	<insert id="insertShop" parameterType="shopVO">
 		<![CDATA[
 			insert into t_shop(shop_NO, member_NO, shop_name, 

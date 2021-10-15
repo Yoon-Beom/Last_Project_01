@@ -28,6 +28,28 @@ public class ShopDAOImpl implements ShopDAO{
 	}
 	
 	@Override
+	public List selectShopList(int member_NO) throws DataAccessException {
+		System.out.println("ShopDAOImpl : selectShopList start");
+		
+		List<ShopVO> shopList = null;
+		shopList = sqlSession.selectList("mapper.shop.selectShopList", member_NO);
+		
+		System.out.println("ShopDAOImpl : selectShopList end");
+		return shopList;
+	}
+	
+	 @Override 
+ 	 public List selectShopDList(int member_NO) throws DataAccessException {
+	 System.out.println("ShopDAOImpl : selectShopDList start");	  
+
+	 List<ShopDetailVO> list = null;
+	 list = sqlSession.selectList("mapper.shop.selectShopDList", member_NO);
+	 System.out.println("ShopDAOImpl : selectShopDList end"); 
+	 return list; 
+	 }
+	 
+	
+	@Override
 	public int insertShop(ShopVO shop) throws DataAccessException {
 		System.out.println("ShopDAOImpl : insertShop start");
 		
@@ -52,4 +74,5 @@ public class ShopDAOImpl implements ShopDAO{
 		int result = sqlSession.selectOne("mapper.shop.selectShop_NO", member_NO);
 		return result;
 	}
+
 }

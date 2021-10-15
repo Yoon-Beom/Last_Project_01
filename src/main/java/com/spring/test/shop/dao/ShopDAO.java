@@ -9,7 +9,11 @@ import com.spring.test.shop.vo.ShopVO;
 
 public interface ShopDAO {
 	public List selectAllShopList() throws DataAccessException;
+	public List selectShopList(int member_NO) throws DataAccessException;
+	public List selectShopDList(int member_NO) throws DataAccessException;
 	public int insertShop(ShopVO shop) throws DataAccessException;
 	public int insertShopDetail(ShopDetailVO shopD) throws DataAccessException;
 	public int selectShop_NO(int member_NO);
+	/* public List selectShopAndDetailList(); */
+	
 }

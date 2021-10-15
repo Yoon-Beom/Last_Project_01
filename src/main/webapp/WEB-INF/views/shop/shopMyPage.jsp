@@ -5,7 +5,10 @@
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*, java.text.*, java.io.*"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="s" value="${shopList[0]}"/>
+<c:set var="sd" value="${shopDList[0]}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -156,27 +159,26 @@ p {
 					
 					<tr>
 						<td class="td" width="20%">관심</td>
-						<td class="td" width="25%">85</td>
+						<td class="td" width="25%">${sd.shop_heartScore}</td>
 						<td class="td" width="20%">예약수</td>
-						<td class="td" width="25%">12</td>
+						<td class="td" width="25%">${sd.shop_reserveScore }</td>
 					</tr>
 					<tr>
 						<td class="td" width="20%">평점</td>
-						<td class="td" width="25%">★★★★★</td>
+						<td class="td" width="25%">${sd.shop_starScore }</td>
 						<td class="td" width="20%">리뷰수</td>
 						<td class="td" width="25%">500</td>
 					</tr>
 					</table>
 					<br>
 					<table>
-					
 						<tr>
 							<td class="td" width="20%" colspan="2">매장명</td>
-							<td class="td" width="20%" colspan="2">에이매장</td>
+							<td class="td" width="20%" colspan="2">${s.shop_name}</td>
 						</tr>
 						<tr>
 							<td class="td" width="20%" colspan="2">사업자등록번호</td>
-							<td class="td" width="20%" colspan="2">111-1111-1111</td>
+							<td class="td" width="20%" colspan="2">${s.shop_code }</td>
 						</tr>
 						<tr>
 							<td class="td" width="20%" colspan="2">매장 대표 사진</td>
@@ -184,16 +186,16 @@ p {
 					    </tr>
 					    <tr>		
 							<td class="td" width="7%">운영시간</td>
-							<td class="td" width="10%"> 11:00~16:00</td>
+							<td class="td" width="10%">${sd.shop_open_time }~${sd.shop_close_time }</td>
 							<td class="td" width="7%" rowspan="3">매장소개</td>
-							<td class="td" width="10%" rowspan="3"> 어쩌고 저쩌구</td>
+							<td class="td" width="10%" rowspan="3">${sd.shop_introduce }</td>
 						</tr>	
 						<tr>		
 							<td class="td" width="7%">주소</td>
-							<td class="td" width="10%"> 경기도 구리시</td>
+							<td class="td" width="10%">${s.shop_address }</td>
 						<tr>	
 							<td class="td" width="7%">☎</td>
-							<td class="td" width="10%"> 010-111-1111</td>
+							<td class="td" width="10%">${sd.shop_phone }</td>
 						</tr>
 				</table>
 				 <br>
@@ -326,6 +328,9 @@ p {
 				</table>
 			</div>
 		</div>
+		<script type="text/javascript">
+			
+		</script>		
 	</header>
 </body>
 </html>

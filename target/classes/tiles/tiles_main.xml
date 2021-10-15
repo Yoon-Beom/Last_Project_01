@@ -72,11 +72,15 @@
       <put-attribute name="content" value="/WEB-INF/views/mypage/visit.jsp" />
    </definition>
    
-      <definition name="shop/shopMyPage" extends="baseLayout">
+      <definition name="/shop/shopMyPage" extends="baseLayout">
       <put-attribute name="content" value="/WEB-INF/views/shop/shopMyPage.jsp" />
    </definition>
    
      <definition name="shop/shopMod" extends="baseLayout">
       <put-attribute name="content" value="/WEB-INF/views/shop/shopMod.jsp" />
+   </definition>
+   
+   <definition name="shop/shopDetail" extends="baseLayout">
+      <put-attribute name="content" value="/WEB-INF/views/shop/shopDetail.jsp" />
    </definition>
 </tiles-definitions>

@@ -45,7 +45,7 @@ public class PetControllerImpl implements PetController {
 	private ReviewService reviewService;
 	
 	@Override
-	@RequestMapping(value = "/mypage/myPage.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/mypage/myPage.do", method = RequestMethod.POST)
 	public ModelAndView listPet(
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
