@@ -52,6 +52,8 @@ table {
 position: absolute;
 top:60px;
 right: 110px;
+border: none;
+background-color: white;
 }
 </style>
 <title>내가 쓴 리뷰</title>

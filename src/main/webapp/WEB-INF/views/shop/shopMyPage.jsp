@@ -7,8 +7,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*, java.text.*, java.io.*"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<c:set var="s" value="${shopList[0]}"/>
-<c:set var="sd" value="${shopDList[0]}"/>
+<!--<c:set var="s" value="${shopList[0]}"/>
+<c:set var="sd" value="${shopDList[0]}"/>-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,13 +159,13 @@ p {
 					
 					<tr>
 						<td class="td" width="20%">관심</td>
-						<td class="td" width="25%">${sd.shop_heartScore}</td>
+						<td class="td" width="25%">${shop.SHOP_HEARTSCORE}</td>
 						<td class="td" width="20%">예약수</td>
-						<td class="td" width="25%">${sd.shop_reserveScore }</td>
+						<td class="td" width="25%">${shop.SHOP_RESERVESCORE }</td>
 					</tr>
 					<tr>
 						<td class="td" width="20%">평점</td>
-						<td class="td" width="25%">${sd.shop_starScore }</td>
+						<td class="td" width="25%">${shop.SHOP_STARSCORE }</td>
 						<td class="td" width="20%">리뷰수</td>
 						<td class="td" width="25%">500</td>
 					</tr>
@@ -174,11 +174,11 @@ p {
 					<table>
 						<tr>
 							<td class="td" width="20%" colspan="2">매장명</td>
-							<td class="td" width="20%" colspan="2">${s.shop_name}</td>
+							<td class="td" width="20%" colspan="2">${shop.SHOP_NAME}</td>
 						</tr>
 						<tr>
 							<td class="td" width="20%" colspan="2">사업자등록번호</td>
-							<td class="td" width="20%" colspan="2">${s.shop_code }</td>
+							<td class="td" width="20%" colspan="2">${shop.SHOP_CODE }</td>
 						</tr>
 						<tr>
 							<td class="td" width="20%" colspan="2">매장 대표 사진</td>
@@ -186,16 +186,16 @@ p {
 					    </tr>
 					    <tr>		
 							<td class="td" width="7%">운영시간</td>
-							<td class="td" width="10%">${sd.shop_open_time }~${sd.shop_close_time }</td>
+							<td class="td" width="10%">${shop.SHOP_OPEN_TIME }~${shop.SHOP_CLOSE_TIME }</td>
 							<td class="td" width="7%" rowspan="3">매장소개</td>
-							<td class="td" width="10%" rowspan="3">${sd.shop_introduce }</td>
+							<td class="td" width="10%" rowspan="3">${shop.SHOP_INTRODUCE}</td>
 						</tr>	
 						<tr>		
 							<td class="td" width="7%">주소</td>
-							<td class="td" width="10%">${s.shop_address }</td>
+							<td class="td" width="10%">${shop.SHOP_ADDRESS }</td>
 						<tr>	
 							<td class="td" width="7%">☎</td>
-							<td class="td" width="10%">${sd.shop_phone }</td>
+							<td class="td" width="10%">${shop.SHOP_PHONE }</td>
 						</tr>
 				</table>
 				 <br>

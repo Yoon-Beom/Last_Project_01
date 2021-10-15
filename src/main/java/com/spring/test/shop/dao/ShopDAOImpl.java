@@ -1,6 +1,7 @@
 package com.spring.test.shop.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,27 +28,17 @@ public class ShopDAOImpl implements ShopDAO{
 		return shopList;
 	}
 	
+
 	@Override
-	public List selectShopList(int member_NO) throws DataAccessException {
+	public Map<String, Object> selectShopList(int member_NO) throws DataAccessException {
 		System.out.println("ShopDAOImpl : selectShopList start");
-		
-		List<ShopVO> shopList = null;
-		shopList = sqlSession.selectList("mapper.shop.selectShopList", member_NO);
-		
+
+		Map<String, Object> shopMap = sqlSession.selectOne("mapper.shop.selectShopList", member_NO);
+		System.out.println("shopDAO : "+shopMap);
 		System.out.println("ShopDAOImpl : selectShopList end");
-		return shopList;
+		return shopMap;
 	}
 	
-	 @Override 
- 	 public List selectShopDList(int member_NO) throws DataAccessException {
-	 System.out.println("ShopDAOImpl : selectShopDList start");	  
-
-	 List<ShopDetailVO> list = null;
-	 list = sqlSession.selectList("mapper.shop.selectShopDList", member_NO);
-	 System.out.println("ShopDAOImpl : selectShopDList end"); 
-	 return list; 
-	 }
-	 
 	
 	@Override
 	public int insertShop(ShopVO shop) throws DataAccessException {

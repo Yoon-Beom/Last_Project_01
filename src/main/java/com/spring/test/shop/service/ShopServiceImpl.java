@@ -1,6 +1,7 @@
 package com.spring.test.shop.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,40 +30,17 @@ public class ShopServiceImpl implements ShopService {
 		System.out.println("ShopServiceImpl : listShop end");
 		return shopList;
 	}
+
 	@Override
-	public List listShop(int member_NO) throws DataAccessException {
+	public Map<String, Object> listShop(int member_NO) throws DataAccessException {
 		System.out.println("ShopServiceImpl : listShop start");
 		
-		List shopList = null;
-		shopList = shopDAO.selectShopList(member_NO);
+		Map<String, Object> shopMap = shopDAO.selectShopList(member_NO);
+		
 		
 		System.out.println("ShopServiceImpl : listShop end");
-		return shopList;
+		return shopMap;
 	}
-	
-	@Override
-	public List listDShop(int member_NO) throws DataAccessException {
-		System.out.println("ShopServiceImpl : listDShop start");
-
-		List shopDList = null;
-		shopDList = shopDAO.selectShopDList(member_NO);
-
-		System.out.println("ShopServiceImpl : listDShop end");
-		return shopDList;
-	}
-
-	/*
-	 * @Override public List listShopAndDetail() {
-	 * System.out.println("ShopServiceImpl : listShopAndDetail start");
-	 * 
-	 * List list = null; list = shopDAO.selectShopAndDetailList();
-	 * 
-	 * List shopAndDetailList = null; shopAndDetailList =
-	 * shopDAO.selectShopAndDetailList();
-	 * 
-	 * 
-	 * System.out.println("ShopServiceImpl : listShopAndDetail end"); return list; }
-	 */
 
 	@Override
 	public int insertShop(ShopVO shop) throws DataAccessException {

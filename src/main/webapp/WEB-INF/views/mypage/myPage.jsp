@@ -198,7 +198,7 @@ window.onload = function() {
 		<div class="container">
 			<div id="box1">
 				<br>
-				<form name="frmMember" method="get" action="${contextPath }">
+				<form name="frmMember" method="post" action="${contextPath }">
 					<table>
 						<tr>
 							<td class="title" colspan="2"><p>회원 정보</p> 

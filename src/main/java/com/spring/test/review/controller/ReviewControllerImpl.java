@@ -157,8 +157,6 @@ public class ReviewControllerImpl implements ReviewController{
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
 		try {
 			reviewService.removeReview(review_NO);
-			
-
 			message = "<script>";
 			message += " alert('글을 삭제했습니다.');";
 			message += " location.href='"+request.getContextPath()+"/mypage/review.do';";

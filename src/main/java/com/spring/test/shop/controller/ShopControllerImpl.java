@@ -1,6 +1,8 @@
 package com.spring.test.shop.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,12 +68,12 @@ public class ShopControllerImpl implements ShopController{
 		memberVO = (MemberVO) session.getAttribute("member");
 		int member_NO = memberVO.getMember_NO();
 		System.out.println("/shopMyPage : memberNO = " + member_NO);
-		List shopList = shopService.listShop(member_NO);		
-		List shopDList = shopService.listDShop(member_NO);
+		Map<String, Object> shopMap = new HashMap<String, Object>();
+		shopMap = (Map<String, Object>) shopService.listShop(member_NO);
 		String viewName = (String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("shopList", shopList);
-		mav.addObject("shopDList", shopDList);
+		mav.addObject("shop", shopMap);
+		System.out.println("shopComtroller : "+shopMap);
 		
 		return mav;
 	}
