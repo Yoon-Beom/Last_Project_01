@@ -41,4 +41,20 @@ public class ReviewServiceImpl implements ReviewService{
 		List list = reviewDAO.myPageReview(member_NO);
 		return list;
 	}
+	@Override
+	public Object ShopReview(Object shop_NO) {
+		List list = reviewDAO.ShopReview(shop_NO);
+		return list;
+	}
+	@Override
+	public Object shopReviewList(Criteria1 cri, int member_NO) {
+		List list = reviewDAO.shopReviewList(cri, member_NO);
+		System.out.println("review Service : list end");
+		return list;
+	}
+	@Override
+	public int reviewListCount(int member_NO) {
+		// TODO Auto-generated method stub
+		return reviewDAO.shoplistCount(member_NO);
+	}
 }

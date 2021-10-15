@@ -13,4 +13,7 @@ public interface ReviewDAO {
 	public int insertNewReview(Map<String, Object> reviewMap);
 	public void deleteReview(int review_NO);
 	public List myPageReview(int member_NO);
+	public List ShopReview(Object shop_NO);
+	public List shopReviewList(Criteria1 cri, int member_NO);
+	public int shoplistCount(int member_NO);
 }

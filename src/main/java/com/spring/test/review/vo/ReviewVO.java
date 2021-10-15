@@ -12,11 +12,18 @@ public class ReviewVO {
 	private String review_title;
 	private String review_content;
 	private Date review_Date;
-	private String review_starScore;
+	private int review_starscore;
 	private String review_image;
 	private int rnum;
 	private String shop_name;
 	private String pet_name;
+	private String member_name;
+	public String getMember_name() {
+		return member_name;
+	}
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
+	}
 	public int getRnum() {
 		return rnum;
 	}
@@ -39,13 +46,13 @@ public class ReviewVO {
 		
 	}
 	public ReviewVO(int review_NO, int member_NO, int shop_NO, String review_title, String review_content, 
-			String review_starScore, String review_image) {
+			int review_starscore, String review_image) {
 		this.review_NO = review_NO;
 		this.member_NO = member_NO;
 		this.shop_NO = shop_NO;
 		this.review_title = review_title;
 		this.review_content = review_content;
-		this.review_starScore = review_starScore;
+		this.review_starscore = review_starscore;
 		this.review_image = review_image;
 		
 	}
@@ -85,11 +92,11 @@ public class ReviewVO {
 	public void setReview_Date(Date review_Date) {
 		this.review_Date = review_Date;
 	}
-	public String getReview_starScore() {
-		return review_starScore;
+	public int getReview_starscore() {
+		return review_starscore;
 	}
-	public void setReview_starScore(String review_starScore) {
-		this.review_starScore = review_starScore;
+	public void setReview_starscore(int review_starscore) {
+		this.review_starscore = review_starscore;
 	}
 	public String getReview_image() {
 		return review_image;

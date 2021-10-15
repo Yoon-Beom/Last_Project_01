@@ -159,15 +159,15 @@ text-shadow: 0 0 0 #f0f0f0 ; /* 새 이모지 색상 부여 */
             <br>
           
                <fieldset>
-                  <input type="radio" name="review_starScore" value="5" id="rate1">
+                  <input type="radio" name="review_starscore" value="5" id="rate1">
                   <label for="rate1">⭐</label>
-                  <input type="radio" name="review_starScore" value="4" id="rate2">
+                  <input type="radio" name="review_starscore" value="4" id="rate2">
                   <label for="rate2">⭐</label>
-                  <input type="radio" name="review_starScore" value="3" id="rate3">
+                  <input type="radio" name="review_starscore" value="3" id="rate3">
                   <label for="rate3">⭐</label>
-                  <input type="radio" name="review_starScore" value="2" id="rate4">
+                  <input type="radio" name="review_starscore" value="2" id="rate4">
                   <label for="rate4">⭐</label>
-                  <input type="radio" name="review_starScore" value="1" id="rate5">
+                  <input type="radio" name="review_starscore" value="1" id="rate5">
                   <label for="rate5">⭐</label> 별점
                </fieldset>
 

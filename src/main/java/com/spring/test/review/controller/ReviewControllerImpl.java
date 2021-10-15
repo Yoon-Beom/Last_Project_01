@@ -62,6 +62,29 @@ public class ReviewControllerImpl implements ReviewController{
 		System.out.println("reviewController : list end");
 		return model;
 	}
+	
+	@RequestMapping(value="/mypage/shopReview.do", method= {RequestMethod.GET,RequestMethod.POST})
+	public Model shopReviewlist(Model model, Criteria1 cri, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		System.out.println("reviewController : list start");
+		HttpSession session= request.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("member");
+		int member_NO = memberVO.getMember_NO();
+		cri.setMember_NO(member_NO);
+		System.out.println("reviewController member_NO: "+member_NO);
+		model.addAttribute("list", reviewService.shopReviewList(cri,member_NO));
+		int page = cri.getPage();
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		pageMaker.setTotalCount(reviewService.reviewListCount(member_NO));
+		model.addAttribute("page",page);
+		System.out.println(cri.toString());
+
+		model.addAttribute("pageMaker", pageMaker);
+		System.out.println("reviewController : list end");
+		return model;
+	}
 	@RequestMapping(value="mypage/addReview.do", method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public ResponseEntity reviewWrite(

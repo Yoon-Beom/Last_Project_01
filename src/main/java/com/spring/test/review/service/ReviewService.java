@@ -12,4 +12,7 @@ public interface ReviewService {
 	public int addNewReview(Map<String, Object> reviewMap);
 	public void removeReview(int review_NO);
 	public Object myPageReview(int member_NO)throws Exception;
+	public Object ShopReview(Object shop_NO);
+	public Object shopReviewList(Criteria1 cri, int member_NO);
+	public int reviewListCount(int member_NO);
 }

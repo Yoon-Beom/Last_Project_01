@@ -21,6 +21,7 @@ import com.spring.test.kakao.KakaoAddr;
 import com.spring.test.kakao.KakaoGeoRes;
 import com.spring.test.member.service.MemberService;
 import com.spring.test.member.vo.MemberVO;
+import com.spring.test.review.service.ReviewService;
 import com.spring.test.shop.dao.ShopDAO;
 import com.spring.test.shop.service.ShopService;
 import com.spring.test.shop.vo.ShopDetailVO;
@@ -37,10 +38,10 @@ public class ShopControllerImpl implements ShopController{
 	MemberVO memberVO;
 	@Autowired
 	ShopVO shopVO;
-	
 	@Autowired
 	ShopDetailVO shopDetailVO;
-	
+	@Autowired
+	ReviewService reviewService;
 	
 	@Override
 	@RequestMapping(value = "map.do", method = RequestMethod.GET)
@@ -70,8 +71,12 @@ public class ShopControllerImpl implements ShopController{
 		System.out.println("/shopMyPage : memberNO = " + member_NO);
 		Map<String, Object> shopMap = new HashMap<String, Object>();
 		shopMap = (Map<String, Object>) shopService.listShop(member_NO);
+		Object shop_NO = shopMap.get("SHOP_NO");
+		System.out.println("shopController : "+shop_NO);
 		String viewName = (String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("member", memberVO);
+		mav.addObject("reviewList", reviewService.ShopReview(shop_NO));
 		mav.addObject("shop", shopMap);
 		System.out.println("shopComtroller : "+shopMap);
 		

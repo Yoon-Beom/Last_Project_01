@@ -14,7 +14,7 @@ import com.spring.test.review.vo.Criteria1;
 public class ReviewDAOImpl implements ReviewDAO{
 	@Autowired
 	private SqlSession sqlSession;
-
+	
 	@Override
 	public List List(Criteria1 cri, int member_NO) throws DataAccessException {
 		System.out.println("review DAO : list start");
@@ -26,7 +26,7 @@ public class ReviewDAOImpl implements ReviewDAO{
 
 		return list;
 	}
-
+	
 	@Override
 	public int listCount(int member_NO) throws DataAccessException {
 		// TODO Auto-generated method stub
@@ -51,13 +51,35 @@ public class ReviewDAOImpl implements ReviewDAO{
 	@Override
 	public void deleteReview(int review_NO) {
 		sqlSession.delete("mapper.review.deleteReview",review_NO);
-
+		
 	}
 
 	@Override
 	public List myPageReview(int member_NO) {
 		List list = sqlSession.selectList("mapper.review.mypageReview",member_NO);
 		return list;
+	}
+
+	@Override
+	public List ShopReview(Object shop_NO) {
+		List list = sqlSession.selectList("mapper.review.shopReview",shop_NO);
+		return list;
+	}
+
+	@Override
+	public List shopReviewList(Criteria1 cri, int member_NO) {
+		cri.setMember_NO(member_NO);	
+		List list = sqlSession.selectList("mapper.review.shopPage",cri);
+		System.out.println("review DAO : list end");
+		
+
+		return list;
+	}
+
+	@Override
+	public int shoplistCount(int member_NO) {
+		
+		return sqlSession.selectOne("mapper.review.shopReviewCount", member_NO);
 	}
 
 }
