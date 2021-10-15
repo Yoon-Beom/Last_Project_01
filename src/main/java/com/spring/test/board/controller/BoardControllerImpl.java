@@ -52,11 +52,11 @@ public class BoardControllerImpl implements BoardController{
 	@RequestMapping(value = "/board/*Board.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public Model list(@RequestParam("board_code") String board_code, Model model, Criteria cri) throws Exception{
 		System.out.println("BoardControllerImpl : list start");
-		model.addAttribute("list", boardService.list(cri,board_code));
+
+		model.addAttribute("list", boardService.list(cri, board_code));
 		int page = cri.getPage();
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-
 		pageMaker.setTotalCount(boardService.listCount(board_code));
 
 		System.out.println(cri.toString());
@@ -64,206 +64,243 @@ public class BoardControllerImpl implements BoardController{
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("page", page);
 		model.addAttribute("search", "AllList");
+
+		System.out.println("BoardControllerImpl : list end");
 		return model;
 	}
 
 	//게시판 글쓰기
 	@Override
-	@RequestMapping(value="/board/addBoard.do", method= {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/board/addBoard.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ResponseEntity addNewFreeBoard(
-			MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-					throws Exception {
+	public ResponseEntity addNewFreeBoard(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+		throws Exception {
+		System.out.println("BoardControllerImpl : addNewFreeBoard start");
 
-		System.out.println("addNewArticle start");
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String, Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
+
 		while(enu.hasMoreElements()) {
-			String name=(String)enu.nextElement();
-			System.out.println("enu : "+name);
-			String value=multipartRequest.getParameter(name);
-			System.out.println("value : "+value);
+			String name = (String) enu.nextElement();
+			System.out.println("enu name : " + name);
+			String value = multipartRequest.getParameter(name);
+			System.out.println("value : " + value);
 			articleMap.put(name, value);
 		}
+
 		String board_image = load(multipartRequest);
-		HttpSession session= multipartRequest.getSession();
+		HttpSession session = multipartRequest.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("member");
 		String member_name = memberVO.getMember_name();
 		int member_NO = memberVO.getMember_NO();
-		articleMap.put("board_name",member_name);
-		articleMap.put("member_NO",member_NO);
-		articleMap.put("board_image",board_image);
-		System.out.println("imageFileName : "+board_image);
-		String board_level=(String) articleMap.get("board_level");
-		if(board_level==null) {
-			articleMap.put("board_level", "0");
-		}
+
+		articleMap.put("board_name", member_name);
+		articleMap.put("member_NO", member_NO);
+		articleMap.put("board_image", board_image);
+		System.out.println("imageFileName : " + board_image);
+		String board_level = (String) articleMap.get("board_level");
+
+		if(board_level == null) { articleMap.put("board_level", "0"); }
+
 		String message;
-		ResponseEntity resEnt=null;
+		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html;charset=utf-8");
-		try {
-			int board_NO = boardService.addNewBoard(articleMap);
 
-			System.out.println("NO : "+board_NO);
-			if(board_image!=null&& board_image.length()!=0) {
-				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
-				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO);
+		try {
+			System.out.println("BoardControllerImpl : addNewFreeBoard try");
+
+			int board_NO = boardService.addNewBoard(articleMap);
+			System.out.println("board_NO : " + board_NO);
+
+			if(board_image != null && board_image.length() != 0) {
+				File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + board_image);
+				File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + board_NO);
 				FileUtils.moveFileToDirectory(srcFile, destDir, true);
 			}
+
 			message = "<script>";
 			message += " alert('새글을 추가했습니다.');";
-			message += " location.href='"+multipartRequest.getContextPath()+"/board/freeBoard.do?board_code=1';";
-			message +=" </script>";
-			resEnt = new ResponseEntity(message,responseHeaders,HttpStatus.CREATED);
-			System.out.println(articleMap);
-		}catch(Exception e) {
-			File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/freeBoard.do?board_code=1';";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			System.out.println("articleMap : " + articleMap);
+
+		} catch(Exception e) {
+			System.out.println("BoardControllerImpl : addNewFreeBoard catch");
+			File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + board_image);
 			srcFile.delete();
 
 			message = " <script>";
-			message +=" alert('오류가 발생했습니다. 다시 시도해 주세요');";
-			message +=" location.href='"+multipartRequest.getContextPath()+"/board/freeBoardWriting.do'; ";
-			message +="</script>";
+			message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/freeBoardWriting.do'; ";
+			message += "</script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-			System.out.println("articleMap : "+articleMap);
+			System.out.println("articleMap : " + articleMap);
 			e.printStackTrace();
 		}
 
+		System.out.println("BoardControllerImpl : addNewFreeBoard end");
 		return resEnt;
-// 게시판 QnA 글쓰기 -글 추가(에러)후 주소값 달라서 따로 구분함.
-	}@RequestMapping(value="/board/addQnABoard.do", method= {RequestMethod.GET,RequestMethod.POST})
-	@ResponseBody
-	public ResponseEntity addNewQnABoard(
-			MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-					throws Exception {
+	}
 
-		System.out.println("addNewArticle start");
+	// 게시판 QnA 글쓰기 -글 추가(에러)후 주소값 달라서 따로 구분함.
+	@RequestMapping(value = "/board/addQnABoard.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public ResponseEntity addNewQnABoard(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+		throws Exception {
+		System.out.println("BoardControllerImpl : addNewQnABoard start");
+
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String, Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
+
 		while(enu.hasMoreElements()) {
-			String name=(String)enu.nextElement();
-			System.out.println("enu : "+name);
-			String value=multipartRequest.getParameter(name);
-			System.out.println("value : "+value);
+			String name = (String) enu.nextElement();
+			System.out.println("enu : " + name);
+			String value = multipartRequest.getParameter(name);
+			System.out.println("value : " + value);
 			articleMap.put(name, value);
 		}
+
 		String board_image = load(multipartRequest);
-		HttpSession session= multipartRequest.getSession();
+		HttpSession session = multipartRequest.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("member");
 		String member_name = memberVO.getMember_name();
 		int member_NO = memberVO.getMember_NO();
-		articleMap.put("board_name",member_name);
-		articleMap.put("member_NO",member_NO);
-		articleMap.put("board_image",board_image);
-		System.out.println("imageFileName : "+board_image);
-		String board_level=(String) articleMap.get("board_level");
-		if(board_level==null) {
+
+		articleMap.put("board_name", member_name);
+		articleMap.put("member_NO", member_NO);
+		articleMap.put("board_image", board_image);
+
+		System.out.println("imageFileName : " + board_image);
+		String board_level = (String) articleMap.get("board_level");
+
+		if(board_level == null) {
 			articleMap.put("board_level", "0");
 		}
+
 		String message;
-		ResponseEntity resEnt=null;
+		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html;charset=utf-8");
-		try {
-			int board_NO = boardService.addNewBoard(articleMap);
 
-			System.out.println("NO : "+board_NO);
-			if(board_image!=null&& board_image.length()!=0) {
-				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
-				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO);
+		try {
+			System.out.println("BoardControllerImpl : addNewQnABoard try");
+
+			int board_NO = boardService.addNewBoard(articleMap);
+			System.out.println("board_NO : " + board_NO);
+
+			if(board_image != null && board_image.length() != 0) {
+				File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + board_image);
+				File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + board_NO);
 				FileUtils.moveFileToDirectory(srcFile, destDir, true);
 			}
+
 			message = "<script>";
 			message += " alert('새글을 추가했습니다.');";
-			message += " location.href='"+multipartRequest.getContextPath()+"/board/qnaBoard.do?board_code=2';";
-			message +=" </script>";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/qnaBoard.do?board_code=2';";
+			message += " </script>";
 			resEnt = new ResponseEntity(message,responseHeaders,HttpStatus.CREATED);
-			System.out.println(articleMap);
-		}catch(Exception e) {
-			File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
+			System.out.println("articleMap : " + articleMap);
+			
+		} catch(Exception e) {			
+			System.out.println("BoardControllerImpl : addNewQnABoard catch");
+
+			File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + board_image);
 			srcFile.delete();
 
 			message = " <script>";
-			message +=" alert('오류가 발생했습니다. 다시 시도해 주세요');";
-			message +=" location.href='"+multipartRequest.getContextPath()+"/board/qnaBoardWriting.do'; ";
-			message +="</script>";
+			message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/qnaBoardWriting.do'; ";
+			message += "</script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-			System.out.println("articleMap : "+articleMap);
+			System.out.println("articleMap : " + articleMap);
 			e.printStackTrace();
+
 		}
 
+		System.out.println("BoardControllerImpl : addNewQnABoard end");
 		return resEnt;
-
 	}
 
 	// 게시판 공지사항 글쓰기 -글 추가(에러)후 주소값 달라서 따로 구분함.
-	@RequestMapping(value="/board/addNoticeBoard.do", method= {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/board/addNoticeBoard.do", method= { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ResponseEntity addNewNoticeBoard(
-			MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-					throws Exception {
+	public ResponseEntity addNewNoticeBoard(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+		throws Exception {
+		System.out.println("BoardControllerImpl : addNewNoticeBoard start");
 
-		System.out.println("addNewArticle start");
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String, Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
+		
 		while(enu.hasMoreElements()) {
-			String name=(String)enu.nextElement();
-			System.out.println("enu : "+name);
-			String value=multipartRequest.getParameter(name);
-			System.out.println("value : "+value);
+			String name = (String)enu.nextElement();
+			System.out.println("enu name : " + name);
+			String value = multipartRequest.getParameter(name);
+			System.out.println("value : " + value);
 			articleMap.put(name, value);
 		}
+		
 		String board_image = load(multipartRequest);
 		HttpSession session= multipartRequest.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("member");
 		String member_name = memberVO.getMember_name();
 		int member_NO = memberVO.getMember_NO();
-		articleMap.put("board_name",member_name);
-		articleMap.put("member_NO",member_NO);
-		articleMap.put("board_image",board_image);
-		System.out.println("imageFileName : "+board_image);
-		String board_level=(String) articleMap.get("board_level");
-		if(board_level==null) {
+		
+		articleMap.put("board_name", member_name);
+		articleMap.put("member_NO", member_NO);
+		articleMap.put("board_image", board_image);
+		
+		System.out.println("imageFileName : " + board_image);
+		String board_level = (String) articleMap.get("board_level");
+		
+		if(board_level == null) {
 			articleMap.put("board_level", "0");
 		}
+		
 		String message;
-		ResponseEntity resEnt=null;
+		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html;charset=utf-8");
+		
 		try {
+			System.out.println("BoardControllerImpl : addNewNoticeBoard try");
+			
 			int board_NO = boardService.addNewBoard(articleMap);
 
-			System.out.println("NO : "+board_NO);
-			if(board_image!=null&& board_image.length()!=0) {
-				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
-				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+board_NO);
+			System.out.println("board_NO : " + board_NO);
+			if(board_image != null && board_image.length() != 0) {
+				File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + board_image);
+				File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + board_NO);
 				FileUtils.moveFileToDirectory(srcFile, destDir, true);
 			}
 			message = "<script>";
 			message += " alert('새글을 추가했습니다.');";
-			message += " location.href='"+multipartRequest.getContextPath()+"/board/noticeBoard.do?board_code=3';";
-			message +=" </script>";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/noticeBoard.do?board_code=3';";
+			message += " </script>";
 			resEnt = new ResponseEntity(message,responseHeaders,HttpStatus.CREATED);
-			System.out.println(articleMap);
-		}catch(Exception e) {
-			File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+board_image);
+			System.out.println("articleMap : " + articleMap);
+		} catch(Exception e) {
+			System.out.println("BoardControllerImpl : addNewNoticeBoard catch");
+			
+			File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + board_image);
 			srcFile.delete();
 
 			message = " <script>";
-			message +=" alert('오류가 발생했습니다. 다시 시도해 주세요');";
-			message +=" location.href='"+multipartRequest.getContextPath()+"/board/noticeBoardWriting.do'; ";
-			message +="</script>";
+			message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/noticeBoardWriting.do'; ";
+			message += "</script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-			System.out.println("articleMap : "+articleMap);
+			System.out.println("articleMap : " + articleMap);
 			e.printStackTrace();
+			
 		}
 
+		System.out.println("BoardControllerImpl : addNewNoticeBoard end");
 		return resEnt;
-
 	}
 
 	private String load(MultipartHttpServletRequest multipartRequest) throws Exception {
@@ -290,7 +327,7 @@ public class BoardControllerImpl implements BoardController{
 
 	@RequestMapping(value="board/*Content.do" ,method = RequestMethod.GET)
 	public ModelAndView viewBoard(@RequestParam("board_NO") int board_NO,
-			HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println("viewArticleSTART");
 		String viewName = (String)request.getAttribute("viewName");
 		List commentList = commentService.listArticles(board_NO);
@@ -313,7 +350,7 @@ public class BoardControllerImpl implements BoardController{
 	@RequestMapping(value="/board/removeBoard.do" ,method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity  removeBoard(@RequestParam("board_NO") int board_NO,
-			HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpServletRequest request, HttpServletResponse response) throws Exception{
 		response.setContentType("text/html; charset=UTF-8");
 		String message;
 		ResponseEntity resEnt=null;
@@ -343,8 +380,8 @@ public class BoardControllerImpl implements BoardController{
 	@RequestMapping(value="/board/modBoard.do" ,method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity modBoard(
-			MultipartHttpServletRequest multipartRequest,  
-			HttpServletResponse response) throws Exception{
+		MultipartHttpServletRequest multipartRequest,  
+		HttpServletResponse response) throws Exception{
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String,Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu=multipartRequest.getParameterNames();
@@ -398,8 +435,8 @@ public class BoardControllerImpl implements BoardController{
 	@RequestMapping(value="/board/modQnABoard.do" ,method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity modQnABoard(
-			MultipartHttpServletRequest multipartRequest,  
-			HttpServletResponse response) throws Exception{
+		MultipartHttpServletRequest multipartRequest,  
+		HttpServletResponse response) throws Exception{
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String,Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu=multipartRequest.getParameterNames();
@@ -453,8 +490,8 @@ public class BoardControllerImpl implements BoardController{
 	@RequestMapping(value="/board/search*.do", method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Model searchList(@RequestParam("search") String search,
-			@RequestParam("board_code") String board_code,
-			Model model, SearchCriteria cri,Criteria cr, HttpServletRequest request) throws Exception {
+		@RequestParam("board_code") String board_code,
+		Model model, SearchCriteria cri,Criteria cr, HttpServletRequest request) throws Exception {
 
 		if (search==null||search=="") {
 

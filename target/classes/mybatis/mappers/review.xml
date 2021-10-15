@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper  namespace="mapper.review">
+<mapper namespace="mapper.review">
 	<resultMap id="reviewResult" type="reviewVO">
 		<result property="review_NO" column="review_NO" />
 		<result property="member_NO" column="member_NO" />
@@ -12,16 +12,17 @@
 		<result property="review_starScore" column="review_starScore" />
 		<result property="review_image" column="review_image" />
 	</resultMap>
- 	<resultMap id="Criteria1" type="criteria1">
+	<resultMap id="Criteria1" type="criteria1">
 		<result property="page" column="page" />
 		<result property="perPageNum" column="perPageNum" />
 		<result property="rowStart" column="rowStart" />
 		<result property="rowEnd" column="rowEnd" />
 		<result property="shop_NO" column="shop_NO" />
 		<result property="member_NO" column="member_NO" />
-	</resultMap> 
-	
-	<select id="ReviewPage" resultType="reviewVO" parameterType="criteria1">
+	</resultMap>
+
+	<select id="ReviewPage" resultType="reviewVO"
+		parameterType="criteria1">
 		<![CDATA[
 select * from (     
      SELECT rownum as rnum, r.review_NO, s.shop_name, r.member_NO, p.pet_name, r.review_content, r.review_starscore, r.review_Date
@@ -35,7 +36,8 @@ select * from (
 
 		]]>
 	</select>
-	<select id="mypageReview" resultType="reviewVO" parameterType="int">
+	<select id="mypageReview" resultType="reviewVO"
+		parameterType="int">
 		<![CDATA[
 select * from (     
      SELECT rownum as rnum, r.review_NO, s.shop_name, r.member_NO, p.pet_name, r.review_content, r.review_starscore, r.review_Date
@@ -54,7 +56,7 @@ select * from (
 			SELECT count(review_NO) from t_review where member_NO=#{member_NO}	
 		]]>
 	</select>
-	
+
 	<insert id="insertNewReview" parameterType="java.util.Map">
 		<![CDATA[
 			INSERT into t_review(review_NO, member_NO, shop_NO, review_title, review_content, review_starScore)
@@ -73,4 +75,12 @@ select * from (
       where review_NO = #{review_NO}
     	]]>
 	</delete>
+	<update id="starScore" parameterType="java.util.Map">
+   <![CDATA[
+   update  t_shopdetail
+    set shop_starScore = (select ROUND(avg(review_starScore), 1) from t_review where shop_NO = #{shop_NO}) 
+    where shop_NO = #{shop_NO}
+   ]]>
+	</update>
+
 </mapper>

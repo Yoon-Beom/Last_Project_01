@@ -154,7 +154,9 @@ input {
 			<div class="container">
 				<div id="box1">
 					<h1>회원 정보 수정</h1>
-					<input type="hidden" name=member_birth value="${member.member_birth }">
+					<input type="hidden" name="member_code" value="${member.member_code }">
+					<input type="hidden" name="member_birth" value="${member.member_birth }">
+					<input type="hidden" name="member_NO" value="${member.member_NO }">
 					<div class="text1">아이디</div>
 					<input type="text" name="member_id" value="${member.member_id }" style="border: none;" readonly >
 					<div class="text1">이름</div>
@@ -181,8 +183,12 @@ input {
 					</div> --%>
 					<br> <br> <br> <input type="button" value="수정" onclick="submitBtn()"
 						class="button">&nbsp;&nbsp;&nbsp; 
-						<a href="${pageContext.request.contextPath}/mypage/myPage.do">
-						<input type="button" value="취소" class="button"></a>
+						<c:if test="${member.member_code =='1' }">
+                     <a   href="${pageContext.request.contextPath}/mypage/myPage.do"><input type="button" value="취소" class="button"></a>
+               		   </c:if>   
+                	   <c:if test="${member.member_code =='2' }">
+                     <a href="${pageContext.request.contextPath}/shop/shopMyPage.do"><input type="button" value="취소" class="button"></a>
+                 	   </c:if>      
 				</div>
 			</div>
 	</header>

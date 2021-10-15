@@ -225,6 +225,7 @@ public class MemberControllerImpl implements MemberController {
 	      String hash_pwd = hash.Hashing(pwdNow.getBytes(), salt);
 	      String member_pwd = request.getParameter("member_pwd");
 	      String member_pwd2 = request.getParameter("member_pwd2");
+	      int member_code = Integer.parseInt(request.getParameter("member_code"));
 	      vo.setMember_pwd(hash_pwd);
 	      System.out.println("pwd : " + pwd);
 	      System.out.println("pwdNow : " + hash_pwd);
@@ -235,10 +236,15 @@ public class MemberControllerImpl implements MemberController {
 	            mav.setViewName("redirect:/mypage/pwdCheckPwd.do");
 	         } else {
 	        	
-		        		vo.setMember_pwd(member_pwd);
-		        		result = memberService.updateMemPwd(vo);
-		        		rAttr.addFlashAttribute("result", "pwdChange");
-						mav.setViewName("redirect:/mypage/myPage.do");
+	        	  vo.setMember_pwd(member_pwd);
+                  result = memberService.updateMemPwd(vo);
+                  rAttr.addFlashAttribute("result", "pwdChange");
+                  if(member_code==1) {
+                     mav = new ModelAndView("redirect:/mypage/myPage.do");
+                  } else if (member_code==2){
+                      mav = new ModelAndView("redirect:/shop/shopMyPage.do");
+                  }
+
 		        
 	         }
 	      }
@@ -260,14 +266,22 @@ public class MemberControllerImpl implements MemberController {
 		String member_post = request.getParameter("member_post");
 		String member_addr = request.getParameter("member_addr");
 		String member_detailAddr = request.getParameter("member_detailAddr");
+		int member_code = Integer.parseInt(request.getParameter("member_code"));
+
 		vo.setMember_phone(phone1 + "-" + phone2 + "-" + phone3);
 		vo.setMember_address(member_post + "," + member_addr + "," + member_detailAddr);
 		result = memberService.updateMember(vo);
 		HttpSession session = request.getSession();
 		/* session.invalidate();  세션 제거*/	
 		request.getSession().setAttribute("member", vo);
-		ModelAndView mav = new ModelAndView("redirect:/mypage/myPage.do");
-		System.out.println("member수정 끝");
+		 ModelAndView mav = new ModelAndView();
+	      if(member_code==1) {
+	         mav = new ModelAndView("redirect:/mypage/myPage.do");
+	      } else if (member_code==2){
+	          mav = new ModelAndView("redirect:/shop/shopMyPage.do");
+	      }
+	      System.out.println("member수정 끝");
+
 		return mav;
 	}
 	

@@ -1,11 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
 <%
 request.setCharacterEncoding("utf-8");
 %>
@@ -13,8 +10,7 @@ request.setCharacterEncoding("utf-8");
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/styles.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css" />
 <title>회원정보 수정</title>
 <style type="text/css">
 input {
@@ -39,10 +35,11 @@ input {
 	text-align: left;
 	padding-left: 36%;
 }
+
 .text2 {
 	width: 70px;
 	text-align: "center";
-}	
+}
 
 .gender {
 	width: auto;
@@ -145,33 +142,37 @@ input {
 		}
 	}
 </script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" ></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 	<header class="masthead">
-		<form method="post" name="membership"
-			action="${contextPath}/mypage/update.do">
+		<form method="post" name="membership" action="${contextPath}/mypage/update.do">
 			<div class="container">
 				<div id="box1">
 					<h1>회원 정보 수정</h1>
-					<input type="hidden" name=member_birth value="${member.member_birth }">
+					<input type="hidden" name="member_NO" value="${member.member_NO }">
+					<input type="hidden" name="member_code" value="${member.member_code }">
+					<input type="hidden" name="member_birth" value="${member.member_birth }">
 					<div class="text1">아이디</div>
-					<input type="text" name="member_id" value="${member.member_id }" style="border: none;" readonly >
+					<input type="text" name="member_id" value="${member.member_id }" style="border: none;" readonly>
 					<div class="text1">이름</div>
 					<input type="text" name="member_name" value="${member.member_name }">
 					<div class="text1">주소</div>
-					<input name="member_post" type="text" readonly onclick="findAddr()" value="${fn:split(member.member_address,',')[0]}"> <br>
-					<input name="member_addr" type="text" readonly  onclick="findAddr()" value="${fn:split(member.member_address,',')[1]}" > <br> 
+					<input name="member_post" type="text" readonly onclick="findAddr()" value="${fn:split(member.member_address,',')[0]}">
+					<br>
+					<input name="member_addr" type="text" readonly onclick="findAddr()" value="${fn:split(member.member_address,',')[1]}">
+					<br>
 					<input name="member_detailAddr" type="text" value="${fn:split(member.member_address,',')[2]}">
 					<div class="text1">이메일</div>
 					<input type="email" name="member_email" value="${member.member_email }">
 					<div class="text1">
 						연락처&nbsp;&nbsp;<a id="account"></a>
 					</div>
-					<input type="number" class="text2" name="member_phone1"  value="${fn:substring(member.member_phone,0,3)}">&nbsp;&nbsp;-&nbsp;&nbsp;
-					<input type="number" class="text2"name="member_phone2"   value="${fn:substring(member.member_phone,4,8)}">&nbsp;&nbsp;-&nbsp;&nbsp;
-					<input type="number" class="text2"name="member_phone3"   value="${fn:substring(member.member_phone,9,13)}">
-		
+					<input type="number" class="text2" name="member_phone1" value="${fn:substring(member.member_phone,0,3)}">
+					&nbsp;&nbsp;-&nbsp;&nbsp;
+					<input type="number" class="text2" name="member_phone2" value="${fn:substring(member.member_phone,4,8)}">
+					&nbsp;&nbsp;-&nbsp;&nbsp;
+					<input type="number" class="text2" name="member_phone3" value="${fn:substring(member.member_phone,9,13)}">
 					<%-- <div class="text1">비밀번호</div>
 					<input type="password" name="member_pwd" value="${member.member_pwd}">
 					<div class="text1">비밀번호 확인</div>
@@ -179,10 +180,9 @@ input {
 						<input type="password" name="member_pwd1" value="${member.member_pwd}"> &nbsp;&nbsp;
 						<input type="button" value="확인" class="button">
 					</div> --%>
-					<br> <br> <br> <input type="button" value="수정" onclick="submitBtn()"
-						class="button">&nbsp;&nbsp;&nbsp; 
-						<a href="${pageContext.request.contextPath}/mypage/myPage.do">
-						<input type="button" value="취소" class="button"></a>
+					<br> <br> <br>
+					<input type="button" value="수정" onclick="submitBtn()" class="button">
+					&nbsp;&nbsp;&nbsp; <a href="${pageContext.request.contextPath}/mypage/myPage.do"> <input type="button" value="취소" class="button"></a>
 				</div>
 			</div>
 	</header>
