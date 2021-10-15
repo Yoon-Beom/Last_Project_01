@@ -16,7 +16,8 @@
 <style type="text/css">
 #box1 {
 	width: 80%;
-	height: 2000px;
+	height: 100%;
+	padding: 0 0 40px 0;
 	position: relative;
 	top: 50px;
 	margin: auto;
@@ -146,11 +147,12 @@ p {
 				</table>
 				
 				<br> <br>
+				<form action="${pageContext.request.contextPath}/shop/shopMod.do" enctype="multipart/form-data">
 				<table>
 					<tr>
 						<td class="title" colspan="4"><p>매장정보</p>
-						<a href="${pageContext.request.contextPath}/shop/shopMod.do">
-						<input type="button" value="수정하기" class="button"></a>
+						<input type="hidden" value="${member.member_NO }">
+						<input type="submit" value="수정하기" class="button">
 						</td>
 					</tr>
 					<tr>
@@ -171,53 +173,50 @@ p {
 					</tr>
 					</table>
 					<br>
-					<table>
-						<tr>
-							<td class="td" width="20%" colspan="2">매장명</td>
-							<td class="td" width="20%" colspan="2">${shop.SHOP_NAME}</td>
-						</tr>
-						<tr>
-							<td class="td" width="20%" colspan="2">사업자등록번호</td>
-							<td class="td" width="20%" colspan="2">${shop.SHOP_CODE }</td>
-						</tr>
-						<tr>
-							<td class="td" width="20%" colspan="2">매장 대표 사진</td>
-							<td class="td" width="20%" colspan="2"><img	src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
-					    </tr>
-					    <tr>		
-							<td class="td" width="7%">운영시간</td>
-							<td class="td" width="10%">${shop.SHOP_OPEN_TIME }~${shop.SHOP_CLOSE_TIME }</td>
-							<td class="td" width="7%" rowspan="3">매장소개</td>
-							<td class="td" width="10%" rowspan="3">${shop.SHOP_INTRODUCE}</td>
-						</tr>	
-						<tr>		
-							<td class="td" width="7%">주소</td>
-							<td class="td" width="10%">${shop.SHOP_ADDRESS }</td>
-						<tr>	
-							<td class="td" width="7%">☎</td>
-							<td class="td" width="10%">${shop.SHOP_PHONE }</td>
-						</tr>
-				</table>
-				 <br>
-				<table>	
-						<tr>	
-							<td class="td" width="7%">매장 서브 사진</td>
-							<td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
-							<td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
-						</tr>
-						<tr>
-							<td>
-								<br>
-							</td>
-						</tr>
-						<tr>	
-							<td class="td" width="7%">매장 서브 사진</td>
-							<td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
-							<td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
-						</tr>
-				
-				</table>
-				
+				  <table>
+                  <tr>
+                     <td class="td" width="20%" colspan="4">매장 대표 사진</td>
+                   </tr>
+                   <tr>
+                     <td class="td" width="20%" colspan="4"><img   src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
+                   </tr>
+                   <tr>      
+                     <td class="td" width="7%">매장명</td>
+                     <td class="td" width="10%">${shop.SHOP_NAME}</td>
+                     <td class="td" width="7%" >사업자등록번호</td>
+                     <td class="td" width="10%" >${shop.SHOP_CODE }</td>
+                  </tr>   
+                  <tr>      
+                     <td class="td" width="7%">오픈 시간</td>
+                     <td class="td" width="10%"> ${shop.SHOP_OPEN_TIME }</td>
+                     <td class="td" width="7%" >마감시간</td>
+                     <td class="td" width="10%" >${shop.SHOP_CLOSE_TIME }</td>
+                  </tr>   
+                  <tr>      
+                     <td class="td" width="7%">주소</td>
+                     <td class="td" width="10%">${shop.SHOP_ADDRESS }</td>
+                     <td class="td" width="7%">☎</td>
+                     <td class="td" width="10%"> ${shop.SHOP_PHONE }</td>
+                  </tr>
+                  <tr>
+                     <td class="td" width="20%" colspan="4">매장 소개</td>
+                  </tr>
+                  <tr>
+                     <td class="td" width="20%" colspan="4">매장 소개내용<br><br></td>
+                  </tr>
+                  <tr>   
+                     <td class="td" width="7%" colspan="4">매장 서브 사진</td>
+                  </tr>
+                  <tr>   
+                     <td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
+                     <td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
+                     <td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
+                     <td class="td" width="10%"> <img src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
+                  </tr>
+            
+            </table>
+			</form>
+
 				<br> <br>
 				<table>
 					<tr>
@@ -290,7 +289,7 @@ p {
 				<table>
 					<tr>
 						<td class="title" colspan="5"><p>리뷰 내역</p><a
-							href="${pageContext.request.contextPath}/mypage/shopReview.do"> <input
+							href="${pageContext.request.contextPath}/mypage/visit.do"> <input
 								type="button" value="더보기" class="button2"></a></td>
 					<tr>
 					<tr>
@@ -304,13 +303,13 @@ p {
 						<td class="td" width="20%">작성 날짜</td>
 
 					</tr>
-					<c:forEach var="review" items="${reviewList }">
+					<c:forEach var="i" begin="1" end="3">
 						<tr>
-							<td class="td">${review.rnum }</td>
-							<td class="td">${review.member_name }</td>
-							<td class="td">${review.pet_name }</td>
-							<td class="td">${review.review_content }</td>
-							<td class="td">${review.review_Date }</td>
+							<td class="td">1</td>
+							<td class="td">콩콩콩</td>
+							<td class="td">콩뽀삐</td>
+							<td class="td">넘 좋았어요.</td>
+							<td class="td">09.15.21</td>
 						</tr>
 					</c:forEach>
 				</table>

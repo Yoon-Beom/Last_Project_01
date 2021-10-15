@@ -32,7 +32,7 @@
 		<put-attribute name="content" value="/WEB-INF/views/shop/shopmembershipForm.jsp" />
 	</definition>
 	
-	<definition name="map" extends="baseLayout">
+	<definition name="/shop/shopMap" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/map/map.jsp" />
 	</definition>
 
@@ -76,11 +76,11 @@
 		<put-attribute name="content" value="/WEB-INF/views/shop/shopMyPage.jsp" />
 	</definition>
    
-	<definition name="shop/shopMod" extends="baseLayout">
+	<definition name="/shop/shopMod" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/shop/shopMod.jsp" />
 	</definition>
    
-	<definition name="shop/shopDetail" extends="baseLayout">
+	<definition name="/shop/shopDetail" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/shop/shopDetail.jsp" />
 	</definition>
    

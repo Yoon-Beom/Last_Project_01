@@ -44,7 +44,7 @@
 					<li class="nav-item"><a class="nav-link"
 						href="${pageContext.request.contextPath}/main.do">홈</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="${pageContext.request.contextPath}/map.do">내주변</a></li>
+						href="${pageContext.request.contextPath}/shop/shopMap.do">내주변</a></li>
 					<c:choose>
 						<c:when test="${isLogOn == true  && member!= null}">
 						<c:if test="${member.member_code =='1' }">

@@ -11,6 +11,7 @@
 		<result property="shop_latitude" column="shop_latitude"/>
 		<result property="shop_longitude" column="shop_longitude"/>
 		<result property="shop_joinDate" column="shop_joinDate"/>
+		<collection property="shopDetailVO" resultMap="shopDetailResult" />
 	</resultMap>
 	
 	<resultMap type="shopDetailVO" id="shopDetailResult">
@@ -29,19 +30,12 @@
 		<result property="shop_Detail_joinDate" column="shop_Detail_joinDate"/>
 	</resultMap>
 	
-<!-- 	<resultMap type="joinShopVO" id="ShopJoinMap">
-		<collection property="shopVO" resultMap="shopResult" />
-		<collection property="shopDetailVO" resultMap="shopDetailResult" />
-	</resultMap> -->
-	
  	<select id="selectAllShopList" resultMap="shopResult"> 
       <![CDATA[
-         select * from t_shop order by shop_joinDate desc
+         select * from t_shop, t_shopDetail order by t_shop.shop_joinDate desc
       ]]>
     </select>
-    <!--     SELECT t.shop_name, t.shop_code, t.shop_address 
-         FROM t_shop t 
-         WHERE t.member_NO= #{member_NO} -->
+
  	<select id="selectShopList" resultType="HashMap" parameterType="int"> 
       <![CDATA[
           select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code,
@@ -55,6 +49,20 @@
        where m.member_NO = #{member_NO}
       ]]>
     </select>
+    
+  	<select id="selectShopView" resultMap="shopResult" parameterType="int"> 
+      <![CDATA[
+          select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code,
+          s.shop_latitude, s.shop_longitude, s.shop_joinDate,
+          d.shopDetail_NO, d.shop_NO, d.shop_ceo, d.shop_phone, d.shop_open_time,
+       	  d.shop_close_time, d.shop_introduce, d.shop_starScore, d.shop_imageMain,
+          d.shop_imageSub, d.shop_heartScore, d.shop_reserveScore,d.shopDetail_joinDate
+          from t_shop s
+          left join t_shopDetail d
+          on d.shop_NO = s.shop_NO
+          where s.shop_NO =#{shop_NO}
+      ]]>
+    </select> 
    		
 	<insert id="insertShop" parameterType="shopVO">
 		<![CDATA[

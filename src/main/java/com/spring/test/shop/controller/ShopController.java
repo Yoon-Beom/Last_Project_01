@@ -16,4 +16,5 @@ public interface ShopController {
 	public ModelAndView addShop(MemberVO member, ShopVO shop, ShopDetailVO shopDetail, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 	public ModelAndView listShopAndDetail(HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ModelAndView listShopView(int shop_NO, HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

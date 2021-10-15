@@ -28,6 +28,10 @@ public class ShopDAOImpl implements ShopDAO{
 		return shopList;
 	}
 	
+	  @Override public ShopVO selectShopView(int shop_NO) throws
+	  DataAccessException { return
+	  sqlSession.selectOne("mapper.shop.selectShopView", shop_NO); }
+	 
 
 	@Override
 	public Map<String, Object> selectShopList(int member_NO) throws DataAccessException {

@@ -14,4 +14,5 @@ public interface ShopDAO {
 	public int insertShopDetail(ShopDetailVO shopD) throws DataAccessException;
 	public int selectShop_NO(int member_NO);
 	public Map selectShopList(int member_NO) throws DataAccessException;
+	public ShopVO selectShopView(int shop_NO) throws DataAccessException;
 }

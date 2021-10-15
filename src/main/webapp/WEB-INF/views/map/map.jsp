@@ -24,7 +24,7 @@
 }
 
  table tr td {
-   background-color: #B0F2CA;
+   background-color: #FFEAEA;
    border: 1px solid #FFFFFF;
 } 
  tabe td {
@@ -305,21 +305,23 @@ li {
                   </tr>
                   <tr>
                      <td>
+               
                         <button class="btn btn-primary">예약</button>
-                        <button class="btn btn-primary" id="${shop.shop_latitude},${shop.shop_longitude},${shop.shop_name},${shop.shop_address}" 
-                        type="button" onclick="search(this.id)" >찾기</button>
+                        <input class="btn btn-primary" id=" ${shop.shop_NO} a!d#$D ${shop.shop_latitude} a!d#$D ${shop.shop_longitude} a!d#$D ${shop.shop_name} a!d#$D ${shop.shop_address}" 
+                        type="button" onclick="search(this.id)" value="찾기">
                      </td>
                   </tr>
                </table>
             </c:forEach>
          </div>
+         <br>
          <button class="btn btn-primary" onclick="moveScroll(-304,0)">◀</button>
          <select name="select">
             <option value="1">가까운 매장순</option>
             <option value="2">리뷰 많은순</option>
             <option value="3">별점 높은 순</option>
          </select>
-         <button class="btn btn-primary" onclick="moveScroll(304,0)">▶</button><br>
+         <button class="btn btn-primary" onclick="moveScroll(304,0)">▶</button><br><br>
          <input type="text" value="" id="test" style="width: 330px;"><br>
          <!-- <button type="button" class="btn btn-primary" onclick="changeTest();">변경이 될까요?</button> -->             
          <div id="box1">
@@ -798,11 +800,13 @@ li {
                   var id = clicked_id; //alert('매장일련번호 = ' + id);
                                   
                   // lat 위도, lon 경도 , 마커이름을 지정할 매장명을 분리합니다
-                  var split = id.split(','),
-                     lat = split[0], // 위도
-                     lon = split[1], // 경도            
-                     shopName = split[2], // 이름
-                     shopAddress = split[3]; // 주소
+                  var split = id.split('a!d#$D'),
+                     lat = split[1], // 위도
+                     lon = split[2], // 경도            
+                     shopName = split[3], // 이름
+                     shopAddress = split[4]; // 주소
+                     shop_NO = split[0]; // 매장 일련번호
+                     
                                   
                   centerMove(lat, lon);
                                                                 
@@ -812,7 +816,7 @@ li {
                   // 마커와 인포윈도우를 표시합니다
                   displayMarker(locPosition, message);
                                                                             
-                  var itemEl = getListItem1(shopName, shopAddress);
+                  var itemEl = getListItem1(shopName, shopAddress, shop_NO);
                      
                   fragment.appendChild(itemEl);
     
@@ -860,15 +864,14 @@ li {
                     
                       
                //검색결과 항목을 Element로 반환하는 함수입니다
-                function getListItem1(shopName, shopAddress) {
-
+                function getListItem1(shopName, shopAddress, shop_NO) {
                    var el = document.createElement('li');
                    var itemStr = 
                         '<div class="info1">'
                       + '   <h3>' + shopName + '</h3><br>'
                       + '<div class="shopImg">사진 공간?</div><br>'
                       + '   <span>' + shopAddress + '</span><br>'
-                      + '<button class="btn btn-primary">상세페이지</button> <button class="btn btn-primary">예약</button>'
+                      + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">상세페이지</button></a> <button class="btn btn-primary">예약</button>'
                       + '</div>';  
                       el.innerHTML = itemStr;
                       el.className = 'item1';

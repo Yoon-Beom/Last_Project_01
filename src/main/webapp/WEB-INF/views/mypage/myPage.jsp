@@ -13,7 +13,8 @@
 <style type="text/css">
 #box1 {
 	width: 80%;
-	height: 2000px;
+	height: 100%;
+    padding: 0 0 40px 0;
 	position: relative;
 	top: 50px;
 	margin: auto;

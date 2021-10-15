@@ -14,7 +14,7 @@
 #box1 {
    width: 80%;
    height: 100%;
-   padding: 0 40px 0 0;
+   padding: 0 0 40px 0;
    position: relative;
    top: 50px;
    margin: auto;
@@ -68,11 +68,10 @@ p {
       <div class="container">
          <div id="box1">
             <br>
-            <form name="frmMember" method="get" action="${contextPath }">
-      
+            <form name="frmMember" method="get" action="${contextPath }">      		
             <table>
                <tr>
-                  <td class="title" colspan="4"><p>매장명  ♡</p>
+                  <td class="title" colspan="4"><p> ${shop.shop_name}  ♡</p>
                   </td>
                </tr>
                <tr>
@@ -80,14 +79,14 @@ p {
                </tr>
                
                <tr>
-                  <td class="td" width="20%">관심</td>
-                  <td class="td" width="25%">85</td>
+                  <td class="td" width="20%">관심수</td>
+                  <td class="td" width="25%"> ${shop.shop_heartScore}</td>
                   <td class="td" width="20%">예약수</td>
-                  <td class="td" width="25%">12</td>
+                  <td class="td" width="25%"> ${shop.shop_reserveScore}</td>
                </tr>
                <tr>
                   <td class="td" width="20%">평점</td>
-                  <td class="td" width="25%">★★★★★</td>
+                  <td class="td" width="25%"> ${shop.shop_starScore}</td>
                   <td class="td" width="20%">리뷰수</td>
                   <td class="td" width="25%">500</td>
                </tr>
@@ -103,20 +102,20 @@ p {
                    </tr>
                    <tr>      
                      <td class="td" width="7%">오픈 시간</td>
-                     <td class="td" width="10%"> 11:00</td>
+                     <td class="td" width="10%">${shop.shop_open_time}</td>
                      <td class="td" width="7%" >마감시간</td>
-                     <td class="td" width="10%" >12:00</td>
+                     <td class="td" width="10%" >${shop.shop_close_time}</td>
                   </tr>   
                   <tr>      
                      <td class="td" width="7%">주소</td>
-                     <td class="td" width="10%"> 경기도 구리시</td>
+                     <td class="td" width="10%">${shop.shop_address}</td>
                      <td class="td" width="7%">☎</td>
-                     <td class="td" width="10%"> 010-111-1111</td>
+                     <td class="td" width="10%">${shop.shop_phone}</td>
                   </tr>
             </table>
                      <br>
                            <input type="button" value="예약하기">
-                           <input type="button" value="뒤로가기">
+                           <a href="${pageContext.request.contextPath}/shop/shopMap.do"><input type="button" value="뒤로가기"></a>
                       <br><br>
             <table>   
                   <tr>
@@ -159,7 +158,7 @@ p {
             </table>
                   <br>
                      <input type="button" value="예약하기">
-                     <input type="button" value="뒤로가기">
+                         <a href="${pageContext.request.contextPath}/shop/shopMap.do"><input type="button" value="뒤로가기"></a>
                       <br><br>
             </form>
          </div>

@@ -183,7 +183,7 @@ public class HomeController {
 		return "mypage/reviewWrite";
 	}
 	
-/*	@RequestMapping(value = "/mypage/visit.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/mypage/visit.do", method = RequestMethod.GET)
 	public String visit(Locale locale, Model model) {
 
 
@@ -196,16 +196,19 @@ public class HomeController {
 	 * 
 	 * return "shop/shopMyPage"; }
 	 */
-	
-	@RequestMapping(value = "/shop/shopMod.do", method = RequestMethod.GET)
-	public String shopMod(Locale locale, Model model) {
 
-		return "shop/shopMod";
-	}
-	
-	@RequestMapping(value = "/shop/shopDetail.do", method = RequestMethod.GET)
-	public String shopDetail(Locale locale, Model model) {
+	/*
+	 * @RequestMapping(value = "/shop/shopMod.do", method = RequestMethod.GET)
+	 * public String shopMod(Locale locale, Model model) {
+	 * 
+	 * return "shop/shopMod"; }
+	 * 
+	 */
 
-		return "shop/shopDetail";
-	}
+	/*
+	 * @RequestMapping(value = "/shop/shopDetail.do", method = RequestMethod.GET)
+	 * public String shopDetail(Locale locale, Model model) {
+	 * 
+	 * return "shop/shopDetail"; }
+	 */
 }

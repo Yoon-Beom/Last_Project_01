@@ -31,6 +31,13 @@ public class ShopServiceImpl implements ShopService {
 		return shopList;
 	}
 
+
+	  @Override public ShopVO ViewShop(int shop_NO) throws DataAccessException {
+	  System.out.println("ShopServiceImpl : listShop start"); ShopVO shopVO=
+	  shopDAO.selectShopView(shop_NO);
+	  
+	  System.out.println("ShopServiceImpl : listShop end"); return shopVO; }
+	  
 	@Override
 	public Map<String, Object> listShop(int member_NO) throws DataAccessException {
 		System.out.println("ShopServiceImpl : listShop start");
