@@ -36,51 +36,56 @@
 		<put-attribute name="content" value="/WEB-INF/views/map/map.jsp" />
 	</definition>
 
-	  <definition name="/mypage/myPage" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/myPage.jsp" />
-   </definition>
+	<definition name="/mypage/myPage" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/myPage.jsp" />
+	</definition>
    
-   <definition name="mypage/pwdCheckMem" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheckMem.jsp" />
-   </definition>
+	<definition name="mypage/pwdCheckMem" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheckMem.jsp" />
+	</definition>
    
-     <definition name="mypage/pwdCheckPwd" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheckPwd.jsp" />
-   </definition>
+	<definition name="mypage/pwdCheckPwd" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/pwdCheckPwd.jsp" />
+	</definition>
    
-     <definition name="mypage/membershipCancle" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/membershipCancle.jsp" />
-   </definition>
+	<definition name="mypage/membershipCancle" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/membershipCancle.jsp" />
+	</definition>
 	
-<definition name="mypage/membershipMod" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/membershipMod.jsp" />
-   </definition>
+	<definition name="mypage/membershipMod" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/membershipMod.jsp" />
+	</definition>
    
-   <definition name="mypage/petAdd" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/petAdd.jsp" />
-   </definition>
+	<definition name="mypage/petAdd" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/petAdd.jsp" />
+	</definition>
    
-   <definition name="mypage/review" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/review.jsp" />
-   </definition>
+	<definition name="mypage/review" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/review.jsp" />
+	</definition>
    
-   <definition name="mypage/reviewWrite" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/reviewWrite.jsp" />
-   </definition>
+	<definition name="mypage/reviewWrite" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/reviewWrite.jsp" />
+	</definition>
    
-   <definition name="mypage/visit" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/mypage/visit.jsp" />
-   </definition>
+	<definition name="mypage/visit" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mypage/visit.jsp" />
+	</definition>
    
-      <definition name="/shop/shopMyPage" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/shop/shopMyPage.jsp" />
-   </definition>
+	<definition name="/shop/shopMyPage" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/shop/shopMyPage.jsp" />
+	</definition>
    
-     <definition name="shop/shopMod" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/shop/shopMod.jsp" />
-   </definition>
+	<definition name="shop/shopMod" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/shop/shopMod.jsp" />
+	</definition>
    
-   <definition name="shop/shopDetail" extends="baseLayout">
-      <put-attribute name="content" value="/WEB-INF/views/shop/shopDetail.jsp" />
-   </definition>
+	<definition name="shop/shopDetail" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/shop/shopDetail.jsp" />
+	</definition>
+   
+	<definition name="reserve" extends="baseLayout">
+		<put-attribute name="content" value="/WEB-INF/views/reserve/reserve.jsp" />
+	</definition>
+   
 </tiles-definitions>

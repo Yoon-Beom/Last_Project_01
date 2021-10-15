@@ -198,7 +198,7 @@
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" ></script>
 <style type="text/css">
-img {
+#img {
 	width: 50px;
 	position: absolute;
 	left: 70%;
@@ -256,7 +256,7 @@ input {
 			<div class="container">
 				<div id="box1">
 					<h1>
-						개인회원 회원가입 <img src="${contextPath}/resources/assets/img/icon.png">
+						개인회원 회원가입 <img id="img" src="${contextPath}/resources/assets/img/icon.png">
 					</h1>
 					<div class="text1">
 						아이디

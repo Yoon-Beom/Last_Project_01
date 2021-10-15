@@ -49,11 +49,9 @@ public class BoardControllerImpl implements BoardController{
 	private CommentVO commentVO;
 
 	// 게시판 목록 페이징
-	@RequestMapping(value="/board/*Board.do", method= {RequestMethod.GET,RequestMethod.POST})
-	public Model list(
-			@RequestParam("board_code") String board_code,
-			Model model, Criteria cri) throws Exception{
-		System.out.println("*Board");
+	@RequestMapping(value = "/board/*Board.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public Model list(@RequestParam("board_code") String board_code, Model model, Criteria cri) throws Exception{
+		System.out.println("BoardControllerImpl : list start");
 		model.addAttribute("list", boardService.list(cri,board_code));
 		int page = cri.getPage();
 		PageMaker pageMaker = new PageMaker();
@@ -64,7 +62,7 @@ public class BoardControllerImpl implements BoardController{
 		System.out.println(cri.toString());
 
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("page",page);
+		model.addAttribute("page", page);
 		model.addAttribute("search", "AllList");
 		return model;
 	}

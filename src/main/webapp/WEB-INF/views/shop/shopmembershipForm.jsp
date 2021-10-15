@@ -308,7 +308,7 @@ $(function() {
 <!-- ㅡ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 
 <style type="text/css">
-img {
+#img {
 	width: 50px;
 	position: absolute;
 	left: 70%;
@@ -378,7 +378,7 @@ input {
 			<div class="container">
 				<div id="box1">
 					<h1>
-						기업회원 회원가입 <img src="${contextPath}/resources/assets/img/icon2.png">
+						기업회원 회원가입 <img id="img" src="${contextPath}/resources/assets/img/icon2.png">
 					</h1>
 					<div class="text1">
 						아이디

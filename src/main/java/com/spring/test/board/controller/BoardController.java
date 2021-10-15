@@ -12,6 +12,5 @@ public interface BoardController {
 //	public ModelAndView listBoard(@RequestParam("board_code") String board_code, HttpServletRequest request, HttpServletResponse response)throws Exception;
 	public ResponseEntity addNewFreeBoard(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception;
 	//public ModelAndView viewArticle(@RequestParam("board_NO") int articleNO, HttpServletRequest request, HttpServletResponse response)throws Exception;
-	public ResponseEntity  removeBoard(@RequestParam("board_NO") int board_NO,
-            HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ResponseEntity  removeBoard(@RequestParam("board_NO") int board_NO, HttpServletRequest request, HttpServletResponse response) throws Exception;
 }
