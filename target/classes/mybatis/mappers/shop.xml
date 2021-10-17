@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.shop">
-	<resultMap type="shopVO" id="shopResult">
+	<resultMap id="shopResult" type="shopVO">
 		<result property="shop_NO" column="shop_NO"/>
 		<result property="member_NO" column="member_NO"/>
 		<result property="shop_name" column="shop_name"/>
@@ -14,7 +14,7 @@
 		<collection property="shopDetailVO" resultMap="shopDetailResult" />
 	</resultMap>
 	
-	<resultMap type="shopDetailVO" id="shopDetailResult">
+	<resultMap id="shopDetailResult" type="shopDetailVO">
 		<result property="shopDetail_NO" column="shopDetail_NO"/>
 		<result property="shop_NO" column="shop_NO"/>
 		<result property="shop_ceo" column="shop_ceo"/>
@@ -32,37 +32,65 @@
 	
  	<select id="selectAllShopList" resultMap="shopResult"> 
       <![CDATA[
-         select * from t_shop, t_shopDetail order by t_shop.shop_joinDate desc
+		select s.shop_NO, s.member_NO, s.shop_name, s.shop_address,
+		    s.shop_code, s.shop_latitude, s.shop_longitude, s.shop_joinDate,
+		    sd.shopDetail_NO, sd.shop_NO, sd.shop_ceo, shop_phone,
+		    shop_open_time, shop_close_time, shop_introduce, shop_starScore,
+		    shop_imageMain, shop_imageSub, shop_heartScore, shop_reserveScore,
+		    shopDetail_joinDate    
+		    from t_member m, t_shop s, t_shopDetail sd
+		    where m.member_no = s.member_no
+		    and s.shop_no = sd.shop_no
+		    and m.member_status = '1'
+		    order by s.shop_joinDate asc
       ]]>
     </select>
 
- 	<select id="selectShopList" resultType="HashMap" parameterType="int"> 
-      <![CDATA[
-          select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code,
-           d.shopDetail_NO, d.shop_NO, d.shop_ceo, d.shop_phone, d.shop_open_time,
-       d.shop_close_time, d.shop_introduce, d.shop_starScore, d.shop_imageMain,
-       d.shop_imageSub, d.shop_heartScore, d.shop_reserveScore,d.shopDetail_joinDate
-       from t_shopDetail d inner join t_shop s
-       on d.shop_NO = s.shop_NO
-        
-       inner join t_member m on s.member_NO = m.member_NO
-       where m.member_NO = #{member_NO}
-      ]]>
-    </select>
-    
-  	<select id="selectShopView" resultMap="shopResult" parameterType="int"> 
-      <![CDATA[
-          select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code,
-          s.shop_latitude, s.shop_longitude, s.shop_joinDate,
-          d.shopDetail_NO, d.shop_NO, d.shop_ceo, d.shop_phone, d.shop_open_time,
-       	  d.shop_close_time, d.shop_introduce, d.shop_starScore, d.shop_imageMain,
-          d.shop_imageSub, d.shop_heartScore, d.shop_reserveScore,d.shopDetail_joinDate
-          from t_shop s
-          left join t_shopDetail d
-          on d.shop_NO = s.shop_NO
-          where s.shop_NO =#{shop_NO}
-      ]]>
-    </select> 
+	<select id="selectShopAndDetailByMemberNO" parameterType="int" resultMap="shopResult"> 
+		<![CDATA[
+			select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code,
+				d.shopDetail_NO, d.shop_NO, d.shop_ceo, d.shop_phone, d.shop_open_time,
+				d.shop_close_time, d.shop_introduce, d.shop_starScore, d.shop_imageMain,
+				d.shop_imageSub, d.shop_heartScore, d.shop_reserveScore, d.shopDetail_joinDate
+				
+				from t_shopDetail d inner join t_shop s
+				on d.shop_NO = s.shop_NO
+				 
+				inner join t_member m on s.member_NO = m.member_NO
+				where m.member_NO = #{member_NO}
+		]]>
+	</select>
+
+	<select id="selectShopByMemberNO" parameterType="int" resultMap="shopResult"> 
+		<![CDATA[
+			select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code
+				from t_shop s
+				where m.member_NO = #{member_NO}
+		]]>
+	</select>
+	
+	<select id="selectShopAndDetailByShopNO" parameterType="int" resultMap="shopResult"> 
+		<![CDATA[
+			select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code,
+				s.shop_latitude, s.shop_longitude, s.shop_joinDate,
+				d.shopDetail_NO, d.shop_NO, d.shop_ceo, d.shop_phone, d.shop_open_time,
+				d.shop_close_time, d.shop_introduce, d.shop_starScore, d.shop_imageMain,
+				d.shop_imageSub, d.shop_heartScore, d.shop_reserveScore,d.shopDetail_joinDate
+				from t_shop s
+				left join t_shopDetail d
+				on d.shop_NO = s.shop_NO
+				where s.shop_NO = #{shop_NO}
+		]]>
+	</select>
+
+	<select id="selectShopByShopNO" parameterType="int" resultMap="shopResult"> 
+		<![CDATA[
+			select s.shop_NO, s.member_NO, s.shop_name, s.shop_address, s.shop_code,
+				s.shop_latitude, s.shop_longitude, s.shop_joinDate
+				from t_shop s
+				where s.shop_NO = #{shop_NO}
+		]]>
+	</select>
    		
 	<insert id="insertShop" parameterType="shopVO">
 		<![CDATA[
@@ -75,7 +103,7 @@
 		]]>
 	</insert>
 	
-		<insert id="insertShopDetail" parameterType="shopDetailVO">
+	<insert id="insertShopDetail" parameterType="shopDetailVO">
 		<![CDATA[
 			insert into t_shopDetail(shopDetail_NO, shop_NO, shop_ceo,
 				shop_phone, shop_open_time, shop_close_time)
@@ -84,7 +112,8 @@
 		]]>
 	</insert>
 	
-	<!-- 		<insert id="insertShopDetail" parameterType="shopDetailVO">
+	<!-- 		
+	<insert id="insertShopDetail" parameterType="shopDetailVO">
 		<![CDATA[
 			insert into t_shopDetail(shopDetail_NO, shop_NO, shop_ceo,
 				shop_phone, shop_open_time, shop_close_time, shop_introduce,
@@ -95,7 +124,9 @@
 			    #{shop_introduce}, #{shop_starScore}, #{shop_imageMain},
 			    #{shop_imageSub}, #{shop_heartScore}, #{shop_reserveScore})
 		]]>
-	</insert> -->
+	</insert> 
+	-->
+	
 	<delete id="deleteShop" parameterType="String">
 		<![CDATA[
 			delete from t_shop where shop_name=#{shop_name}

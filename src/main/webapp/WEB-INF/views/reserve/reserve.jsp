@@ -14,9 +14,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>예약 하기</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+
+$('#select_pet_table').on('scroll touchmove mousewheel', function(event) {
+	event.preventDefault();
+	event.stopPropagation();
+	return false;
+});
+	
+</script>
 <script type="text/javascript">
 
 window.onload = function() {
+	// 달력 초기 세팅
 	<% 
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		int yy = cal.get(java.util.Calendar.YEAR);
@@ -47,20 +58,37 @@ window.onload = function() {
 	for(var i = 10; i <= 20; i++ ) {
 		document.getElementById('time_' + i + ':00').addEventListener('click', select_time);
 	}
-	
 }
 
+// 달력 div 이동 메서드
 function moveScroll(x, y) {
 	var table = document.getElementById('table-box');
 	table.scrollBy(x, y);
 };
 
+// 반려동물 정보 / 입력 div 이동
 function pet_moveScroll(x, y) {
 	var select_pet_table = document.getElementById('select_pet_table');
-	console.log(select_pet_table);
 	select_pet_table.scrollBy(x, y);
+
+	var pet_select = document.querySelector('input[name="pet_select"]:checked');
+	
+	if(pet_select.value == '0') {
+		var pet = document.getElementsByName('pet_NO');
+		var pet_info = document.getElementById('pet_info');
+		
+		pet.value = '';
+		pet_info.innerText = '\u00a0';
+	}
 };
 
+// 반려동물 정보 선택 div 이동
+function pet_listScroll(x, y) {
+	var select_pet_table = document.getElementById('pet_select_div');
+	select_pet_table.scrollBy(x, y);
+}
+
+// 달력 이동
 function month_move(m) {
 	var mon = document.getElementById('month');
 	
@@ -79,6 +107,53 @@ function month_move(m) {
 	}
 }
 
+// 펫 선택
+function select_pet(pet_NO) {
+	var pet = document.getElementsByName('pet_NO');
+	var pet_info = document.getElementById('pet_info');
+
+	var pet_name = document.getElementById('pet_name_' + pet_NO).innerText;
+	var pet_scale = document.getElementById('pet_scale_' + pet_NO).innerText;
+	var pet_age = document.getElementById('pet_age_' + pet_NO).innerText;
+	//var pet_age = str.substring(o, str.length - 1);
+	
+	pet.value = pet_NO;
+	pet_info.innerHTML = pet_name + ', ' + pet_age + ', ' + pet_scale;
+}
+
+// 펫 입력
+function input_pet() {
+	var pet_name = document.getElementById('pet_name').value;
+	var pet_age = document.getElementById('pet_age').value;
+		
+	if(document.querySelector('input[name="pet_scale"]:checked') != null) {
+		var pet_scale = document.querySelector('input[name="pet_scale"]:checked').value;
+	} else {
+		var pet_scale = "";
+	}
+	
+	
+	
+	if((pet_name != "") && (pet_age != "") && (pet_scale != "")) {
+		pet_info.innerText = pet_name + ', ' + pet_age + '살, ' + pet_scale;
+	} else if((pet_name != "") && (pet_age != "")) {
+		pet_info.innerText = pet_name + ', ' + pet_age + '살';
+	} else if((pet_name != "") && (pet_scale != "")) {
+		pet_info.innerText = pet_name + ', ' + pet_scale;
+	} else if((pet_age != "") && (pet_scale != "")) {
+		pet_info.innerText = pet_age + '살, ' + pet_scale;
+	} else if(pet_name != "") {
+		pet_info.innerText = pet_name;
+	} else if(pet_age != "") {
+		pet_info.innerText = pet_age + '살';
+	} else if(pet_scale != "") {
+		pet_info.innerText = pet_scale;
+	} else{
+		pet_info.innerText = '\u00a0';
+	}
+}
+
+// 날짜 선택
 function select_day(e) {
 	delete_color_day();
 	var mon = document.getElementById('month').value;
@@ -90,6 +165,7 @@ function select_day(e) {
 	document.getElementsByName('reserve_Date').value = <%= yy %> + '-' + mon + '-' + this.innerText;
 }
 
+// 날짜 스타일 지우기
 function delete_color_day() {
 	var str = document.getElementsByName('reserve_Date').value;
 	if(str != null) {
@@ -112,6 +188,7 @@ function delete_color_day() {
 	}
 }
 
+// 시간대 선택
 function select_time(e) {
 	delete_time();
 	
@@ -122,12 +199,22 @@ function select_time(e) {
 	document.getElementsByName('reserve_TimeA').value = this.innerText;
 }
 
+// 시간대 스타일 지우기
 function delete_time() {
 	var str = document.getElementsByName('reserve_TimeA').value;
 	if(str != null) {
 		document.getElementById('time_' + str).style.backgroundColor = '';
 		document.getElementById('time_' + str).style.color = 'gray';
 		document.getElementById('time_' + str).style.border = '';
+	}
+}
+
+//submit 예약하기
+function sumit_action() {
+	var reservefrm = document.reserve;
+
+	if(reservefrm.pet_name.value == '') {
+		
 	}
 }
 	
@@ -204,23 +291,24 @@ input {
 	padding: 0px 16px;
 	width: 900px;
 	display: flex;
-	
-	.element {
-		height: 100%;
-	}
+	.
+	element
+	{
+	height
+	:
+	100%;
 }
 
+}
 #table-box {
 	overflow-x: scroll;
 	white-space: nowrap;
 	width: 560px;
-	
 	display: inline-block;
-	float: left; 
-	scroll-behavior : smooth;
-	
+	float: left;
+	scroll-behavior: smooth;
 	/* 드래그 막기 */
-	-ms-user-select : none;
+	-ms-user-select: none;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
@@ -252,7 +340,7 @@ input {
 	margin: 0px;
 	padding: 0px;
 	width: 100px;
-	height: calc( ( 100% - 40px ) / 11 );
+	height: calc(( 100% - 40px)/11);
 	text-align: center;
 	border-collapse: collapse;
 	border: 1px solid black;
@@ -271,14 +359,19 @@ input {
 	height: 15px;
 }
 
+.pet_scale_selct {
+	width: 15px;
+	height: 15px;
+}
+
 #select_pet_table {
 	width: 200px;
-	height: 250px;
+	height: 180px;
 	display: inline-block;
 	overflow: scroll;
 	
 	/* 드래그 막기 */
-	-ms-user-select : none;
+	-ms-user-select: none;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
@@ -291,14 +384,39 @@ input {
 	white-space: nowrap;
 }
 
+#petlist_div {
+	width: 200px;
+	height: 180px;
+	display: inline-block; 
+	overflow : scroll;
+	
+	/* 드래그 막기 */
+	-ms-user-select: none;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	-ms-user-select: none;
+	scroll-behavior: smooth;
+	overflow: scroll;
+}
+
 .past_day {
 	background-color: rgb(180, 180, 180);
 	color: rgb(104, 104, 104);
 }
 
 .next_day {
+	
 }
 
+#pet_select_div {
+	width: 200px;
+	height: 78px;
+	display: inline-block;
+	overflow: hidden;
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -503,16 +621,16 @@ input {
 						</tr>
 
 						<%
-						for (int i = 10; i < 21; i++) {
-							out.println("<tr><td id='time_" + i + ":00'>" + i + ":00</td></tr>");
-						}
+							for (int i = 10; i < 21; i++) {
+								out.println("<tr><td id='time_" + i + ":00'>" + i + ":00</td></tr>");
+							}
 						%>
 					</table>
 					<!-- timeline -->
 
 					<div id="resContent" class='element'>
-						<form name='reserve' method="post">
-							<table style="width: 100%; margin: 10px 0 0 0; padding: 0px; height: 13%">
+						<form id="" name='reserve' method="post">
+							<table style="width: 100%; margin: 20px 0 0 0; padding: 0px; height: 13%">
 								<tr>
 									<td colspan="4" style="height: 40px; text-align: center;">
 										<h5 style="margin: 5px 0 0 0;">예약 내역</h5>
@@ -520,83 +638,139 @@ input {
 								</tr>
 								
 								<tr>
-									<td style="width:20%;">&nbsp;</td>
-									<td style="width:30%; text-align: center;">
-										<input type="radio" class="pet_tabe_selct" name="pet_select" value="0" checked="checked" onclick="pet_moveScroll(0, -250)">
-									</td>
-									<td style="width:30%; text-align: center;">
-										<input type="radio" class="pet_tabe_selct" name="pet_select" value="1" onclick="pet_moveScroll(0, 250)">
-									</td>
-									<td style="width:20%;">&nbsp;</td>
+
+									<c:choose>
+										<c:when test="${empty petList}">
+											<td colspan="4" style="text-align: center;">
+												<input type="radio" class="pet_tabe_selct" name="pet_select" value="0" checked="checked">
+											</td>
+										</c:when>
+										
+										<c:otherwise>
+											<td style="width: 20%;">&nbsp;</td>
+											<td style="width: 30%; text-align: center;">
+												<input type="radio" class="pet_tabe_selct" name="pet_select" value="0" checked="checked" onclick="pet_moveScroll(0, -195)">
+											</td>
+											<td style="width: 30%; text-align: center;">
+												<input type="radio" class="pet_tabe_selct" name="pet_select" value="1" onclick="pet_moveScroll(0, 195)">
+											</td>
+											<td style="width: 20%;">&nbsp;</td>
+										</c:otherwise>
+									</c:choose>
+									
 								</tr>
 							</table>
-								
 							
-							<div id="select_pet_table"><!-- 반려동물 입력, 선택 -->
-								<table style="width: 200px; height: 250px; display: inline-block; white-space:nowrap;"> <!-- 반려동물 정보 입력 -->
+							<div id="select_pet_table">
+								<!-- 반려동물 입력, 선택 -->
+								<table style="width: 200px; height: 180px; display: inline-block; white-space: nowrap;">
+									<!-- 반려동물 정보 입력 -->
 									<tr>
 										<td colspan="2" style="text-align: center; height: 40px;">
 											<span style="font-size: 18px;">[반려동물 정보 입력]</span>
 										</td>
 									</tr>
-									
 									<tr>
-										<td style="width: 60px; height: 32px; text-align: center;">이름</td>
+										<td style="width: 60px; height: 20px; text-align: center;">이름</td>
 										<td>
-											<input type="text" name="pet_name" style="width: 130px; height: 30px; text-align: center;">
+											<input type="text" id="pet_name" name="pet_name" style="width: 130px; height: 20px; text-align: center; border: none 0px;" onchange="input_pet()">
 										</td>
 									</tr>
-									
 									<tr>
-										<td rowspan="3" style="text-align: center; width: 60px; height: 120px;">크기</td>
-										<td style="text-align: center; width: 120px; height: 40px;">
-											<input type="radio" class="pet_tabe_selct" name="pet_scale" value="소형">
-											&nbsp;
-											<span style="vertical-align: 3.5px;">소형</span>
+										<td style="text-align: center;">나이</td>
+										<td style="text-align: center; width: 120px; height: 20px;">
+											<input type="text" id="pet_age" name="pet_age" style="width: 120px; height: 20px; text-align: center; border: none 0px;" onchange="input_pet()">살
 										</td>
 									</tr>
-									
 									<tr>
-										<td style="text-align: center; width: 120px; height: 40px;">
-											<input type="radio" class="pet_tabe_selct" name="pet_scale" value="중형">
-											&nbsp; 
-											<span style="vertical-align: 3.5px;">중형</span>
+										<td rowspan="3" style="text-align: center; width: 60px; height: 60px;">크기</td>
+										<td style="text-align: center; width: 120px; height: 20px;">
+											<input type="radio" class="pet_scale_selct" name="pet_scale" value="소형" onclick="input_pet()">
+											&nbsp; <span style="vertical-align: 3.5px;">소형</span>
 										</td>
 									</tr>
-									
 									<tr>
-										<td style="text-align: center; width: 120px; height: 40px;">
-											<input type="radio" class="pet_tabe_selct" name="pet_scale" value="대형">
-											&nbsp;
-											<span style="vertical-align: 3.5px;">대형</span>
+										<td style="text-align: center; width: 120px; height: 20px;">
+											<input type="radio" class="pet_scale_selct" name="pet_scale" value="중형" onclick="input_pet()">
+											&nbsp; <span style="vertical-align: 3.5px;">중형</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: center; width: 120px; height: 20px;">
+											<input type="radio" class="pet_scale_selct" name="pet_scale" value="대형" onclick="input_pet()">
+											&nbsp; <span style="vertical-align: 3.5px;">대형</span>
 										</td>
 									</tr>
 								</table>
 								
-								<table style="width: 200px; height: 250px; display: inline-block; text-align: center;"> <!-- 반려동물 선택 -->
-									<tr>
-										<td colspan="2" style="text-align: center; width: 200px;">
-											<span>[반려동물 선택하기]</span>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2">
-											&nbsp;
-										</td>
-									</tr>
+								<div id="petlist_div">
+									<table style="width: 200px; height: 20px; display: block; text-align: center;  margin: 0 0 30px 0;">
+										<!-- 반려동물 선택 -->
+										<tr>
+											<td colspan="2" style="text-align: center; width: 200px;">
+												<span>[반려동물 선택하기]</span>
+											</td>
+										</tr>
+									</table>
 									
-									<tr>
-										<td>
-											<button> ◀ </button>	
-										</td>
-										<td>
-											<button> ▶ </button>
-										</td>
-									</tr>
-								</table>
+									<div id="pet_select_div">
+										<c:choose>
+											<c:when test="${not empty petList}">
+												<c:forEach var="pet" items="${petList}">
+													<table style="width: 200px; height: 70px; display: inline;">
+														<tr>
+															<td rowspan="3" style="width: 100px; height: 70;">
+																<c:choose>
+																	<c:when test="${not empty pet.pet_image}">
+																		<img src="${contextPath}/downloadPet.do?pet_NO=${pet.pet_NO}&pet_image=${pet.pet_image}" id="pet_previewNon${pet.pet_NO}" width="100px"/>
+																	</c:when>
+																	<c:otherwise>
+																		<img src="${contextPath}/resources/assets/img/pet_image.png" id="pet_preview${pet.pet_NO}" width="100px" />
+																	</c:otherwise>
+																</c:choose>
+															</td>
+															
+															<td style="width: 100px;">
+																<span id="pet_name_${pet.pet_NO}" style="text-align: center;">${pet.pet_name}</span>
+															</td>
+															
+															<td rowspan="3" style="height: 72px;">
+																<div style="width: 45px; height: 30px; text-align: center; padding: 0 2px 0 0; margin: auto; font-weight: bold;" onclick="select_pet(${pet.pet_NO})">선택</div>
+															</td>
+														</tr>
+														
+														<tr>
+															<td>
+																<span id="pet_age_${pet.pet_NO}">${pet.pet_age}살</span>
+															</td>
+														</tr>
+														
+														<tr>
+															<td>
+																<span id="pet_scale_${pet.pet_NO}">${pet.pet_scale}</span>
+															</td>
+														</tr>
+													</table>
+												</c:forEach>
+											</c:when>
+										</c:choose>
+									</div>
+									<!-- pet_select_div -->
+									
+									<table style="width: 200px; height: 30px; text-align: center;">
+										<tr>
+											<td>
+												<div style="width: 95px" onclick="pet_listScroll(0, -78)">◀</div>
+											</td>
+											<td>
+												<div style="width: 95px" onclick="pet_listScroll(0, 78)">▶</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<!-- petlist_div -->
 							</div>
-				
-							
+							<!-- select_pet_table -->
 							<table style="height: 35%;">
 								<tr>
 									<td style="text-align: center; width: 60px;">미용</td>
@@ -621,7 +795,21 @@ input {
 								</tr>
 								
 								<tr>
-									<td colspan="4" style="text-align: center; height: 40%; padding: 10% 0 0 0;">
+									<td colspan="4" style="text-align: center; height: 20%;">
+										<h4 style="font-size: 20px; margin: 0;">${shopVO.shop_name}</h4>
+										<input type="hidden" value="${shopVO.shop_NO}">
+									</td>
+								</tr>
+								
+								<tr>
+									<td colspan="4" style="text-align: center; height: 20%;">
+										<span id="pet_info" style="font-size: 18px; margin: 0;">&nbsp;</span>
+										<input type="hidden" name="pet_NO" value="">
+									</td>
+								</tr>
+								
+								<tr>
+									<td colspan="4" style="text-align: center; height: 40%;">
 										<h4 style="font-size: 16px; display: inline;">예약 날짜 : &nbsp;</h4>
 										<h4 id='reserve_Date' style="font-size: 16px; display: inline;"></h4>
 										<input type="hidden" name="reserve_Date" value="">
@@ -639,7 +827,7 @@ input {
 								<tr>
 									<td colspan="4" style="text-align: center;">
 										<button type="button" style="width: 80px; height: 30px;">취소하기</button>
-										<button type="button" style="width: 80px; height: 30px;">예약하기</button>
+										<button type="button" style="width: 80px; height: 30px;" onclick="sumit_action()">예약하기</button>
 									</td>
 								</tr>
 							</table>

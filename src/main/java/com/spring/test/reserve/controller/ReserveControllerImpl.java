@@ -15,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.test.member.vo.MemberVO;
 import com.spring.test.pet.service.PetService;
 import com.spring.test.pet.vo.PetVO;
+import com.spring.test.shop.service.ShopService;
+import com.spring.test.shop.service.ShopServiceImpl;
+import com.spring.test.shop.vo.ShopVO;
 
 @Controller("reserveController")
 public class ReserveControllerImpl implements ReserveController {
@@ -24,30 +27,35 @@ public class ReserveControllerImpl implements ReserveController {
 	private PetVO petVO;
 	@Autowired
 	private MemberVO memberVO;
+	@Autowired
+	private ShopService shopService;
 	
 	@Override
 	@RequestMapping(value = "/reserve.do", method = RequestMethod.GET)
-	public String reservation(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView reservation(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("ReserveControllerImpl : reservation start");
+		
+		String viewName = (String) request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
+		
 		HttpSession session = request.getSession();
 		memberVO = (MemberVO) session.getAttribute("member");
 		
+		int member_NO = memberVO.getMember_NO();
+		List petList = petService.listPet(member_NO);
 		
-		return "reserve";
+		System.out.println("petList : " + petList);
+		
+		ShopVO shopVO = shopService.selectShopByShopNO(1);
+		
+		mav.addObject("petList", petList);
+		mav.addObject("shopVO", shopVO);
+		
+		
+		System.out.println("ReserveControllerImpl : reservation end");
+		return mav;
 	}
 	
-//	@Override
-//	@RequestMapping(value = "/mypage/myPage.do", method = RequestMethod.POST)
-//	public ModelAndView listPet(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		HttpSession session = request.getSession();
-//		memberVO = (MemberVO) session.getAttribute("member");
-//		int member_NO = memberVO.getMember_NO();
-//		System.out.println("listPet member_NO : " + member_NO);
-//		String viewName = (String) request.getAttribute("viewName");
-//		List petList = petService.listPet(member_NO);
-//		ModelAndView mav = new ModelAndView(viewName);
-//		mav.addObject("member", memberVO);
-//		mav.addObject("petList", petList);
-//
-//		return mav;
-//	}
+
 }

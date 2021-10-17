@@ -7,19 +7,19 @@ import org.springframework.stereotype.Component;
 @Component("shopDetailVO")
 public class ShopDetailVO {
 
-	private int shopDetail_NO;  			//매장 디테일 일련번호
-	private int shop_NO;   			        //매장 일련번호*
-	private String shop_ceo;                //대표 이름
+	private int shopDetail_NO;  			// 매장 디테일 일련번호
+	private int shop_NO;   			        // 매장 일련번호*
+	private String shop_ceo;                // 대표 이름
 	private String shop_phone;              // 매장 전화번호
-	private String shop_open_time;          //오픈 시간
-	private String shop_close_time;         //마감 시간
-	private String shop_introduce;          //소개글
-	private int shop_starScore;             //별점
-	private String shop_imageMain;          //메인 사진
-	private String shop_imageSub;           //서브 사진
-	private int shop_heartScore;            //관심 수
-	private int shop_reserveScore;          //예약 수 (마이페이지)
-	private Date shopDetail_joinDate;       //등록날짜	
+	private String shop_open_time;          // 오픈 시간
+	private String shop_close_time;         // 마감 시간
+	private String shop_introduce;          // 소개글
+	private int shop_starScore;             // 별점
+	private String shop_imageMain;          // 메인 사진
+	private String shop_imageSub;           // 서브 사진
+	private int shop_heartScore;            // 관심 수
+	private int shop_reserveScore;          // 예약 수 (마이페이지)
+	private Date shopDetail_joinDate;       // 등록날짜	
 	
 	public ShopDetailVO() {}
 	

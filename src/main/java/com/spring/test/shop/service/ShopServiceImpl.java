@@ -24,29 +24,38 @@ public class ShopServiceImpl implements ShopService {
 	public List listShop() throws DataAccessException {
 		System.out.println("ShopServiceImpl : listShop start");
 
-		List shopList = null;
-		shopList = shopDAO.selectAllShopList();
+		List shopList = shopDAO.selectAllShopList();
 
 		System.out.println("ShopServiceImpl : listShop end");
 		return shopList;
 	}
 
-
-	  @Override public ShopVO ViewShop(int shop_NO) throws DataAccessException {
-	  System.out.println("ShopServiceImpl : listShop start"); ShopVO shopVO=
-	  shopDAO.selectShopView(shop_NO);
-	  
-	  System.out.println("ShopServiceImpl : listShop end"); return shopVO; }
-	  
 	@Override
-	public Map<String, Object> listShop(int member_NO) throws DataAccessException {
+	public ShopVO listShop(int member_NO) throws DataAccessException {
 		System.out.println("ShopServiceImpl : listShop start");
 		
-		Map<String, Object> shopMap = shopDAO.selectShopList(member_NO);
-		
+		ShopVO shopMap = shopDAO.selectShopAndDetailByMemberNO(member_NO);
 		
 		System.out.println("ShopServiceImpl : listShop end");
 		return shopMap;
+	}
+
+	@Override public ShopVO ViewShop(int shop_NO) throws DataAccessException {
+		System.out.println("ShopServiceImpl : ViewShop start");
+		
+		ShopVO shopVO = shopDAO.selectShopAndDetailByShopNO(shop_NO);
+		
+		System.out.println("ShopServiceImpl : ViewShop end");
+		return shopVO;
+	}
+	
+	@Override public ShopVO selectShopByShopNO(int shop_NO) throws DataAccessException {
+		System.out.println("ShopServiceImpl : selectShopByShopNO start");
+		
+		ShopVO shopVO = shopDAO.selectShopByShopNO(shop_NO);
+		
+		System.out.println("ShopServiceImpl : selectShopByShopNO end");
+		return shopVO;
 	}
 
 	@Override
@@ -71,8 +80,12 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	public int selectShop_No(int member_NO) {
-		// TODO Auto-generated method stub
-		return shopDAO.selectShop_NO(member_NO);
+		System.out.println("ShopServiceImpl : selectShop_No start");
+		
+		int result = shopDAO.selectShop_NO(member_NO);
+		
+		System.out.println("ShopServiceImpl : selectShop_No end");
+		return result;
 	}
 
 }

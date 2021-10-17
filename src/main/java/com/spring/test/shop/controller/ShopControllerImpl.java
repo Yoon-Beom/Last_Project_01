@@ -58,54 +58,58 @@ public class ShopControllerImpl implements ShopController{
 		return mav; 
 		}
 	
-	 @Override
-	  @RequestMapping(value="/shop/shopDetail.do", method= RequestMethod.GET) 
-	 public ModelAndView listShopView(@RequestParam("shop_NO") int shop_NO,HttpServletRequest request, HttpServletResponse response) throws
-	  Exception {
-	  System.out.println("ShopControllerImpl : listShopAndDetail start"); 
-	  String viewName = (String)request.getAttribute("viewName");
-	  shopVO=shopService.ViewShop(shop_NO);
-	  String phone = shopVO.getShopDetailVO().getShop_phone();
-	  String openTime = shopVO.getShopDetailVO().getShop_open_time();
-	  String closeTime = shopVO.getShopDetailVO().getShop_close_time();
-	  String introduce =  shopVO.getShopDetailVO().getShop_introduce();
-	  int starScore =  shopVO.getShopDetailVO().getShop_starScore();
-	  int heartScore =  shopVO.getShopDetailVO().getShop_heartScore();
-	  int reserveScore =  shopVO.getShopDetailVO().getShop_reserveScore();
-	  shopVO.setShop_phone(phone);
-	  shopVO.setShop_open_time(openTime);
-	  shopVO.setShop_close_time(closeTime);
-	  shopVO.setShop_introduce(introduce);
-	  shopVO.setShop_introduce(introduce);
-	  shopVO.setShop_starScore(starScore);
-	  shopVO.setShop_heartScore(heartScore);
-	  shopVO.setShop_reserveScore(reserveScore);
-	  ModelAndView mav = new ModelAndView();
-	  mav.setViewName(viewName); 
-	  mav.addObject("shop", shopVO); 
+	@Override
+	@RequestMapping(value="/shop/shopDetail.do", method= RequestMethod.GET) 
+	public ModelAndView listShopView(@RequestParam("shop_NO") int shop_NO,HttpServletRequest request, HttpServletResponse response) throws
+	Exception {
+		System.out.println("ShopControllerImpl : listShopAndDetail start"); 
+		String viewName = (String)request.getAttribute("viewName");
+		
+		shopVO = shopService.ViewShop(shop_NO);
+		String phone = shopVO.getShopDetailVO().getShop_phone();
+		String openTime = shopVO.getShopDetailVO().getShop_open_time();
+		String closeTime = shopVO.getShopDetailVO().getShop_close_time();
+		String introduce =  shopVO.getShopDetailVO().getShop_introduce();
+		int starScore =  shopVO.getShopDetailVO().getShop_starScore();
+		int heartScore =  shopVO.getShopDetailVO().getShop_heartScore();
+		int reserveScore =  shopVO.getShopDetailVO().getShop_reserveScore();
+		
+		shopVO.getShopDetailVO().setShop_phone(phone);
+		shopVO.getShopDetailVO().setShop_open_time(openTime);
+		shopVO.getShopDetailVO().setShop_close_time(closeTime);
+		shopVO.getShopDetailVO().setShop_introduce(introduce);
+		shopVO.getShopDetailVO().setShop_introduce(introduce);
+		shopVO.getShopDetailVO().setShop_starScore(starScore);
+		shopVO.getShopDetailVO().setShop_heartScore(heartScore);
+		shopVO.getShopDetailVO().setShop_reserveScore(reserveScore);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName); 
+		mav.addObject("shop", shopVO); 
 
-	  return mav; 
-	  }
+		return mav; 
+	}
 	 
-	 
+
 	 @Override
-		@RequestMapping(value={"/shop/shop*.do","/shop/shopMod.do"}, method = RequestMethod.GET)
-		public ModelAndView listShopAndDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-			System.out.println("ShopControllerImpl : listShopAndDetail start");
+	 @RequestMapping(value={"/shop/shop*.do","/shop/shopMod.do"}, method = RequestMethod.GET)
+	 public ModelAndView listShopAndDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		 System.out.println("ShopControllerImpl : listShopAndDetail start");
 
-			HttpSession session = request.getSession();
-			memberVO = (MemberVO) session.getAttribute("member");
-			int member_NO = memberVO.getMember_NO();
-			System.out.println("/shopMyPage : memberNO = " + member_NO);
-			Map<String, Object> shopMap = new HashMap<String, Object>();
-			shopMap = (Map<String, Object>) shopService.listShop(member_NO);
-			String viewName = (String)request.getAttribute("viewName");
-			ModelAndView mav = new ModelAndView(viewName);
-			mav.addObject("shop", shopMap);
-			System.out.println("shopComtroller : "+shopMap);
+		 HttpSession session = request.getSession();
+		 memberVO = (MemberVO) session.getAttribute("member");
+		 int member_NO = memberVO.getMember_NO();
+		 System.out.println("/shopMyPage : memberNO = " + member_NO);
+		 
+		 ShopVO shopVO = shopService.listShop(member_NO);
+		 String viewName = (String)request.getAttribute("viewName");
+		 ModelAndView mav = new ModelAndView(viewName);
+		 mav.addObject("shop", shopVO);
+		 System.out.println("shopComtroller : " + shopVO);
 
-			return mav;
-		}
+		 System.out.println("ShopControllerImpl : listShopAndDetail end");
+		 return mav;
+	 }
 
 	
 	

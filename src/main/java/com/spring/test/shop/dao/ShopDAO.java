@@ -13,6 +13,8 @@ public interface ShopDAO {
 	public int insertShop(ShopVO shop) throws DataAccessException;
 	public int insertShopDetail(ShopDetailVO shopD) throws DataAccessException;
 	public int selectShop_NO(int member_NO);
-	public Map selectShopList(int member_NO) throws DataAccessException;
-	public ShopVO selectShopView(int shop_NO) throws DataAccessException;
+	public ShopVO selectShopAndDetailByMemberNO(int member_NO) throws DataAccessException;
+	public ShopVO selectShopByMemberNO(int shop_NO) throws DataAccessException;
+	public ShopVO selectShopAndDetailByShopNO(int shop_NO) throws DataAccessException;
+	public ShopVO selectShopByShopNO(int member_NO) throws DataAccessException;
 }

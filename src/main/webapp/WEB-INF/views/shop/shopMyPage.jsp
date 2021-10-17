@@ -161,13 +161,13 @@ p {
 					
 					<tr>
 						<td class="td" width="20%">관심</td>
-						<td class="td" width="25%">${shop.SHOP_HEARTSCORE}</td>
+						<td class="td" width="25%">${shop.shopDetailVO.shop_heartScore}</td>
 						<td class="td" width="20%">예약수</td>
-						<td class="td" width="25%">${shop.SHOP_RESERVESCORE }</td>
+						<td class="td" width="25%">${shop.shopDetailVO.shop_reserveScore }</td>
 					</tr>
 					<tr>
 						<td class="td" width="20%">평점</td>
-						<td class="td" width="25%">${shop.SHOP_STARSCORE }</td>
+						<td class="td" width="25%">${shop.shopDetailVO.shop_starScore }</td>
 						<td class="td" width="20%">리뷰수</td>
 						<td class="td" width="25%">500</td>
 					</tr>
@@ -182,21 +182,21 @@ p {
                    </tr>
                    <tr>      
                      <td class="td" width="7%">매장명</td>
-                     <td class="td" width="10%">${shop.SHOP_NAME}</td>
+                     <td class="td" width="10%">${shop.shop_name}</td>
                      <td class="td" width="7%" >사업자등록번호</td>
-                     <td class="td" width="10%" >${shop.SHOP_CODE }</td>
+                     <td class="td" width="10%" >${shop.shop_code}</td>
                   </tr>   
                   <tr>      
                      <td class="td" width="7%">오픈 시간</td>
-                     <td class="td" width="10%"> ${shop.SHOP_OPEN_TIME }</td>
+                     <td class="td" width="10%"> ${shop.shopDetailVO.shop_open_time}</td>
                      <td class="td" width="7%" >마감시간</td>
-                     <td class="td" width="10%" >${shop.SHOP_CLOSE_TIME }</td>
+                     <td class="td" width="10%" >${shop.shopDetailVO.shop_close_time}</td>
                   </tr>   
                   <tr>      
                      <td class="td" width="7%">주소</td>
-                     <td class="td" width="10%">${shop.SHOP_ADDRESS }</td>
+                     <td class="td" width="10%">${shop.shop_address}</td>
                      <td class="td" width="7%">☎</td>
-                     <td class="td" width="10%"> ${shop.SHOP_PHONE }</td>
+                     <td class="td" width="10%"> ${shop.shopDetailVO.shop_phone}</td>
                   </tr>
                   <tr>
                      <td class="td" width="20%" colspan="4">매장 소개</td>
