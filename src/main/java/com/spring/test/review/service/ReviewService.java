@@ -15,4 +15,5 @@ public interface ReviewService {
 	public Object ShopReview(Object shop_NO);
 	public Object shopReviewList(Criteria1 cri, int member_NO);
 	public int reviewListCount(int member_NO);
+	public Object myPageReserve(int member_NO);
 }

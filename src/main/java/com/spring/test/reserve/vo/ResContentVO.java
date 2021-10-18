@@ -40,6 +40,15 @@ public class ResContentVO {				// 예약 디테일 테이블
 	private String res_option;			// 예약 테이블 : 옵션 (목욕 : 0, 1)
 	private String res_status;			// 예약 테이블 : 예약상태 (예약 상태 : 0, 1)
 	
+	private int rnum;					// 방문내역 번호 용도
+	public int getRnum() {
+		return rnum;
+	}
+
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+
 	ResContentVO() { }
 	
 	public void setResContent_NO(int resContent_NO) { this.resContent_NO = resContent_NO; }

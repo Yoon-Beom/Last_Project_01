@@ -82,4 +82,12 @@ public class ReviewDAOImpl implements ReviewDAO{
 		return sqlSession.selectOne("mapper.review.shopReviewCount", member_NO);
 	}
 
+	@Override
+	public List myPageReserve(int member_NO) {
+	List list = sqlSession.selectList("mapper.review.mypageReserve",member_NO);
+	System.out.println("mypageReserve DAO :"+member_NO);
+	System.out.println("mypageReserve DAO" +list);
+		return list;
+	}
+
 }

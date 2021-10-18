@@ -60,9 +60,10 @@ public class PetControllerImpl implements PetController {
 		ModelAndView mav = new ModelAndView(viewName);
 		
 		mav.addObject("reviewList", reviewService.myPageReview(member_NO));
+		mav.addObject("reserveList", reviewService.myPageReserve(member_NO));
 		mav.addObject("member", memberVO);
 		mav.addObject("petList", petList);
-		
+	
 		System.out.println("PetControllerImpl : listPet end");
 		return mav;
 	}

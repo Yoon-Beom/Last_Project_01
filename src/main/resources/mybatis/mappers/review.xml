@@ -21,6 +21,18 @@
 		<result property="member_NO" column="member_NO" />
 	</resultMap> 
 	
+<!-- 		<resultMap id="reserveResult" type="reserveVO">
+		<result property="reserve_NO" column="reserve_NO" />
+		<result property="shop_NO" column="shop_NO" />
+		<result property="member_NO" column="member_NO" />
+		<result property="pet_NO" column="pet_NO" />
+		<result property="reserve_Date" column="reserve_Date" />
+		<result property="reserve_TimeA" column="reserve_TimeA" />
+		<result property="res_spot" column="res_spot" />
+		<result property="res_option" column="res_option" />
+		<result property="res_status" column="res_status" />
+	</resultMap> -->
+	
 	<select id="ReviewPage" resultType="reviewVO" parameterType="criteria1">
 		<![CDATA[
  select * from (       
@@ -31,7 +43,7 @@
           ON r.member_NO = p.member_NO
           INNER JOIN t_shop s
           ON r.shop_no = s.shop_no
-          where r.member_NO=11
+          where r.member_NO=#{member_NO}
           order by r.review_Date desc))
           where rnum between #{rowStart} and #{rowEnd}
 
@@ -133,4 +145,22 @@ select * from (
     where shop_NO = #{shop_NO}
 	]]>
 	</update>
+	
+<select id="mypageReserve" resultType="resContentVO" parameterType="int">
+		<![CDATA[
+select * from (       
+    SELECT rownum as rnum, reserve_NO, shop_NO, shop_name,
+   pet_name, reserve_Date
+     FROM ( select re.reserve_NO, re.shop_NO, ss.shop_name, pp.pet_name, re.reserve_Date
+     from t_reserve re INNER JOIN t_pet pp
+          ON re.member_NO = pp.member_NO
+          INNER JOIN t_shop ss
+          ON re.shop_no = ss.shop_no
+          where re.member_NO = #{member_NO}
+          and re.res_status='1'
+          order by  re.reserve_Date desc))
+          where rnum between 1 and 3
+
+		]]>
+	</select>	
 </mapper>

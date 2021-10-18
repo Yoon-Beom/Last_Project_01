@@ -16,4 +16,5 @@ public interface ReviewDAO {
 	public List ShopReview(Object shop_NO);
 	public List shopReviewList(Criteria1 cri, int member_NO);
 	public int shoplistCount(int member_NO);
+	public java.util.List myPageReserve(int member_NO);
 }

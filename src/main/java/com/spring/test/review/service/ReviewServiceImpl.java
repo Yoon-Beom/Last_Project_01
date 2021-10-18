@@ -57,4 +57,10 @@ public class ReviewServiceImpl implements ReviewService{
 		// TODO Auto-generated method stub
 		return reviewDAO.shoplistCount(member_NO);
 	}
+	@Override
+	public Object myPageReserve(int member_NO) {
+		List list = reviewDAO.myPageReserve(member_NO);
+		System.out.println("mypageReserve service : "+list);
+		return list;
+	}
 }

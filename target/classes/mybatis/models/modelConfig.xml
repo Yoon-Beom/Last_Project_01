@@ -14,5 +14,6 @@
 		<typeAlias type="com.spring.test.review.vo.ReviewVO" alias="reviewVO" />
 		<typeAlias type="com.spring.test.review.vo.Criteria1" alias="criteria1" />
 		<typeAlias type="com.spring.test.reserve.vo.ReserveVO" alias="reserveVO" />
+		<typeAlias type="com.spring.test.reserve.vo.ResContentVO" alias="resContentVO" />
 	</typeAliases>
 </configuration>

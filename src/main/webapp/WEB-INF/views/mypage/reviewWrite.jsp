@@ -142,7 +142,7 @@ text-shadow: 0 0 0 #f0f0f0 ; /* 새 이모지 색상 부여 */
                <tr id="boardmenu">
                   <td width="20%" class="td">제목</td>
                   <td id="board_title" width="80%" class="td" style="background-color: white;">
-                  <input type="hidden" name="shop_NO" value=1>
+                  <input type="hidden" name="shop_NO" value="${reserve.shop_NO }">
                      <input type="text" name="review_title" style="resize: none; width: 100%; height: 100%; padding: 0; border-width: 0; font-size: 20px;"></input>
                   </td>
                </tr>

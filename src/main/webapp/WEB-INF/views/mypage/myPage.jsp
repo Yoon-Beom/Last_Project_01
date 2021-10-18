@@ -448,17 +448,18 @@ window.onload = function() {
 						<td class="td" width="25%">리뷰쓰기</td>
 
 					</tr>
-					<c:forEach var="i" begin="1" end="3">
+					<c:forEach var="reserve" items="${reserveList}">
 						<tr>
-							<td class="td">1</td>
-							<td class="td">A매장</td>
-							<td class="td">홍뽀삐</td>
-							<td class="td">09.23.21</td>
-							<td class="td"><a href="${pageContext.request.contextPath}/mypage/reviewWrite.do">
+							<td class="td">${reserve.rnum }</td>
+							<td class="td">${reserve.shop_name }</td>
+							<td class="td">${reserve.pet_name }</td>
+							<td class="td">${reserve.reserve_Date }</td>
+							<td class="td"><a href="${pageContext.request.contextPath}/mypage/reviewWrite.do?shop_NO=${reserve.shop_NO}">
 									<input type="button" value="리뷰쓰기">
-							</a></td>
+							</a></td>	
 						</tr>
 					</c:forEach>
+
 				</table>
 				
 				<br> <br>		

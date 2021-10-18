@@ -15,7 +15,8 @@ public class ReserveVO {			// 예약 테이블
 	private String res_spot;		// 미용 부위(전체, 부분 : 1, 2)
 	private String res_option;		// 옵션 (목욕 : 0, 1)
 	private String res_status;		// 예약상태 (예약 상태 : 0, 1)
-	
+
+
 	ReserveVO() { }
 	
 	ReserveVO(int reserve_NO, int shop_NO, int member_NO, 
