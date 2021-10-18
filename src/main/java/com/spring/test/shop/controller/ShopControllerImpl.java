@@ -102,9 +102,11 @@ public class ShopControllerImpl implements ShopController{
 		 System.out.println("/shopMyPage : memberNO = " + member_NO);
 		 
 		 ShopVO shopVO = shopService.listShop(member_NO);
+		 Object shop_NO = shopVO.getShop_NO();
 		 String viewName = (String)request.getAttribute("viewName");
 		 ModelAndView mav = new ModelAndView(viewName);
 		 mav.addObject("shop", shopVO);
+		 mav.addObject("reviewList", reviewService.ShopReview(shop_NO));
 		 System.out.println("shopComtroller : " + shopVO);
 
 		 System.out.println("ShopControllerImpl : listShopAndDetail end");

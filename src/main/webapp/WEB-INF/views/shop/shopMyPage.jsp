@@ -286,10 +286,11 @@ p {
 					</c:forEach>
 				</table>
 				<br> <br>
-				<table>
+			<table>
 					<tr>
 						<td class="title" colspan="5"><p>리뷰 내역</p><a
-							href="${pageContext.request.contextPath}/mypage/visit.do"> <input
+	
+							href="${pageContext.request.contextPath}/mypage/shopReview.do"> <input
 								type="button" value="더보기" class="button2"></a></td>
 					<tr>
 					<tr>
@@ -303,13 +304,14 @@ p {
 						<td class="td" width="20%">작성 날짜</td>
 
 					</tr>
-					<c:forEach var="i" begin="1" end="3">
+				
+					<c:forEach var="review" items="${reviewList }">
 						<tr>
-							<td class="td">1</td>
-							<td class="td">콩콩콩</td>
-							<td class="td">콩뽀삐</td>
-							<td class="td">넘 좋았어요.</td>
-							<td class="td">09.15.21</td>
+							<td class="td">${review.rnum }</td>
+							<td class="td">${review.member_name }</td>
+							<td class="td">${review.pet_name }</td>
+							<td class="td">${review.review_content }</td>
+							<td class="td">${review.review_Date }</td>
 						</tr>
 					</c:forEach>
 				</table>

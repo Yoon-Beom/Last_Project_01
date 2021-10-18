@@ -68,7 +68,7 @@ p {
       <div class="container">
          <div id="box1">
             <br>
-            <form name="frmMember" method="get" action="${contextPath }">      		
+            <form name="frmMember" method="get" action="${contextPath }">            
             <table>
                <tr>
                   <td class="title" colspan="4"><p> ${shop.shop_name}  ♡</p>
@@ -80,13 +80,13 @@ p {
                
                <tr>
                   <td class="td" width="20%">관심수</td>
-                  <td class="td" width="25%"> ${shop.shop_heartScore}</td>
+                  <td class="td" width="25%"> ${shop.shopDetailVO.shop_heartScore}</td>
                   <td class="td" width="20%">예약수</td>
-                  <td class="td" width="25%"> ${shop.shop_reserveScore}</td>
+                  <td class="td" width="25%"> ${shop.shopDetailVO.shop_reserveScore}</td>
                </tr>
                <tr>
                   <td class="td" width="20%">평점</td>
-                  <td class="td" width="25%"> ${shop.shop_starScore}</td>
+                  <td class="td" width="25%"> ${shop.shopDetailVO.shop_starScore}</td>
                   <td class="td" width="20%">리뷰수</td>
                   <td class="td" width="25%">500</td>
                </tr>
@@ -102,15 +102,15 @@ p {
                    </tr>
                    <tr>      
                      <td class="td" width="7%">오픈 시간</td>
-                     <td class="td" width="10%">${shop.shop_open_time}</td>
+                     <td class="td" width="10%">${shop.shopDetailVO.shop_open_time}</td>
                      <td class="td" width="7%" >마감시간</td>
-                     <td class="td" width="10%" >${shop.shop_close_time}</td>
+                     <td class="td" width="10%" >${shop.shopDetailVO.shop_close_time}</td>
                   </tr>   
                   <tr>      
                      <td class="td" width="7%">주소</td>
                      <td class="td" width="10%">${shop.shop_address}</td>
                      <td class="td" width="7%">☎</td>
-                     <td class="td" width="10%">${shop.shop_phone}</td>
+                     <td class="td" width="10%">${shop.shopDetailVO.shop_phone}</td>
                   </tr>
             </table>
                      <br>

@@ -139,7 +139,6 @@ li {
       <c:forEach var="shop" items="${shopList}">
          // 현재 내 위치와 매장간의 거리를 담을 객체
          var calDis = calculateDistance(myLCLat,myLCLon,${shop.shop_latitude},${shop.shop_longitude});
-         
          //
          if(calDis < 1.0) {
             var mCal = Math.round(calDis * 1000);
@@ -175,9 +174,9 @@ li {
          lon = arrS[3],
          address = arrS[4];
              
-         alert('5km 이내에 있는 매장은 "' + name + '" 밖에 없습니다.\n매장 위치로 이동합니다.');
+         alert('5km 이내에 있는 매장은 "' + name +'" 밖에 없습니다.\n매장 위치로 이동합니다.');
          // search함수를 재사용합니다
-         search(lat+','+lon+','+name+','+address);
+         search(no+'a!d#$D'+lat+'a!d#$D'+lon+'a!d#$D'+name+'a!d#$D'+address);
       // 만약 매장이 여러 곳 이라면?     
       } else {
          alert(arr);
@@ -258,7 +257,7 @@ li {
    }
    
    // 검색결과 항목을 Element로 반환하는 함수입니다
-    function getListItem2(index, name, address) {
+    function getListItem2(index, name, address, no) {
     
        var el = document.createElement('li'), 
        itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>'
@@ -266,7 +265,7 @@ li {
          + '   <h3>' + name + '</h3><br>'
          + '<div class="shopImg">사진 공간?</div><br>'
          + '   <span>' + address + '</span><br>'
-         + '<button class="btn btn-primary">상세페이지</button> <button class="btn btn-primary">예약</button>'
+         + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+no+'"><button class="btn btn-primary">상세페이지</button></a> <button class="btn btn-primary">예약</button>'
          + '</div><br>';  
        
        el.innerHTML = itemStr;
@@ -307,7 +306,7 @@ li {
                      <td>
                
                         <button class="btn btn-primary">예약</button>
-                        <input class="btn btn-primary" id=" ${shop.shop_NO} a!d#$D ${shop.shop_latitude} a!d#$D ${shop.shop_longitude} a!d#$D ${shop.shop_name} a!d#$D ${shop.shop_address}" 
+                        <input class="btn btn-primary" id="${shop.shop_NO} a!d#$D ${shop.shop_latitude} a!d#$D ${shop.shop_longitude} a!d#$D ${shop.shop_name} a!d#$D ${shop.shop_address}" 
                         type="button" onclick="search(this.id)" value="찾기">
                      </td>
                   </tr>
@@ -801,11 +800,12 @@ li {
                                   
                   // lat 위도, lon 경도 , 마커이름을 지정할 매장명을 분리합니다
                   var split = id.split('a!d#$D'),
-                     lat = split[1], // 위도
+                      shop_NO = split[0]; // 매장 일련번호
+                      lat = split[1], // 위도
                      lon = split[2], // 경도            
                      shopName = split[3], // 이름
                      shopAddress = split[4]; // 주소
-                     shop_NO = split[0]; // 매장 일련번호
+                     
                      
                                   
                   centerMove(lat, lon);
