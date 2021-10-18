@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.reserve">
+	<resultMap id="reserveResult" type="reserveVO">
+		<result property="reserve_NO" column="reserve_NO"/>
+		<result property="shop_NO" column="shop_NO"/>
+		<result property="member_NO" column="member_NO"/>
+		<result property="pet_NO" column="pet_NO"/>
+		<result property="reserve_Date" column="reserve_Date"/>
+		<result property="reserve_TimeA" column="reserve_TimeA"/>
+		<result property="res_spot" column="res_spot"/>
+		<result property="res_option" column="res_option"/>
+		<result property="res_status" column="res_status"/>
+	</resultMap>
+</mapper>

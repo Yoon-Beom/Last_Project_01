@@ -7,4 +7,5 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface ReserveController {
 	public ModelAndView reservation(HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ModelAndView reserveAction(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

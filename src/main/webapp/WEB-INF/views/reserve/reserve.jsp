@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -73,13 +74,17 @@ function pet_moveScroll(x, y) {
 
 	var pet_select = document.querySelector('input[name="pet_select"]:checked');
 	
-	if(pet_select.value == '0') {
-		var pet = document.getElementsByName('pet_NO');
-		var pet_info = document.getElementById('pet_info');
-		
-		pet.value = '';
-		pet_info.innerText = '\u00a0';
+	document.getElementById('pet_name').value = '';
+	document.getElementById('pet_age').value = '';
+	if(document.querySelector('input[name="pet_scale"]:checked') != null) {
+		document.querySelector('input[name="pet_scale"]:checked').checked = false;
 	}
+	
+	var pet = document.getElementsByName('pet_NO');
+	var pet_info = document.getElementById('pet_info');
+	
+	pet.value = '';
+	pet_info.innerText = '\u00a0';
 };
 
 // 반려동물 정보 선택 div 이동
@@ -115,7 +120,7 @@ function select_pet(pet_NO) {
 	var pet_name = document.getElementById('pet_name_' + pet_NO).innerText;
 	var pet_scale = document.getElementById('pet_scale_' + pet_NO).innerText;
 	var pet_age = document.getElementById('pet_age_' + pet_NO).innerText;
-	//var pet_age = str.substring(o, str.length - 1);
+	
 	
 	pet.value = pet_NO;
 	pet_info.innerHTML = pet_name + ', ' + pet_age + ', ' + pet_scale;
@@ -162,24 +167,31 @@ function select_day(e) {
 	this.style.color = 'white';
 	this.style.border = '3px solid #f17791';
 	document.getElementById('reserve_Date').innerText = <%= yy %> + '-' + mon + '-' + this.innerText;
-	document.getElementsByName('reserve_Date').value = <%= yy %> + '-' + mon + '-' + this.innerText;
+	document.reserve.reserve_Date.value = <%= yy %> + '-' + mon + '-' + this.innerText;
 }
 
 // 날짜 스타일 지우기
 function delete_color_day() {
-	var str = document.getElementsByName('reserve_Date').value;
-	if(str != null) {
+	var str = document.getElementById('reserve_Date').innerText;
+	
+	if(str != null && str != '') {
 		var date = str.split('-');
 		var pastDay = document.getElementById(date[1] + '_' + date[2]);
-
+		
+		var nowdate = new Date();
+		var year = nowdate.getFullYear();
+		
+		nowdate.setMonth(date[1]);
+		nowdate.setDate(date[2]);		
+		
 		var className = pastDay.className;
 		var cName = className.split(' ');
 		
 		pastDay.style.border = '';
 		
-		if(cName[0] == 'saturday') {
+		if(nowdate.getDay() == '2') {
 			pastDay.style.color = 'blue';
-		} else if (cName[0] == 'saturday') {
+		} else if (nowdate.getDay() == '1') {
 			pastDay.style.color = 'red';
 		} else {
 			pastDay.style.color = 'gray';
@@ -197,6 +209,7 @@ function select_time(e) {
 	this.style.border = '3px solid #f17791';
 	document.getElementById('reserve_TimeA').innerText = this.innerText;
 	document.getElementsByName('reserve_TimeA').value = this.innerText;
+	document.reserve.reserve_TimeA.value = this.innerText;
 }
 
 // 시간대 스타일 지우기
@@ -212,9 +225,74 @@ function delete_time() {
 //submit 예약하기
 function sumit_action() {
 	var reservefrm = document.reserve;
+	var pet_select = document.querySelector('input[name="pet_select"]:checked');
+	var pet_scale = document.querySelector('input[name="pet_scale"]:checked');
+	var res_spot = document.querySelector('input[name="res_spot"]:checked').value;
+	var res_option = document.querySelector('input[name="res_option"]:checked').value;
+	
+	console.log('sumit_action 실행');
+	
+	if(reservefrm.reserve_Date.value == '') {
+		alert('날짜를 선택해주세요.');
+		console.log('2');
+	} else if(reservefrm.reserve_TimeA.value == '') {
+		alert('시간을 선택해주세요.');	
+		console.log('3');	
+	} else if(pet_select.value == '0' && ((reservefrm.pet_name.value == '') || (reservefrm.pet_age.value == '') || (pet_scale == null))) {
+		console.log('4');	
+		if(reservefrm.pet_name.value == '') {
+			alert('반려동물의 이름을 입력하세요');
+			reservefrm.pet_name.focus();
+		} else if(reservefrm.pet_age.value == '') {
+			alert('반려동물의 나이를 입력하세요');
+			reservefrm.pet_age.focus();
+		} else if(pet_scale == null) {
+			alert('반려동물의 크기를 체크하세요');
+			reservefrm.pet_age.focus();
+		}
+	} else if(pet_select.value == '1' && reservefrm.pet_NO == '') {
+		console.log('5');	
+		alert('반려동물을 선택하세요');
+		document.getElementById('pet_select_div').focus();
+	} else {
+		console.log('6');	
+		var str = '';
 
-	if(reservefrm.pet_name.value == '') {
+		if(pet_select.value == '0') {
+			
+			str += '예약 내역\n' + '이름 : ${member.member_name}\n'
+					+ '반려동물 이름 : ' + reservefrm.pet_name.value + '\n'
+					+ '반려동물 나이 : ' + reservefrm.pet_age.value + '\n'
+					+ '반려동물 크기 : ' + pet_scale.value + '\n'
+					+ '${shopVO.shop_name}' + '\n'
+					+ '예약 날짜 : ' + reservefrm.reserve_Date.value + '\n'
+					+ '예약 시간 : ' + reservefrm.reserve_TimeA.value + '\n'
+					+ '미용 : ' + ((res_spot == '0') ? '전체' : '부분') + '\n'
+					+ '목욕 : ' + ((res_option == '0') ? '선택' : '미선택') + '\n'
+					+ '예약 하시겠습니까?';
+		} else if(pet_select.value == '1') {
+			var pet_NO = document.getElementsByName('pet_NO').value;
+			var select_pet_name = document.getElementById('pet_name_' + pet_NO).innerText;
+			var select_pet_scale = document.getElementById('pet_scale_' + pet_NO).innerText;
+			var select_pet_age = document.getElementById('pet_age_' + pet_NO).innerText;
+			
+			str += '예약 내역\n' + '이름 : ${member.member_name}\n'
+					+ '반려동물 이름 : ' + select_pet_name + '\n'
+					+ '반려동물 나이 : ' + select_pet_scale + '\n'
+					+ '반려동물 크기 : ' + select_pet_age + '\n'
+					+ '${shopVO.shop_name}' + '\n'
+					+ '예약 날짜 : ' + reservefrm.reserve_Date.value + '\n'
+					+ '예약 시간 : ' + reservefrm.reserve_TimeA.value + '\n'
+					+ '미용 : ' + ((res_spot == '0') ? '전체' : '부분') + '\n'
+					+ '목욕 : ' + ((res_option == '0') ? '선택' : '미선택') + '\n'
+					+ '예약 하시겠습니까?';
+		}
 		
+		if(confirm(str)) {
+			reservefrm.action = "${contextPath}/reserve/reserveAction.do";
+			reservefrm.submit();
+		}
+
 	}
 }
 	
@@ -369,6 +447,7 @@ input {
 	height: 180px;
 	display: inline-block;
 	overflow: scroll;
+	scroll-behavior: smooth;
 	
 	/* 드래그 막기 */
 	-ms-user-select: none;
@@ -389,6 +468,7 @@ input {
 	height: 180px;
 	display: inline-block; 
 	overflow : scroll;
+	scroll-behavior: smooth;
 	
 	/* 드래그 막기 */
 	-ms-user-select: none;
@@ -717,15 +797,15 @@ input {
 										<c:choose>
 											<c:when test="${not empty petList}">
 												<c:forEach var="pet" items="${petList}">
-													<table style="width: 200px; height: 70px; display: inline;">
+													<table style="width: 200px; display: inline;">
 														<tr>
-															<td rowspan="3" style="width: 100px; height: 70;">
+															<td rowspan="3" style="width: 100px; height: 78px; padding: 0; overflow: hidden;">
 																<c:choose>
 																	<c:when test="${not empty pet.pet_image}">
-																		<img src="${contextPath}/downloadPet.do?pet_NO=${pet.pet_NO}&pet_image=${pet.pet_image}" id="pet_previewNon${pet.pet_NO}" width="100px"/>
+																		<img src="${contextPath}/downloadPet.do?pet_NO=${pet.pet_NO}&pet_image=${pet.pet_image}" id="pet_previewNon${pet.pet_NO}" style="max-height: 78px; max-width: 100px;"/>
 																	</c:when>
 																	<c:otherwise>
-																		<img src="${contextPath}/resources/assets/img/pet_image.png" id="pet_preview${pet.pet_NO}" width="100px" />
+																		<img src="${contextPath}/resources/assets/img/pet_image.png" id="pet_preview${pet.pet_NO}" style="max-height: 78px; max-width: 100px;"/>
 																	</c:otherwise>
 																</c:choose>
 															</td>
@@ -797,7 +877,7 @@ input {
 								<tr>
 									<td colspan="4" style="text-align: center; height: 20%;">
 										<h4 style="font-size: 20px; margin: 0;">${shopVO.shop_name}</h4>
-										<input type="hidden" value="${shopVO.shop_NO}">
+										<input type="hidden" name="shop_NO" value="${shopVO.shop_NO}">
 									</td>
 								</tr>
 								

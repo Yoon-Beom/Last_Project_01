@@ -2,6 +2,9 @@ package com.spring.test.reserve.vo;
 
 import java.sql.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component("resContentVO")
 public class ResContentVO {				// 예약 디테일 테이블
 	private int resContent_NO;			// 예약 디테일 일련번호
 	private int member_NO;				// 회원 테이블 : 회원 일련번호

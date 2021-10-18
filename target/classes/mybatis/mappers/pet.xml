@@ -27,6 +27,13 @@
 			VALUES(seq_pet.nextval, #{member_NO}, #{pet_name}, #{pet_age}, #{pet_scale}, #{pet_image})
 		]]>
 	</insert>
+	
+	<insert id="insertPetFromVO" parameterType="java.util.Map">
+		<![CDATA[
+			INSERT into t_pet(pet_NO, member_NO, pet_name, pet_age, pet_scale, pet_image)
+			VALUES(seq_pet.nextval, #{member_NO}, #{pet_name}, #{pet_age}, #{pet_scale}, #{pet_image})
+		]]>
+	</insert>
 
 	<select id="selectPet" resultType="petVO" parameterType="int">
     <![CDATA[

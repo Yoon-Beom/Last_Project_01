@@ -13,5 +13,6 @@
 		<typeAlias type="com.spring.test.board.vo.Criteria" alias="criteria" />
 		<typeAlias type="com.spring.test.review.vo.ReviewVO" alias="reviewVO" />
 		<typeAlias type="com.spring.test.review.vo.Criteria1" alias="criteria1" />
+		<typeAlias type="com.spring.test.reserve.vo.ReserveVO" alias="reserveVO" />
 	</typeAliases>
 </configuration>
