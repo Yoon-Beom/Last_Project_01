@@ -90,4 +90,20 @@ public class ReviewDAOImpl implements ReviewDAO{
 		return list;
 	}
 
+	@Override
+	public List visit(Criteria1 cri, int member_NO) {
+		cri.setMember_NO(member_NO);	
+		List list = sqlSession.selectList("mapper.review.visitPage",cri);
+		System.out.println("review DAO : list end");
+
+
+		return list;
+	}
+
+	@Override
+	public int visitCount(int member_NO) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("mapper.review.visitCount", member_NO);
+	}
+
 }

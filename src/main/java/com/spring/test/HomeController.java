@@ -183,7 +183,7 @@ public class HomeController {
 		return "mypage/reviewWrite";
 	}
 	
-	@RequestMapping(value = "/mypage/visit.do", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/mypage/visit.do", method = RequestMethod.GET)
 	public String visit(Locale locale, Model model) {
 
 

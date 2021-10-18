@@ -63,4 +63,15 @@ public class ReviewServiceImpl implements ReviewService{
 		System.out.println("mypageReserve service : "+list);
 		return list;
 	}
+	@Override
+	public Object visit(Criteria1 cri, int member_NO) {
+		List list = reviewDAO.visit(cri, member_NO);
+		System.out.println("review Service : list end");
+		return list;
+	}
+	@Override
+	public int visitCount(int member_NO) {
+		// TODO Auto-generated method stub
+		return reviewDAO.visitCount(member_NO);
+	}
 }

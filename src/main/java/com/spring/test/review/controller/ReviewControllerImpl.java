@@ -85,6 +85,30 @@ public class ReviewControllerImpl implements ReviewController{
 		System.out.println("reviewController : list end");
 		return model;
 	}
+	
+	@RequestMapping(value="/mypage/visit.do", method= {RequestMethod.GET,RequestMethod.POST})
+	public Model visit(Model model, Criteria1 cri, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		System.out.println("reviewController : list start");
+		HttpSession session= request.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("member");
+		int member_NO = memberVO.getMember_NO();
+		cri.setMember_NO(member_NO);
+		System.out.println("reviewController member_NO: "+member_NO);
+		model.addAttribute("list", reviewService.visit(cri,member_NO));
+		int page = cri.getPage();
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		pageMaker.setTotalCount(reviewService.visitCount(member_NO));
+		model.addAttribute("page",page);
+		System.out.println(cri.toString());
+
+		model.addAttribute("pageMaker", pageMaker);
+		System.out.println("reviewController : list end");
+		return model;
+	}
+	
 	@RequestMapping(value="mypage/addReview.do", method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public ResponseEntity reviewWrite(
@@ -92,6 +116,7 @@ public class ReviewControllerImpl implements ReviewController{
 					throws Exception {
 
 		System.out.println("ReviewController : reviewWrite start");
+
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String, Object> reviewMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
@@ -195,6 +220,7 @@ public class ReviewControllerImpl implements ReviewController{
 			e.printStackTrace();
 		}
 		return resEnt;
-	} 
+	}
+
 	
 }
