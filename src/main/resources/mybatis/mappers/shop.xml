@@ -112,20 +112,33 @@
 		]]>
 	</insert>
 	
-	<!-- 		
-	<insert id="insertShopDetail" parameterType="shopDetailVO">
+	<update id="updateShopDetail" parameterType="java.util.Map">
+
+		update t_shopDetail
+		set shop_ceo=#{shop_ceo}, shop_phone=#{shop_phone},
+		shop_open_time=#{shop_open_time}, shop_close_time=#{shop_close_time}
+
+		<if test="shop_introduce !='' and shop_introduce!=null">
+			,shop_introduce=#{shop_introduce}
+		</if>
+		<if test="shop_imageMain !='' and shop_imageMain!=null">
+			,shop_imageMain=#{shop_imageMain}
+		</if>
+		<if test="shop_imageSub !='' and shop_imageSub!=null">
+			,shop_imageSub=#{shop_imageSub}
+		</if>
+		where shopDetail_NO=#{shopDetail_NO}
+	</update>
+	
+	<update id="updateShop" parameterType="int">
 		<![CDATA[
-			insert into t_shopDetail(shopDetail_NO, shop_NO, shop_ceo,
-				shop_phone, shop_open_time, shop_close_time, shop_introduce,
-				shop_starScore, shop_imageMain, shop_imageSub, shop_heartScore,
-				shop_reserveScore)
-				values(seq_shopDetail.nextval, #{shop_NO}, #{shop_ceo},
-			    #{shop_phone}, #{shop_open_time}, #{shop_close_time},
-			    #{shop_introduce}, #{shop_starScore}, #{shop_imageMain},
-			    #{shop_imageSub}, #{shop_heartScore}, #{shop_reserveScore})
+		update t_shop
+		set shop_name=#{shop_name}, shop_address=#{shop_address},
+		shop_code=#{shop_code}, shop_latitude=#{shop_latitude},
+		shop_longitude=#{shop_longitude}
+		where shop_NO=#{shop_NO}
 		]]>
-	</insert> 
-	-->
+	</update>
 	
 	<delete id="deleteShop" parameterType="String">
 		<![CDATA[

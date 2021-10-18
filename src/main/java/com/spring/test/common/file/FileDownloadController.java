@@ -18,7 +18,7 @@ public class FileDownloadController {
 	private static final String ARTICLE_IMAGE_REPO = "C:\\workspace\\article_image";
 	private static final String ARTICLE_IMAGE_PET = "C:\\workspace\\pet_image";
 	private static final String ARTICLE_IMAGE_REVIEW = "C:\\workspace\\review_image";
-	private static final String ARTICLE_IMAGE_SHOP = "C:\\workspace\\shop_image";
+	private static final String ARTICLE_IMAGE_SHOP_Main = "C:\\workspace\\shop_imageMain";
 	@RequestMapping("/download.do")
 	protected void download(@RequestParam("board_image") String board_image,
 							@RequestParam("board_NO") String board_NO,
@@ -90,17 +90,17 @@ public class FileDownloadController {
 		System.out.println("FileDownloadController : downloadReview end");
 	}
 	
-	@RequestMapping("/downloadShop.do")
-	protected void downloadShop(@RequestParam("shop_image") String shop_image,
-							@RequestParam("shop_NO") String shop_NO,
+	@RequestMapping("/downloadShopDetail.do")
+	protected void downloadShop(@RequestParam("shop_imageMain") String shop_imageMain,
+							@RequestParam("shopDetail_NO") String shopDetail_NO,
 			                 HttpServletResponse response)throws Exception {
 		System.out.println("FileDownloadController : downloadReview start");
 		OutputStream out = response.getOutputStream();
-		String downFile = ARTICLE_IMAGE_SHOP + "\\" +shop_NO+"\\"+ shop_image;
+		String downFile = ARTICLE_IMAGE_SHOP_Main + "\\" +shopDetail_NO+"\\"+ shop_imageMain;
 		File file = new File(downFile);
 		System.out.println("downFile : "+downFile);
 		response.setHeader("Cache-Control", "no-cache");
-		response.addHeader("Content-disposition", "attachment; fileName=" + shop_image);
+		response.addHeader("Content-disposition", "attachment; fileName=" + shop_imageMain);
 		FileInputStream in = new FileInputStream(file);
 		byte[] buffer = new byte[1024 * 8];
 		while (true) {

@@ -57,7 +57,23 @@ p {
 .title {
    border-bottom: 3px solid gray;
 }
+.img2 {
+	width: 500px;
+	height: 200px;
+}
 </style>
+<script type="text/javascript">
+function readURL(input) {
+    if (input.files && input.files[0]) {
+    	$('#preview').show();
+	      var reader = new FileReader();
+	      reader.onload = function (e) {
+	        $('#preview').attr('src', e.target.result);
+        }
+       reader.readAsDataURL(input.files[0]);
+    }
+};
+</script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <title>매장페이지</title>
 <link rel="stylesheet" type="text/css"
@@ -68,7 +84,7 @@ p {
       <div class="container">
          <div id="box1">
             <br>
-            <form name="frmMember" method="get" action="${contextPath }">            
+            <form name="frmMember" method="get" action="${contextPath }">      		
             <table>
                <tr>
                   <td class="title" colspan="4"><p> ${shop.shop_name}  ♡</p>
@@ -98,7 +114,15 @@ p {
                      <td class="td" width="20%" colspan="4">매장 대표 사진</td>
                    </tr>
                    <tr>
-                     <td class="td" width="20%" colspan="4"><img   src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
+                     <td class="td" width="20%" colspan="4">
+                     	  <c:if test="${shop.shopDetailVO.shop_imageMain == null}">
+							<img src="${pageContext.request.contextPath}/resources/assets/img/shopMain.png" id="mainCover" class="img2">
+						</c:if>
+                      	<c:if test="${shop.shopDetailVO.shop_imageMain != null}">
+                      	<%-- <input  type= "hidden"  name="originalFileName" value="${shop.shopDetailVO.shop_imageMain }" id="shop_imageMain"/> --%>
+							<img src="${contextPath}/downloadShopDetail.do?shopDetail_NO=${shop.shopDetailVO.shopDetail_NO}&shop_imageMain=${shop.shopDetailVO.shop_imageMain }" id="preview" class="img2" />
+						</c:if>
+                     </td>
                    </tr>
                    <tr>      
                      <td class="td" width="7%">오픈 시간</td>
@@ -122,7 +146,9 @@ p {
                      <td class="td" width="20%" colspan="4">매장 소개</td>
                   </tr>
                   <tr>
-                     <td class="td" width="20%" colspan="4">매장 소개내용<br><br></td>
+                     <td class="td" width="20%" colspan="4">
+                       <textarea rows="8" cols="60%" style="resize:none;border:none; pointer-events: none;" name="shop_introduce" id="shop_introduce" readonly="readonly" >${shop.shopDetailVO.shop_introduce }</textarea>
+                     </td>
                   </tr>
                   <tr>   
                      <td class="td" width="7%" colspan="4">매장 서브 사진</td>

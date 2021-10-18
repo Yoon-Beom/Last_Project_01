@@ -66,5 +66,17 @@ public class ShopDAOImpl implements ShopDAO{
 		System.out.println("ShopDAOImpl : selectShop_NO start");
 		return sqlSession.selectOne("mapper.shop.selectShop_NO", member_NO);
 	}
+	
+	@Override
+	public void updateShopDetail(Map<String, Object> articleMap) {
+		sqlSession.update("mapper.shop.updateShopDetail",articleMap);
 
+	}
+
+	@Override
+	public int updateShop(ShopVO shopVO) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return sqlSession.update("mapper.shop.updateShop",shopVO);
+	}
+	
 }

@@ -18,6 +18,8 @@ public interface ShopService {
 	public int selectShop_No(int member_NO);
 	public ShopVO selectShopByShopNO(int shop_NO) throws DataAccessException;
 	public ShopVO ViewShop(int shop_NO) throws DataAccessException;
+	public void updateShopDetail(Map<String, Object> articleMap) throws Exception;
 
+	public int updateShop(ShopVO shopVO) throws DataAccessException;
 	
 }

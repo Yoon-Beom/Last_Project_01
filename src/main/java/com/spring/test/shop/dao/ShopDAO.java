@@ -17,4 +17,6 @@ public interface ShopDAO {
 	public ShopVO selectShopByMemberNO(int shop_NO) throws DataAccessException;
 	public ShopVO selectShopAndDetailByShopNO(int shop_NO) throws DataAccessException;
 	public ShopVO selectShopByShopNO(int member_NO) throws DataAccessException;
+	public void updateShopDetail(Map<String, Object> articleMap);
+	public int updateShop(ShopVO shopVO)throws DataAccessException;
 }

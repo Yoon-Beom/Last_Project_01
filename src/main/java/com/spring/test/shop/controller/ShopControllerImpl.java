@@ -1,6 +1,9 @@
 package com.spring.test.shop.controller;
 
+import java.io.File;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -8,20 +11,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.test.kakao.KakaoAddr;
 import com.spring.test.kakao.KakaoGeoRes;
 import com.spring.test.member.service.MemberService;
 import com.spring.test.member.vo.MemberVO;
+import com.spring.test.reserve.vo.ReserveVO;
 import com.spring.test.review.service.ReviewService;
 import com.spring.test.shop.dao.ShopDAO;
 import com.spring.test.shop.service.ShopService;
@@ -30,7 +41,7 @@ import com.spring.test.shop.vo.ShopVO;
 
 @Controller("shopController")
 public class ShopControllerImpl implements ShopController{
-
+	private static final String ARTICLE_IMAGE_SHOP_Main = "C:\\workspace\\shop_imageMain";
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -207,5 +218,128 @@ public class ShopControllerImpl implements ShopController{
 
 		System.out.println("ShopControllerImpl : addShop end");
 		return mav;
+	}
+	
+	private String upload(MultipartHttpServletRequest multipartRequest) throws Exception {
+		System.out.println("ShopControllerImpl : upload start");
+		String shop_imageMain = null;
+		Map<String, String> articleMap = new HashMap<String, String>();
+		Iterator<String> fileNames = multipartRequest.getFileNames();
+
+		while (fileNames.hasNext()) {
+			String fileName = fileNames.next();
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			shop_imageMain = mFile.getOriginalFilename();
+			File file = new File(ARTICLE_IMAGE_SHOP_Main + "\\" + fileName);
+			if (mFile.getSize() != 0) {
+				if (!file.exists()) {
+					if (file.getParentFile().mkdirs()) {
+						file.createNewFile();
+					}
+				}
+				mFile.transferTo(new File(ARTICLE_IMAGE_SHOP_Main + "\\" + "temp" + "\\" + shop_imageMain));
+			}
+		}
+		System.out.println("ShopControllerImpl : upload end");
+		return shop_imageMain;
+	}
+
+	@RequestMapping(value = "/shop/updateShop.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity updateShop(@ModelAttribute("shopVO") ShopVO shopVO,MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception {
+		System.out.println("shopUpdate 시작");
+		multipartRequest.setCharacterEncoding("utf-8");
+		Map<String, Object> articleMap = new HashMap<String, Object>();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while (enu.hasMoreElements()) {
+			String name = (String) enu.nextElement();
+			System.out.println("shop_name : " + name);
+			String value = multipartRequest.getParameter(name);
+			articleMap.put(name, value);
+			System.out.println("shop_value : " + value);
+		}
+
+		String shop_imageMain = upload(multipartRequest);
+		HttpSession session = multipartRequest.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("member");	
+		String member_id = memberVO.getMember_id();
+		int member_NO = memberVO.getMember_NO();
+		String shopDetail_NO = multipartRequest.getParameter("shopDetail_NO");
+		
+		String shop_ceo = multipartRequest.getParameter("shop_ceo");
+		
+		String shop_phone1 = multipartRequest.getParameter("shop_phone1");
+		String shop_phone2 = multipartRequest.getParameter("shop_phone2");
+		String shop_phone3 = multipartRequest.getParameter("shop_phone3");
+		String shop_phone= shop_phone1 + "-" + shop_phone2 + "-" + shop_phone3;
+		String shop_open_time = multipartRequest.getParameter("open_time");
+		String shop_close_time = multipartRequest.getParameter("close_time");
+		
+		String shop_introduce = multipartRequest.getParameter("shop_introduce");
+		articleMap.put("member_NO", member_NO);
+		articleMap.put("shopDetail_NO", shopDetail_NO);
+		articleMap.put("shop_imageMain", shop_imageMain);
+		articleMap.put("shop_phone",shop_phone);
+		articleMap.put("shop_open_time",shop_open_time);
+		articleMap.put("shop_close_time",shop_close_time);
+		articleMap.put("shop_introduce", shop_introduce);
+		System.out.println("shop_controller : update : " + articleMap);
+		shopDetail_NO = (String) articleMap.get("shopDetail_NO");	
+		
+		  int result = 0; 
+		  int shop_NO =Integer.parseInt(multipartRequest.getParameter("shop_NO")); 
+		  String shop_name = multipartRequest.getParameter("shop_name"); 
+		  String shop_post = multipartRequest.getParameter("shop_post"); 
+		  String shop_addr = multipartRequest.getParameter("shop_addr"); 
+		  String shop_detailAddr = multipartRequest.getParameter("shop_detailAddr"); 
+		  String shop_code = multipartRequest.getParameter("shop_code");
+		 
+		 KakaoAddr kAddr = new KakaoAddr();
+		
+		 KakaoGeoRes bodyJson = kAddr.getPoint(shop_addr);
+		 
+		 double latitude = bodyJson.getDocuments().get(0).getY(); 
+		 double longitude =  bodyJson.getDocuments().get(0).getX();
+		 
+		 shopVO.setShop_name(shop_name); 
+		 shopVO.setShop_address(shop_post + "," + shop_addr + "," + shop_detailAddr); 
+		 shopVO.setShop_latitude(latitude);
+		 shopVO.setShop_longitude(longitude); 
+		 shopVO.setShop_code(shop_code);
+		 
+		 result = shopService.updateShop(shopVO);
+		 
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		try {
+			shopService.updateShopDetail(articleMap);
+			
+			if (shop_imageMain != null && shop_imageMain.length() != 0) {
+				File srcFile = new File(ARTICLE_IMAGE_SHOP_Main + "\\" + "temp" + "\\" + shop_imageMain);
+				File destDir = new File(ARTICLE_IMAGE_SHOP_Main + "\\" + shopDetail_NO);
+				FileUtils.moveFileToDirectory(srcFile, destDir, true);
+
+				String originalFileName = (String) articleMap.get("originalFileName");
+				File oldFile = new File(ARTICLE_IMAGE_SHOP_Main + "\\" + shopDetail_NO + "\\" + originalFileName);
+				oldFile.delete();
+			}
+			message = "<script>";
+			message += " alert('매장정보를 수정했습니다.');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/shop/shopMyPage.do'; ";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		} catch (Exception e) {
+			File srcFile = new File(ARTICLE_IMAGE_SHOP_Main + "\\" + "temp" + "\\" + shop_imageMain);
+			srcFile.delete();
+			message = "<script>";
+			message += " alert('오류가 발생했습니다.다시 수정해주세요');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/shop/shopMyPage.do'; ";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}
+		return resEnt;
 	}
 }

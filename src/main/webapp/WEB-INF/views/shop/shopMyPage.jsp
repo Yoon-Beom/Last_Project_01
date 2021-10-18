@@ -69,6 +69,10 @@ p {
 .title {
 	border-bottom: 3px solid gray;
 }
+.img2 {
+	width: 500px;
+	height: 200px;
+}
 </style>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <c:choose>
@@ -147,7 +151,7 @@ p {
 				</table>
 				
 				<br> <br>
-				<form action="${pageContext.request.contextPath}/shop/shopMod.do" enctype="multipart/form-data">
+			<form action="${pageContext.request.contextPath}/shop/shopMod.do" enctype="multipart/form-data">
 				<table>
 					<tr>
 						<td class="title" colspan="4"><p>매장정보</p>
@@ -178,11 +182,23 @@ p {
                      <td class="td" width="20%" colspan="4">매장 대표 사진</td>
                    </tr>
                    <tr>
-                     <td class="td" width="20%" colspan="4"><img   src="${pageContext.request.contextPath}/resources/assets/img/dog4.png"></td>
+                     <td class="td" width="20%" colspan="4">
+	                     <c:if test="${shop.shopDetailVO.shop_imageMain == null}">
+							<img src="${pageContext.request.contextPath}/resources/assets/img/shopMain.png" id="mainCover" class="img2">
+						</c:if>
+                      	<c:if test="${shop.shopDetailVO.shop_imageMain != null}">
+                      	<%-- <input  type= "hidden"  name="originalFileName" value="${shop.shopDetailVO.shop_imageMain }" id="shop_imageMain"/> --%>
+							<img src="${contextPath}/downloadShopDetail.do?shopDetail_NO=${shop.shopDetailVO.shopDetail_NO}&shop_imageMain=${shop.shopDetailVO.shop_imageMain }" id="preview" class="img2" />
+						</c:if>
+		   			 </td>
                    </tr>
                    <tr>      
-                     <td class="td" width="7%">매장명</td>
-                     <td class="td" width="10%">${shop.shop_name}</td>
+                     <td class="td" width="7%" colspan="2">매장명</td>
+                     <td class="td" width="10%" colspan="2">${shop.shop_name}</td>
+                  </tr>   
+                  <tr>      
+                     <td class="td" width="7%">대표명</td>
+                     <td class="td" width="10%">${shop.shopDetailVO.shop_ceo}</td>
                      <td class="td" width="7%" >사업자등록번호</td>
                      <td class="td" width="10%" >${shop.shop_code}</td>
                   </tr>   
@@ -202,7 +218,8 @@ p {
                      <td class="td" width="20%" colspan="4">매장 소개</td>
                   </tr>
                   <tr>
-                     <td class="td" width="20%" colspan="4">매장 소개내용<br><br></td>
+                     <td class="td" width="20%" colspan="4">
+                     <textarea rows="8" cols="60%" style="resize:none;border:none; pointer-events: none;" name="shop_introduce" id="shop_introduce" readonly="readonly" >${shop.shopDetailVO.shop_introduce }</textarea></td>
                   </tr>
                   <tr>   
                      <td class="td" width="7%" colspan="4">매장 서브 사진</td>

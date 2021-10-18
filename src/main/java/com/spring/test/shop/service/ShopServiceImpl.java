@@ -87,5 +87,17 @@ public class ShopServiceImpl implements ShopService {
 		System.out.println("ShopServiceImpl : selectShop_No end");
 		return result;
 	}
+	
+	@Override
+	public void updateShopDetail(Map<String, Object> articleMap) throws Exception {
+		shopDAO.updateShopDetail(articleMap);
+		
+	}
+
+	@Override
+	public int updateShop(ShopVO shopVO) throws DataAccessException {
+		
+		return shopDAO.updateShop(shopVO);
+	}
 
 }
