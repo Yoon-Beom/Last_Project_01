@@ -16,8 +16,7 @@
 
 	<select id="selectPetList" resultMap="petResult">
     <![CDATA[
-     SELECT * from t_pet where member_NO=#{member_NO} order by pet_joinDate DESC
-      	
+     	SELECT * from t_pet where member_NO=#{member_NO} order by pet_joinDate DESC      	
     ]]>
 	</select>
 

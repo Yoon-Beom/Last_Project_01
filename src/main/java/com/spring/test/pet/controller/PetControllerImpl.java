@@ -72,9 +72,12 @@ public class PetControllerImpl implements PetController {
 	@RequestMapping(value = "/mypage/petAdd.do", method = RequestMethod.POST)
 	public ResponseEntity addPet(@ModelAttribute("member") MemberVO member,
 		MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
+		System.out.println("PetControllerImpl : addPet start");
+		
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String, Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu = multipartRequest.getParameterNames();
+		
 		while (enu.hasMoreElements()) {
 			String name = (String) enu.nextElement();
 			System.out.println("enu : " + name);
@@ -82,6 +85,7 @@ public class PetControllerImpl implements PetController {
 			System.out.println("value : " + value);
 			articleMap.put(name, value);
 		}
+		
 		String pet_image = upload(multipartRequest);
 		HttpSession session = multipartRequest.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("member");
@@ -89,6 +93,7 @@ public class PetControllerImpl implements PetController {
 		int member_NO = memberVO.getMember_NO();
 		String member_name = memberVO.getMember_name();
 		int pet_NO = petVO.getPet_NO();
+		
 		articleMap.put("member_name",member_name);
 		articleMap.put("member_NO",member_NO);
 		articleMap.put("member_id", member_id);
@@ -98,21 +103,24 @@ public class PetControllerImpl implements PetController {
 		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
 		try {
 			pet_NO = petService.addPet(articleMap);
 
 			System.out.println("NO : " + pet_NO);
+			
 			if (pet_image != null && pet_image.length() != 0) {
 				File srcFile = new File(ARTICLE_IMAGE_PET + "\\" + "temp" + "\\" + pet_image);
 				File destDir = new File(ARTICLE_IMAGE_PET + "\\" + pet_NO);
 				FileUtils.moveFileToDirectory(srcFile, destDir, true);
 			}
+			
 			message = "<script>";
 			message += " alert('반려동물을 추가했습니다.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/mypage/myPage.do'; ";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-			System.out.println(articleMap);
+			System.out.println("articleMap : " + articleMap);
 		} catch (Exception e) {
 			File srcFile = new File(ARTICLE_IMAGE_PET + "\\" + "temp" + "\\" + pet_image);
 			srcFile.delete();
@@ -125,23 +133,30 @@ public class PetControllerImpl implements PetController {
 			System.out.println("articleMap : " + articleMap);
 			e.printStackTrace();
 		}
-
+		
+		System.out.println("PetControllerImpl : addPet end");
 		return resEnt;
 	}
 
 	@RequestMapping(value = "/mypage/*Form.do", method = RequestMethod.GET)
 	public ModelAndView viewPet(@RequestParam("member_NO") int member_NO, HttpServletRequest request,
 		HttpServletResponse response) throws Exception {
+		System.out.println("PetControllerImpl : viewPet start");
+		
 		String viewName = (String) request.getAttribute("viewName");
 		petVO = petService.viewPet(member_NO);
 		ModelAndView mav = new ModelAndView();
+		
 		mav.setViewName(viewName);
-		mav.addObject("pet", "petVO");
+		mav.addObject("pet", petVO);
+		
 		String name = petVO.getPet_name();
 		int age = petVO.getPet_age();
 		String scale = petVO.getPet_scale();
 		String image = petVO.getPet_image();
 		System.out.println("펫 이름 : " + name);
+		
+		System.out.println("PetControllerImpl : viewPet end");
 		return mav;
 	}
 
@@ -155,6 +170,7 @@ public class PetControllerImpl implements PetController {
 
 	private String upload(MultipartHttpServletRequest multipartRequest) throws Exception {
 		System.out.println("PetControllerImpl : upload start");
+		
 		String pet_image = null;
 		Map<String, String> articleMap = new HashMap<String, String>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -173,6 +189,7 @@ public class PetControllerImpl implements PetController {
 				mFile.transferTo(new File(ARTICLE_IMAGE_PET + "\\" + "temp" + "\\" + pet_image));
 			}
 		}
+		
 		System.out.println("PetControllerImpl : upload end");
 		return pet_image;
 	}
@@ -205,7 +222,8 @@ public class PetControllerImpl implements PetController {
 	@ResponseBody
 	public ResponseEntity updatePet(MultipartHttpServletRequest multipartRequest,  
 		HttpServletResponse response) throws Exception{
-		System.out.println("petUpdate 시작");
+		System.out.println("PetControllerImpl : updatePet start");
+		
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String,Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu=multipartRequest.getParameterNames();
@@ -235,13 +253,18 @@ public class PetControllerImpl implements PetController {
 		articleMap.put("member_id", member_id);
 		articleMap.put("pet_image", pet_image);
 		System.out.println("pet_controller : update : "+articleMap);
+		
 		pet_NO =(String)articleMap.get("pet_NO");
+		
 		String message;
 		ResponseEntity resEnt=null;
+		
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
 		try {
 			petService.updatePet(articleMap);
+			
 			if(pet_image!=null && pet_image.length()!=0) {
 				File srcFile = new File(ARTICLE_IMAGE_PET+"\\"+"temp"+"\\"+pet_image);
 				File destDir = new File(ARTICLE_IMAGE_PET+"\\"+pet_NO);
@@ -251,6 +274,7 @@ public class PetControllerImpl implements PetController {
 				File oldFile = new File(ARTICLE_IMAGE_PET+"\\"+pet_NO+"\\"+originalFileName);
 				oldFile.delete();
 			}	
+			
 			message = "<script>";
 			message += " alert('반려동물 정보를 수정했습니다.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/mypage/myPage.do'; ";
@@ -265,6 +289,8 @@ public class PetControllerImpl implements PetController {
 			message +=" </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 		}
+		
+		System.out.println("PetControllerImpl : updatePet end");
 		return resEnt;
 	}
 
@@ -274,6 +300,8 @@ public class PetControllerImpl implements PetController {
 	@RequestMapping(value="/mypage/removePet.do" ,method = RequestMethod.GET)
 	public ModelAndView removePet(@RequestParam("pet_NO") int pet_NO, 
 		HttpServletRequest request, HttpServletResponse response) throws Exception{
+		System.out.println("PetControllerImpl : removePet start");
+		
 		request.setCharacterEncoding("utf-8");
 		/*
 		 * System.out.println("pet_NO : "+pet_NO); pet_NO =
@@ -283,6 +311,8 @@ public class PetControllerImpl implements PetController {
 		System.out.println("pet_NO : " + pet_NO);
 		petService.removePet(pet_NO);
 		ModelAndView mav = new ModelAndView("redirect:/mypage/myPage.do");
+		
+		System.out.println("PetControllerImpl : removePet end");
 		return mav;
 	}
 }

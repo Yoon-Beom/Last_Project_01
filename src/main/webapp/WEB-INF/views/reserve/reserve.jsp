@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -5,6 +6,7 @@
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -18,12 +20,20 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 
-$('#select_pet_table').on('scroll touchmove mousewheel', function(event) {
-	event.preventDefault();
-	event.stopPropagation();
-	return false;
-});
-	
+/* function ajaxList(str, shop_NO) {
+	var sendData = {"shop_NO" : shop_NO, "reserve_Date" : str};
+	$.ajax({
+		url:"${contextPath}/reserve/timeList.do",
+		type:"POST",
+		dataType: 'json',
+		contentType: 'application/json; charset=UTF-8',
+		data: JSON.stringify(sendData),
+		success: function(timeList) {
+			
+		}
+	});
+} */
+
 </script>
 <script type="text/javascript">
 
@@ -44,6 +54,7 @@ window.onload = function() {
 		}
 		
 		int nextday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		
 	%>
 	
 	for(var i = 1; i <= <%= dd %>; i++) {
@@ -59,6 +70,12 @@ window.onload = function() {
 	for(var i = 10; i <= 20; i++ ) {
 		document.getElementById('time_' + i + ':00').addEventListener('click', select_time);
 	}
+	
+	<c:forEach items="${dayList}" var="day">
+		var str1 = "${day}".split(" ");
+		var str = str1[0].split("-");
+		addBlock(document.getElementById(str[1] + '_' + str[2]), 'addBlockDayStyle');
+	</c:forEach>
 }
 
 // 달력 div 이동 메서드
@@ -114,7 +131,7 @@ function month_move(m) {
 
 // 펫 선택
 function select_pet(pet_NO) {
-	var pet = document.getElementsByName('pet_NO');
+	var pet = document.reserve.pet_NO;
 	var pet_info = document.getElementById('pet_info');
 
 	var pet_name = document.getElementById('pet_name_' + pet_NO).innerText;
@@ -122,7 +139,7 @@ function select_pet(pet_NO) {
 	var pet_age = document.getElementById('pet_age_' + pet_NO).innerText;
 	
 	
-	pet.value = pet_NO;
+	pet.value = pet_NO;	
 	pet_info.innerHTML = pet_name + ', ' + pet_age + ', ' + pet_scale;
 }
 
@@ -158,16 +175,121 @@ function input_pet() {
 	}
 }
 
+// ajax 부분
+//httpRequest 객체 생성
+var httpRequest = null;
+
+function getXMLHttpRequest(){
+	httpRequest = null;
+
+	if(window.ActiveXObject){
+		try{
+			httpRequest = new ActiveXObject("Msxml2.XMLHTTP");	
+		} catch(e) {
+			try{
+				httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e2) { httpRequest = null; }
+		}
+	}
+	else if(window.XMLHttpRequest){
+		httpRequest = new window.XMLHttpRequest();
+	}
+	return httpRequest;	
+}
+
+function ajaxList (str, shop_NO) {
+	var sendData = "shop_NO=" + shop_NO + "&reserve_Date=" + str;
+	httpRequest = getXMLHttpRequest();
+	httpRequest.onreadystatechange = callback;
+	httpRequest.open("POST", "${contextPath}/reserve/timeList.do", true);	
+	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+	httpRequest.send(sendData);
+}
+
+function callback() {
+	if(httpRequest.readyState == 4){
+		var resultText = httpRequest.responseText;
+
+		var str = resultText.split(',');
+		for(var i = 0; i < str.length; i++) {
+			if(str[i] != '') {
+				var timeA = document.getElementById('time_' + str[i]);
+				addBlock(timeA, 'addBlockTimeStyle');
+			}
+		}
+	}
+}
+
+function deleteBlock() {
+	for(var i = 10; i <= 20; i++) {
+		var timeA = document.getElementById('time_' + i + ':00');
+		addBlock(timeA, 'deleteBlockTimeStyle');
+	}
+}
+
 // 날짜 선택
 function select_day(e) {
 	delete_color_day();
 	var mon = document.getElementById('month').value;
-	
+	var shop_NO = document.reserve.shop_NO.value;
+		
 	this.style.backgroundColor = '#f0b3c0';
 	this.style.color = 'white';
 	this.style.border = '3px solid #f17791';
-	document.getElementById('reserve_Date').innerText = <%= yy %> + '-' + mon + '-' + this.innerText;
-	document.reserve.reserve_Date.value = <%= yy %> + '-' + mon + '-' + this.innerText;
+	
+	var date = <%= yy %> + '-' + mon + '-' + this.innerText;
+	
+	document.getElementById('reserve_Date').innerText = date;
+	document.reserve.reserve_Date.value = date;
+
+	deleteBlock();
+	todayCheck(date);
+	ajaxList(date, shop_NO);
+}
+
+function todayCheck(str) {
+	// 오늘 날짜 선택 햇을 시 시간대 현재시간 이후 2시간 예약은 막음
+	var today = new Date();
+	var month = today.getMonth() + 1;	// 월
+	var date = today.getDate();			// 날짜
+	var hours = today.getHours();		// 시
+	var minutes = today.getMinutes();	// 분
+	
+	var arrdate = str.split('-');
+	var startHours = ((minutes > 30) ? hours + 3 : hours + 2);
+
+	if(startHours >= 20) { startHours = 20; }
+	
+	if(arrdate[1] == month && arrdate[2] == date) {
+		delete_time();
+		document.getElementById('reserve_TimeA').innerText = '\u00a0';
+		
+		for(var i = 10; i <= startHours; i++) {
+			addBlock(document.getElementById('time_' + i + ':00'), 'addBlockTimeStyle');
+		}
+	} else {
+		for(var i = 10; i <= 20; i++ ) {
+			addBlock(document.getElementById('time_' + i + ':00'), 'deleteBlockTimeStyle');
+		}
+	}
+}
+
+// 클릭 이벤트와 스타일 추가, 삭제
+function addBlock(element, flag) {
+	if(flag == 'addBlockTimeStyle') {
+		element.removeEventListener('click', select_time);
+		element.style.backgroundColor = 'rgb(180, 180, 180)';
+		element.style.color = 'rgb(104, 104, 104)';
+	} else if(flag == 'deleteBlockTimeStyle') {
+		element.addEventListener('click', select_time);
+		element.style.backgroundColor = '';
+		element.style.color = 'gray';
+		element.style.border = '1px solid black';
+	} else if(flag == 'addBlockDayStyle') {
+		element.removeEventListener('click', select_day);
+		element.style.backgroundColor = 'rgb(180, 180, 180)';
+		element.style.color = 'rgb(104, 104, 104)';
+	}
 }
 
 // 날짜 스타일 지우기
@@ -230,16 +352,11 @@ function sumit_action() {
 	var res_spot = document.querySelector('input[name="res_spot"]:checked').value;
 	var res_option = document.querySelector('input[name="res_option"]:checked').value;
 	
-	console.log('sumit_action 실행');
-	
 	if(reservefrm.reserve_Date.value == '') {
 		alert('날짜를 선택해주세요.');
-		console.log('2');
 	} else if(reservefrm.reserve_TimeA.value == '') {
 		alert('시간을 선택해주세요.');	
-		console.log('3');	
 	} else if(pet_select.value == '0' && ((reservefrm.pet_name.value == '') || (reservefrm.pet_age.value == '') || (pet_scale == null))) {
-		console.log('4');	
 		if(reservefrm.pet_name.value == '') {
 			alert('반려동물의 이름을 입력하세요');
 			reservefrm.pet_name.focus();
@@ -250,12 +367,10 @@ function sumit_action() {
 			alert('반려동물의 크기를 체크하세요');
 			reservefrm.pet_age.focus();
 		}
-	} else if(pet_select.value == '1' && reservefrm.pet_NO == '') {
-		console.log('5');	
+	} else if(pet_select.value == '1' && reservefrm.pet_NO.value == '') {
 		alert('반려동물을 선택하세요');
 		document.getElementById('pet_select_div').focus();
 	} else {
-		console.log('6');	
 		var str = '';
 
 		if(pet_select.value == '0') {
@@ -271,7 +386,7 @@ function sumit_action() {
 					+ '목욕 : ' + ((res_option == '0') ? '선택' : '미선택') + '\n'
 					+ '예약 하시겠습니까?';
 		} else if(pet_select.value == '1') {
-			var pet_NO = document.getElementsByName('pet_NO').value;
+			var pet_NO = reservefrm.pet_NO.value;
 			var select_pet_name = document.getElementById('pet_name_' + pet_NO).innerText;
 			var select_pet_scale = document.getElementById('pet_scale_' + pet_NO).innerText;
 			var select_pet_age = document.getElementById('pet_age_' + pet_NO).innerText;
@@ -702,7 +817,7 @@ input {
 
 						<%
 							for (int i = 10; i < 21; i++) {
-								out.println("<tr><td id='time_" + i + ":00'>" + i + ":00</td></tr>");
+								out.println("<tr><td id='time_" + i + ":00' class=''>" + i + ":00</td></tr>");
 							}
 						%>
 					</table>

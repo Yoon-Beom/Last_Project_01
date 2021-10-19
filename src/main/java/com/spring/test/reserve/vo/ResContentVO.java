@@ -41,13 +41,6 @@ public class ResContentVO {				// 예약 디테일 테이블
 	private String res_status;			// 예약 테이블 : 예약상태 (예약 상태 : 0, 1)
 	
 	private int rnum;					// 방문내역 번호 용도
-	public int getRnum() {
-		return rnum;
-	}
-
-	public void setRnum(int rnum) {
-		this.rnum = rnum;
-	}
 
 	ResContentVO() { }
 	
@@ -62,12 +55,14 @@ public class ResContentVO {				// 예약 디테일 테이블
 	public void setMember_address(String member_address) { this.member_address = member_address; }
 	public void setMember_joinDate(Date member_joinDate) { this.member_joinDate = member_joinDate; }
 	public void setMember_code(String member_code) { this.member_code = member_code; }
+	
 	public void setPet_NO(int pet_NO) { this.pet_NO = pet_NO; }
 	public void setPet_name(String pet_name) { this.pet_name = pet_name; }
 	public void setPet_age(int pet_age) { this.pet_age = pet_age; }
 	public void setPet_scale(String pet_scale) { this.pet_scale = pet_scale; }
 	public void setPet_image(String pet_image) { this.pet_image = pet_image; }
 	public void setPet_joinDate(Date pet_joinDate) { this.pet_joinDate = pet_joinDate; }
+	
 	public void setShop_NO(int shop_NO) { this.shop_NO = shop_NO; }
 	public void setShopDetail_NO(int shopDetail_NO) { this.shopDetail_NO = shopDetail_NO; }
 	public void setShop_name(String shop_name) { this.shop_name = shop_name; }
@@ -75,13 +70,17 @@ public class ResContentVO {				// 예약 디테일 테이블
 	public void setShop_latitude(double shop_latitude) { this.shop_latitude = shop_latitude; }
 	public void setShop_longitude(double shop_longitude) { this.shop_longitude = shop_longitude; }
 	public void setShop_joinDate(Date shop_joinDate) { this.shop_joinDate = shop_joinDate; }
+	
 	public void setReserve_NO(int reserve_NO) { this.reserve_NO = reserve_NO; }
 	public void setReserve_Date(Date reserve_Date) { this.reserve_Date = reserve_Date; }
 	public void setReserve_TimeA(String reserve_TimeA) { this.reserve_TimeA = reserve_TimeA; }
 	public void setRes_spot(String res_spot) { this.res_spot = res_spot; }
 	public void setRes_option(String res_option) { this.res_option = res_option; }
 	public void setRes_status(String res_status) { this.res_status = res_status; }
+	
+	public void setRnum(int rnum) { this.rnum = rnum; }
 	 
+	
 	public int getResContent_NO() { return resContent_NO; }
 	public int getMember_NO() { return member_NO; }
 	public String getMember_id() { return member_id; }
@@ -93,12 +92,14 @@ public class ResContentVO {				// 예약 디테일 테이블
 	public String getMember_address() { return member_address; }
 	public Date getMember_joinDate() { return member_joinDate; }
 	public String getMember_code() { return member_code; }
+	
 	public int getPet_NO() { return pet_NO; }
 	public String getPet_name() { return pet_name; }
 	public int getPet_age() { return pet_age; }
 	public String getPet_scale() { return pet_scale; }
 	public String getPet_image() { return pet_image; }
 	public Date getPet_joinDate() { return pet_joinDate; }
+	
 	public int getShop_NO() { return shop_NO; }
 	public int getShopDetail_NO() { return shopDetail_NO; }
 	public String getShop_name() { return shop_name; }
@@ -106,10 +107,13 @@ public class ResContentVO {				// 예약 디테일 테이블
 	public double getShop_latitude() { return shop_latitude; }
 	public double getShop_longitude() { return shop_longitude; }
 	public Date getShop_joinDate() { return shop_joinDate; }
+	
 	public int getReserve_NO() { return reserve_NO; }
 	public Date getReserve_Date() { return reserve_Date; }
 	public String getReserve_TimeA() { return reserve_TimeA; }
 	public String getRes_spot() { return res_spot; }
 	public String getRes_option() { return res_option; }
 	public String getRes_status() { return res_status; }
+	
+	public int getRnum() { return rnum; }
 }

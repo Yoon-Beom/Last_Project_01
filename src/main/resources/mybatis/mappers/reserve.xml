@@ -14,4 +14,44 @@
 		<result property="res_option" column="res_option"/>
 		<result property="res_status" column="res_status"/>
 	</resultMap>
+	
+	<insert id="insertReserve" parameterType="com.spring.test.reserve.vo.ReserveVO">
+		<![CDATA[
+			insert into t_reserve(reserve_NO, shop_NO, member_NO,
+			    pet_NO, reserve_Date, reserve_TimeA, res_spot)
+			    values(seq_reserve.nextval, #{shop_NO}, #{member_NO},
+			    #{pet_NO}, #{reserve_Date}, #{reserve_TimeA}, #{res_spot})
+		]]>
+	</insert>
+	
+	<select id="selectMaxResNO" resultType="int">
+		<![CDATA[
+			select max(reserve_NO) from t_reserve
+		]]>
+	</select>
+		
+	<select id="selectDateCount" parameterType="java.util.HashMap" resultType="String">
+		<![CDATA[
+			select reserve_date
+			    from t_reserve
+			    where reserve_date 
+			    between to_date(#{startDay}, 'YY/MM/DD')
+			    and to_date(#{endDay}, 'YY/MM/DD')
+			    and shop_no = #{shop_NO}
+			    group by reserve_date
+			    having count(reserve_timea) = 11
+			    order by reserve_date asc
+		]]>
+	</select>
+	
+	<select id="selectTimeByDate" parameterType="java.util.HashMap" resultType="String">
+		<![CDATA[
+			select reserve_TimeA
+			    from t_reserve
+			    where shop_no = #{shop_NO}
+			    and reserve_date=to_date(#{reserve_Date}, 'YY/MM/DD')
+			    order by reserve_timeA asc
+		]]>
+	</select>
+	
 </mapper>
