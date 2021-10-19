@@ -42,9 +42,9 @@
 		<div class="container">
 			<div id="box1">
 				<div class="masthead-subheading">환영합니다!</div>
-				<div class="masthead-heading text-uppercase">멍멍이 헤어샵입니다!</div>
+				<div class="masthead-heading text-uppercase">멍냥이 헤어샵입니다!</div>
 				<a class="btn btn-primary btn-xl text-uppercase"
-					href="${pageContext.request.contextPath}/main.do">궁금하다면?</a>
+					href="${pageContext.request.contextPath}/shop/shopMap.do">궁금하다면?</a>
 			</div>
 		</div>
 	</header>

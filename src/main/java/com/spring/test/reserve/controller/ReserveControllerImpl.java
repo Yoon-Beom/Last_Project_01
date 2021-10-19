@@ -61,6 +61,11 @@ public class ReserveControllerImpl implements ReserveController {
 		
 		int member_NO = memberVO.getMember_NO();
 		List petList = petService.listPet(member_NO);
+		String str = request.getParameter("shop_NO");
+		int shop_NO = Integer.parseInt(str);
+
+		System.out.println("str : " + str);
+		System.out.println("shop_NO : " + shop_NO);
 		
 		// 날짜 관련 코드
 		Calendar cal = Calendar.getInstance();

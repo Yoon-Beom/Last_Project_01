@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*, java.text.*, java.io.*"%>
 <%@ page session="false"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
@@ -79,12 +80,17 @@ li {
 </head>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
+   
+   window.onclick = function(){
+      
+   }
+
    // 가로스크롤 이동 함수 (이동할 거리만큼의 매개변수는 버튼에서 함수 호출 시 지정)
    function moveScroll(x, y) {
       var table = document.getElementById('table-box');
        table.scrollBy(x, y);
    };
-
+   
 /* function calDis(){
    var test = map.getCenter().toString().slice(0, -1).slice(1),
    split1 = test.split(', '),
@@ -150,7 +156,7 @@ li {
          // 만약 거리가 5키로 이내일 경우,
          if(calDis <= 5.0) {
             // 배열에 담습니다   ':' <- 구분자
-            arr.push('${shop.shop_NO} : ${shop.shop_name} : ${shop.shop_latitude} : ${shop.shop_longitude} : ${shop.shop_address} : '+calDis);
+            arr.push('${shop.shop_NO} : ${shop.shop_name} : ${shop.shop_latitude} : ${shop.shop_longitude} : ${shop.shop_address} : ${shop.shopDetailVO.shop_imageMain} : '+calDis);
             // 추천 매장 테이블 정보 변경
             
          }
@@ -173,13 +179,13 @@ li {
          lat = arrS[2], 
          lon = arrS[3],
          address = arrS[4];
+         image = arrS[5];
              
          alert('5km 이내에 있는 매장은 "' + name +'" 밖에 없습니다.\n매장 위치로 이동합니다.');
          // search함수를 재사용합니다
-         search(no+'a!d#$D'+lat+'a!d#$D'+lon+'a!d#$D'+name+'a!d#$D'+address);
+         search(no+'a!d#$D'+lat+'a!d#$D'+lon+'a!d#$D'+name+'a!d#$D'+address+'a!d#$D'+image);
       // 만약 매장이 여러 곳 이라면?     
       } else {
-         alert(arr);
          // 재검색 버튼 숨기기
          document.getElementById('reSearch').style.display = 'none';
          
@@ -211,7 +217,7 @@ li {
                 var location = arr[i].split(' : ');//경로1
                 var placePosition = new kakao.maps.LatLng(location[2], location[3]), 
                    marker = addMarker(placePosition, i),                   
-                   itemEl = getListItem2(i,location[1],location[4]);
+                   itemEl = getListItem2(i,location[1],location[4],location[5]);
                 // 검색 결과 항목 Element를 생성합니다
                          
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
@@ -257,15 +263,20 @@ li {
    }
    
    // 검색결과 항목을 Element로 반환하는 함수입니다
-    function getListItem2(index, name, address, no) {
+    function getListItem2(index, name, address, no, image) {
     
        var el = document.createElement('li'), 
        itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>'
          + '<br><div class="info1">'
-         + '   <h3>' + name + '</h3><br>'
-         + '<div class="shopImg">사진 공간?</div><br>'
-         + '   <span>' + address + '</span><br>'
-         + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+no+'"><button class="btn btn-primary">상세페이지</button></a> <button class="btn btn-primary">예약</button>'
+         + '   <h3>' + name + '</h3><br>';
+       if (shopImg) {
+         itemStr += '<div class="shopImg"><img src="${contextPath}/downloadShopDetail.do?shopDetail_NO=' + shop_NO + '&shop_imageMain=' + shopImg + ' style="max-width: 100px; height: 100px;"/></div><br>'
+       } else {
+           itemStr += '<div class="shopImg"><img src="${contextPath}/resources/assets/img/dog2.png" style="max-width: 100px; height: 100px;"/></div><br>'
+       }
+       itemStr += '   <span>' + address + '</span><br>'
+         + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+no+'"><button class="btn btn-primary">상세페이지</button></a>'
+         + '<a href="${contextPath}/reserve/reserve.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">예약</button></a>'
          + '</div><br>';  
        
        el.innerHTML = itemStr;
@@ -293,11 +304,25 @@ li {
                   <tr>
                      <td>${shop.shop_name}</td>
                   </tr>
-                  <tr>
-                     <td>사진공간?</td>
+                  <c:choose>
+              <c:when test="${not empty shop.shopDetailVO.shop_imageMain && shop.shopDetailVO.shop_imageMain!='null' }">
+               <tr id="tr_file_upload">
+                     <td>
+                           <img src="${contextPath}/downloadShopDetail.do?shopDetail_NO=${shop.shopDetailVO.shopDetail_NO}&shop_imageMain=${shop.shopDetailVO.shop_imageMain }" style="max-width: 290px; max-height: 100px;"  />
+                           <%-- <img src="${contextPath}/download.do?board_NO=${shop.shop_NO}&board_image=${shop.shopDetailVO.shop_imageMain }" id="preview" width="300" height="200px" />    --%>                  
+                        </td>
                   </tr>
+                  </c:when>
+                <c:otherwise>
+                   <tr id="tr_file_upload">
+                     <td>
+                           <img src="${contextPath}/resources/assets/img/dog2.png" width="120px"/>                                             
+                        </td>
+                    </tr>
+                </c:otherwise>
+                </c:choose>
                   <tr>
-                     <td style="width:300px;">${shop.shop_address}</td>
+                     <td style="width:300px;">${fn:split(shop.shop_address,',')[0]}<br>${fn:split(shop.shop_address,',')[1]}<br>${fn:split(shop.shop_address,',')[2]}</td>
                   </tr>
                   <tr>
                      <td><li style="none" id="${shop.shop_NO}List">거리를 나타내야해요</li></td>
@@ -305,8 +330,8 @@ li {
                   <tr>
                      <td>
                
-                        <button class="btn btn-primary">예약</button>
-                        <input class="btn btn-primary" id="${shop.shop_NO} a!d#$D ${shop.shop_latitude} a!d#$D ${shop.shop_longitude} a!d#$D ${shop.shop_name} a!d#$D ${shop.shop_address}" 
+                        <a href="${contextPath}/reserve/reserve.do?shop_NO=${shop.shop_NO}"><button class="btn btn-primary">예약</button></a>
+                        <input class="btn btn-primary" id="${shop.shop_NO}a!d#$D ${shop.shop_latitude} a!d#$D ${shop.shop_longitude} a!d#$D ${shop.shop_name} a!d#$D ${shop.shop_address} a!d#$D${shop.shopDetailVO.shop_imageMain}" 
                         type="button" onclick="search(this.id)" value="찾기">
                      </td>
                   </tr>
@@ -321,7 +346,7 @@ li {
             <option value="3">별점 높은 순</option>
          </select>
          <button class="btn btn-primary" onclick="moveScroll(304,0)">▶</button><br><br>
-         <input type="text" value="" id="test" style="width: 330px;"><br>
+         <input type="hidden" value="" id="test" style="width: 330px;"><br>
          <!-- <button type="button" class="btn btn-primary" onclick="changeTest();">변경이 될까요?</button> -->             
          <div id="box1">
             <div class="map_wrap">
@@ -805,7 +830,7 @@ li {
                      lon = split[2], // 경도            
                      shopName = split[3], // 이름
                      shopAddress = split[4]; // 주소
-                     
+                     shopImg = split[5]; // 사진경로
                      
                                   
                   centerMove(lat, lon);
@@ -816,7 +841,7 @@ li {
                   // 마커와 인포윈도우를 표시합니다
                   displayMarker(locPosition, message);
                                                                             
-                  var itemEl = getListItem1(shopName, shopAddress, shop_NO);
+                  var itemEl = getListItem1(shopName, shopAddress, shop_NO, shopImg);
                      
                   fragment.appendChild(itemEl);
     
@@ -864,14 +889,20 @@ li {
                     
                       
                //검색결과 항목을 Element로 반환하는 함수입니다
-                function getListItem1(shopName, shopAddress, shop_NO) {
+                function getListItem1(shopName, shopAddress, shop_NO, shopImg) {
                    var el = document.createElement('li');
                    var itemStr = 
                         '<div class="info1">'
-                      + '   <h3>' + shopName + '</h3><br>'
-                      + '<div class="shopImg">사진 공간?</div><br>'
-                      + '   <span>' + shopAddress + '</span><br>'
-                      + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">상세페이지</button></a> <button class="btn btn-primary">예약</button>'
+                      + '   <h3>' + shopName + '</h3><br>';
+                      
+                   if (shopImg) {
+                      itemStr += '<div class="shopImg"><img src="${contextPath}/downloadShopDetail.do?shopDetail_NO=' + shop_NO + '&shop_imageMain=' + shopImg + '" style="max-width: 100px; height: 100px;"/></div><br>'
+                   } else {
+                     itemStr += '<div class="shopImg"><img src="${contextPath}/resources/assets/img/dog2.png" style="max-width: 100px; height: 100px;"/></div><br>'
+                   } 
+                      itemStr += '   <span>' + shopAddress + '</span><br>'
+                      + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">상세페이지</button></a>'
+					  + '<a href="${contextPath}/reserve/reserve.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">예약</button></a>'
                       + '</div>';  
                       el.innerHTML = itemStr;
                       el.className = 'item1';
