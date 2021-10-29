@@ -241,6 +241,7 @@ function select_day(e) {
 	
 	document.getElementById('reserve_Date').innerText = date;
 	document.reserve.reserve_Date.value = date;
+	document.getElementsByName('reserve_TimeA').value = null;
 
 	deleteBlock();
 	todayCheck(date);
@@ -261,7 +262,6 @@ function todayCheck(str) {
 	if(startHours >= 20) { startHours = 20; }
 	
 	if(arrdate[1] == month && arrdate[2] == date) {
-		delete_time();
 		document.getElementById('reserve_TimeA').innerText = '\u00a0';
 		
 		for(var i = 10; i <= startHours; i++) {
@@ -324,7 +324,7 @@ function delete_color_day() {
 
 // 시간대 선택
 function select_time(e) {
-	delete_time();
+	delete_time()
 	
 	this.style.backgroundColor = '#f0b3c0';
 	this.style.color = 'white';
@@ -337,6 +337,7 @@ function select_time(e) {
 // 시간대 스타일 지우기
 function delete_time() {
 	var str = document.getElementsByName('reserve_TimeA').value;
+	
 	if(str != null) {
 		document.getElementById('time_' + str).style.backgroundColor = '';
 		document.getElementById('time_' + str).style.color = 'gray';

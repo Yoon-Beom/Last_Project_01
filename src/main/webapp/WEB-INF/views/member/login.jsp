@@ -51,6 +51,13 @@ h1 {
 	    }
 	  </script>
 	</c:when>
+	<c:when test="${memberCode == '0'}">
+	  <script>
+	    window.onload=function(){
+	      alert("예약하시려면 로그인을 해주세요.");
+	    }
+	  </script>
+	</c:when>
 </c:choose>  
 </head>
 <body>

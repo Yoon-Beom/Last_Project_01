@@ -59,15 +59,26 @@ public class ShopControllerImpl implements ShopController{
 	@RequestMapping(value = "/shop/shopMap.do", method = RequestMethod.GET)
 	public ModelAndView listShop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("ShopControllerImpl : listShop start");
+		
 		String viewName = (String)request.getAttribute("viewName"); 
 		List shopList =	shopService.listShop(); 
 		ModelAndView mav = new ModelAndView(viewName);
-		mav.addObject("shopList", shopList); System.out.println("리턴 값 : " + mav);
+		mav.addObject("shopList", shopList);
 		HttpSession session = request.getSession();
-		session.setAttribute("shopList",shopList);
+		
+		memberVO = (MemberVO) session.getAttribute("member");
+		
+		if(memberVO.getMember_code().equals("2")) {
+			mav.addObject("memberCode", "2");
+		}
+		
+		session.setAttribute("shopList", shopList);
+		
+
+		System.out.println("리턴 값 : " + mav);
 		System.out.println("ShopControllerImpl : listShop end"); 
 		return mav; 
-		}
+	}
 	
 	@Override
 	@RequestMapping(value="/shop/shopDetail.do", method= RequestMethod.GET) 

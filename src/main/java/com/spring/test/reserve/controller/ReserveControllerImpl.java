@@ -59,6 +59,12 @@ public class ReserveControllerImpl implements ReserveController {
 		HttpSession session = request.getSession();
 		memberVO = (MemberVO) session.getAttribute("member");
 		
+		if(memberVO == null) {
+			mav.setViewName("login");
+			mav.addObject("memberCode", "0");
+			return mav;
+		}
+		
 		int member_NO = memberVO.getMember_NO();
 		List petList = petService.listPet(member_NO);
 		String str = request.getParameter("shop_NO");

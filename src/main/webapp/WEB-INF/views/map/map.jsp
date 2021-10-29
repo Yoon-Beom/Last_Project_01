@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*, java.text.*, java.io.*"%>
@@ -13,49 +12,49 @@
 <title>내주변</title>
 <style>
 #box1 {
-   width: 80%;
-   height: 500px;
-   margin: auto;
-   margin-top: 100px;
-   background-color: white;
+	width: 80%;
+	height: 500px;
+	margin: auto;
+	margin-top: 100px;
+	background-color: white;
 }
 
 #shopTable .shopInfo {
-   background-color: white;
+	background-color: white;
 }
 
- table tr td {
-   background-color: #FFEAEA;
-   border: 1px solid #FFFFFF;
-} 
- tabe td {
-    
- }
+table tr td {
+	background-color: #FFEAEA;
+	border: 1px solid #FFFFFF;
+}
+
+tabe td {
+	
+}
 
 #table-box {
-   overflow-x:scroll;
-   white-space:nowrap;
-   width: 608px;
-   margin: auto;
-   scroll-behavior: smooth;
-   
-   /* 드래그 막기 */   
-   -ms-user-select: none; 
-   -moz-user-select: -moz-none;
-   -khtml-user-select: none;
-   -webkit-user-select: none;
-   user-select: none;
+	overflow-x: scroll;
+	white-space: nowrap;
+	width: 608px;
+	margin: auto;
+	scroll-behavior: smooth;
+	/* 드래그 막기 */
+	-ms-user-select: none;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 #table-box table {
-   display: inline;
-/*    width: 500px;
+	display: inline;
+	/*    width: 500px;
    text-overflow: ellipsis; */
 }
 
-   /* 스크롤바 숨기기 */
+/* 스크롤바 숨기기 */
 ::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 /* #test-table table:nth-child(odd) {
@@ -68,21 +67,16 @@
   clear: left;
 } */
 li {
-   list-style: none; 
+	list-style: none;
 }
-
-
 </style>
-
-
-<link rel="stylesheet" type="text/css"
-   href="${contextPath}/resources/css/styles.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/styles.css" />
 </head>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
    
-   window.onclick = function(){
-      
+   window.onload = function(){
+	   
    }
 
    // 가로스크롤 이동 함수 (이동할 거리만큼의 매개변수는 버튼에서 함수 호출 시 지정)
@@ -274,6 +268,7 @@ li {
        } else {
            itemStr += '<div class="shopImg"><img src="${contextPath}/resources/assets/img/dog2.png" style="max-width: 100px; height: 100px;"/></div><br>'
        }
+       
        itemStr += '   <span>' + address + '</span><br>'
          + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+no+'"><button class="btn btn-primary">상세페이지</button></a>'
          + '<a href="${contextPath}/reserve/reserve.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">예약</button></a>'
@@ -294,89 +289,102 @@ li {
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b47d4f2e1f1f2f33a525416b1d6042d0&libraries=services"></script>
 <body>
-   <header class="masthead">
-      <div class="container">
-         <br><br><h2>추천 매장</h2>
-            
-         <div id='table-box'>         
-            <c:forEach var="shop" items="${shopList}">
-               <table id="${shop.shop_NO}" class="scroll" style="padding: 0px;">
-                  <tr>
-                     <td>${shop.shop_name}</td>
-                  </tr>
-                  <c:choose>
-              <c:when test="${not empty shop.shopDetailVO.shop_imageMain && shop.shopDetailVO.shop_imageMain!='null' }">
-               <tr id="tr_file_upload">
-                     <td>
-                           <img src="${contextPath}/downloadShopDetail.do?shopDetail_NO=${shop.shopDetailVO.shopDetail_NO}&shop_imageMain=${shop.shopDetailVO.shop_imageMain }" style="max-width: 290px; max-height: 100px;"  />
-                           <%-- <img src="${contextPath}/download.do?board_NO=${shop.shop_NO}&board_image=${shop.shopDetailVO.shop_imageMain }" id="preview" width="300" height="200px" />    --%>                  
-                        </td>
-                  </tr>
-                  </c:when>
-                <c:otherwise>
-                   <tr id="tr_file_upload">
-                     <td>
-                           <img src="${contextPath}/resources/assets/img/dog2.png" width="120px"/>                                             
-                        </td>
-                    </tr>
-                </c:otherwise>
-                </c:choose>
-                  <tr>
-                     <td style="width:300px;">${fn:split(shop.shop_address,',')[0]}<br>${fn:split(shop.shop_address,',')[1]}<br>${fn:split(shop.shop_address,',')[2]}</td>
-                  </tr>
-                  <tr>
-                     <td><li style="none" id="${shop.shop_NO}List">거리를 나타내야해요</li></td>
-                  </tr>
-                  <tr>
-                     <td>
-               
-                        <a href="${contextPath}/reserve/reserve.do?shop_NO=${shop.shop_NO}"><button class="btn btn-primary">예약</button></a>
-                        <input class="btn btn-primary" id="${shop.shop_NO}a!d#$D ${shop.shop_latitude} a!d#$D ${shop.shop_longitude} a!d#$D ${shop.shop_name} a!d#$D ${shop.shop_address} a!d#$D${shop.shopDetailVO.shop_imageMain}" 
-                        type="button" onclick="search(this.id)" value="찾기">
-                     </td>
-                  </tr>
-               </table>
-            </c:forEach>
-         </div>
-         <br>
-         <button class="btn btn-primary" onclick="moveScroll(-304,0)">◀</button>
-         <select name="select">
-            <option value="1">가까운 매장순</option>
-            <option value="2">리뷰 많은순</option>
-            <option value="3">별점 높은 순</option>
-         </select>
-         <button class="btn btn-primary" onclick="moveScroll(304,0)">▶</button><br><br>
-         <input type="hidden" value="" id="test" style="width: 330px;"><br>
-         <!-- <button type="button" class="btn btn-primary" onclick="changeTest();">변경이 될까요?</button> -->             
-         <div id="box1">
-            <div class="map_wrap">
-               <div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
-               <a id="reSearch" onclick="reSearchShop();" class="btn btn-primary btn-lg" style="position: relative; width: 30%; height:30px; bottom: 80px; z-index: 2; font-size: medium; text-align: center; display: none;">현 위치에서 재검색 <i class="glyphicon glyphicon-zoom-in"></i></a>
-               <button type="button" class="btn btn-primary" id="btn2" onclick="expand();" style="position: relative; bottom: 475px; display: none; z-index: 2;">
-                  <img src="${contextPath}/resources/assets/img/expand.png" width="18px">
-               </button>
-               <div id="menu_wrap" class="bg_white">
-                  <div class="option">
-                     <div>
-                        <form onsubmit="searchPlaces(); return false;">
-                           <input type="text" value="" id="keyword" size="15">
-                           <button type="submit" class="btn btn-primary">검색하기</button>
-                           <button type="button" onclick=" myLocation();"class="btn btn-primary">내위치</button>
-                           <div>
-                              <button class="btn btn-primary" type="button" onclick="reduce();">
-                                 <img src="${contextPath}/resources/assets/img/reduce.png" width="18px">
-                              </button>
-                           </div>
-                        </form>
-                     </div>
-                  </div>
-                  <hr>
-                  <ul id="placesList"></ul>
-                  <div id="pagination"></div>
-               </div>
-            </div>            
-<!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->            
-            <script>
+	<header class="masthead">
+		<div class="container">
+			<br> <br>
+			<h2>추천 매장</h2>
+			<div id='table-box'>
+				<c:forEach var="shop" items="${shopList}">
+					<table id="${shop.shop_NO}" class="scroll" style="padding: 0px;">
+						<tr>
+							<td>${shop.shop_name}</td>
+						</tr>
+						<c:choose>
+							<c:when test="${not empty shop.shopDetailVO.shop_imageMain && shop.shopDetailVO.shop_imageMain!='null' }">
+								<tr id="tr_file_upload">
+									<td>
+										<img
+											src="${contextPath}/downloadShopDetail.do?shopDetail_NO=${shop.shopDetailVO.shopDetail_NO}&shop_imageMain=${shop.shopDetailVO.shop_imageMain }"
+											style="max-width: 290px; max-height: 100px;"
+										/>
+										<%-- <img src="${contextPath}/download.do?board_NO=${shop.shop_NO}&board_image=${shop.shopDetailVO.shop_imageMain }" id="preview" width="300" height="200px" />    --%>
+									</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr id="tr_file_upload">
+									<td>
+										<img src="${contextPath}/resources/assets/img/dog2.png" width="120px" />
+									</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+						<tr>
+							<td style="width: 300px;">${fn:split(shop.shop_address,',')[0]}<br>${fn:split(shop.shop_address,',')[1]}<br>${fn:split(shop.shop_address,',')[2]}</td>
+						</tr>
+						<tr>
+							<td>
+								<li style="" id="${shop.shop_NO}List">거리를 나타내야해요</li>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<c:if test="${memberCode != '2'}">
+									<a href="${contextPath}/reserve/reserve.do?shop_NO=${shop.shop_NO}"><button class="btn btn-primary">예약</button></a>
+								</c:if>
+								
+								<input class="btn btn-primary"
+									id="${shop.shop_NO}a!d#$D ${shop.shop_latitude} a!d#$D ${shop.shop_longitude} a!d#$D ${shop.shop_name} a!d#$D ${shop.shop_address} a!d#$D${shop.shopDetailVO.shop_imageMain}"
+									type="button" onclick="search(this.id)" value="찾기"
+								>
+							</td>
+						</tr>
+					</table>
+				</c:forEach>
+			</div>
+			<br>
+			<button class="btn btn-primary" onclick="moveScroll(-304,0)">◀</button>
+			<select name="select">
+				<option value="1">가까운 매장순</option>
+				<option value="2">리뷰 많은순</option>
+				<option value="3">별점 높은 순</option>
+			</select>
+			<button class="btn btn-primary" onclick="moveScroll(304,0)">▶</button>
+			<br> <br>
+			<input type="hidden" value="" id="test" style="width: 330px;">
+			<br>
+			<!-- <button type="button" class="btn btn-primary" onclick="changeTest();">변경이 될까요?</button> -->
+			<div id="box1">
+				<div class="map_wrap">
+					<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
+					<a id="reSearch" onclick="reSearchShop();" class="btn btn-primary btn-lg"
+						style="position: relative; width: 30%; height: 30px; bottom: 80px; z-index: 2; font-size: medium; text-align: center; display: none;"
+					>현 위치에서 재검색 <i class="glyphicon glyphicon-zoom-in"></i></a>
+					<button type="button" class="btn btn-primary" id="btn2" onclick="expand();" style="position: relative; bottom: 475px; display: none; z-index: 2;">
+						<img src="${contextPath}/resources/assets/img/expand.png" width="18px">
+					</button>
+					<div id="menu_wrap" class="bg_white">
+						<div class="option">
+							<div>
+								<form onsubmit="searchPlaces(); return false;">
+									<input type="text" value="" id="keyword" size="15">
+									<button type="submit" class="btn btn-primary">검색하기</button>
+									<button type="button" onclick=" myLocation();" class="btn btn-primary">내위치</button>
+									<div>
+										<button class="btn btn-primary" type="button" onclick="reduce();">
+											<img src="${contextPath}/resources/assets/img/reduce.png" width="18px">
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<hr>
+						<ul id="placesList"></ul>
+						<div id="pagination"></div>
+					</div>
+				</div>
+				<!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+				<script>
                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
                    mapOption = { 
                        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -901,9 +909,13 @@ li {
                      itemStr += '<div class="shopImg"><img src="${contextPath}/resources/assets/img/dog2.png" style="max-width: 100px; height: 100px;"/></div><br>'
                    } 
                       itemStr += '   <span>' + shopAddress + '</span><br>'
-                      + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">상세페이지</button></a>'
-					  + '<a href="${contextPath}/reserve/reserve.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">예약</button></a>'
-                      + '</div>';  
+                      + '<a href="${contextPath}/shop/shopDetail.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">상세페이지</button></a>';
+                      
+                      if(${memberCode != "2"}) {
+                    	  itemStr += '<a href="${contextPath}/reserve/reserve.do?shop_NO='+shop_NO+'"><button class="btn btn-primary">예약</button></a>';
+                      }
+                      
+                      itemStr += '</div>';  
                       el.innerHTML = itemStr;
                       el.className = 'item1';
 
@@ -912,8 +924,8 @@ li {
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
             
             </script>
-         </div>
-      </div>
-   </header>
+			</div>
+		</div>
+	</header>
 </body>
 </html>
