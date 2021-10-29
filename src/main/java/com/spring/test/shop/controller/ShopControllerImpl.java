@@ -67,8 +67,9 @@ public class ShopControllerImpl implements ShopController{
 		HttpSession session = request.getSession();
 		
 		memberVO = (MemberVO) session.getAttribute("member");
-		
-		if(memberVO.getMember_code().equals("2")) {
+		if(memberVO == null) {
+			
+		} else if(memberVO.getMember_code().equals("2")) {
 			mav.addObject("memberCode", "2");
 		}
 		
